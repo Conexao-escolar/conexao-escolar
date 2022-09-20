@@ -1,0 +1,8 @@
+{
+  "apiEndpoint": "https://dev-conexao-escolar.prismic.io/api/v2",
+  "libraries": [
+    "@/slices"
+  ],
+  "localSliceSimulatorURL": "http://localhost:3333/slice-simulator",
+  "_latest": "0.4.2"
+}
