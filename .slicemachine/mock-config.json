@@ -1,0 +1,36 @@
+{
+  "slices": {
+    "Teste": {},
+    "SliceTesteAgoraVai": {
+      "default": {
+        "primary": {}
+      }
+    },
+    "EscolaProfile": {
+      "default": {
+        "primary": {},
+        "items": {}
+      }
+    },
+    "EscolaRankDetail": {
+      "default": {
+        "primary": {}
+      }
+    },
+    "EscolaReclamacoes": {
+      "default": {
+        "primary": {}
+      }
+    },
+    "EscolaProfileImgs": {
+      "default": {
+        "primary": {}
+      }
+    }
+  },
+  "_cts": {
+    "escolarank": {
+      "midea": {}
+    }
+  }
+}

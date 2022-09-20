@@ -1,0 +1,138 @@
+{
+  "id": "escolarank",
+  "label": "EscolaRank",
+  "repeatable": true,
+  "status": true,
+  "json": {
+    "Main": {
+      "uid": {
+        "type": "UID",
+        "config": {
+          "label": "id",
+          "placeholder": ""
+        }
+      },
+      "nome": {
+        "type": "StructuredText",
+        "config": {
+          "label": "nome",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "rank": {
+        "type": "Number",
+        "config": {
+          "label": "rank",
+          "placeholder": ""
+        }
+      },
+      "midea": {
+        "type": "Group",
+        "config": {
+          "label": "midea",
+          "fields": {
+            "banner": {
+              "type": "Image",
+              "config": {
+                "label": "banner",
+                "constraint": {},
+                "thumbnails": []
+              }
+            },
+            "profileimg": {
+              "type": "Image",
+              "config": {
+                "label": "profile",
+                "constraint": {},
+                "thumbnails": []
+              }
+            }
+          }
+        }
+      },
+      "geo": {
+        "type": "Group",
+        "config": {
+          "label": "geo",
+          "fields": {
+            "endereco": {
+              "type": "StructuredText",
+              "config": {
+                "label": "endereco",
+                "placeholder": "",
+                "allowTargetBlank": true,
+                "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+              }
+            },
+            "geoendereco": {
+              "type": "GeoPoint",
+              "config": {
+                "label": "geoEndereco"
+              }
+            }
+          }
+        }
+      },
+      "slices": {
+        "type": "Slices",
+        "fieldset": "Slice Zone",
+        "config": {
+          "choices": {
+            "teste": {
+              "type": "SharedSlice"
+            },
+            "escola_profile_imgs": {
+              "type": "SharedSlice"
+            },
+            "escola_reclamacoes": {
+              "type": "SharedSlice"
+            }
+          }
+        }
+      }
+    },
+    "sobre": {
+      "sobre_a_escola": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Sobre a escola",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      }
+    },
+    "conteúdo": {
+      "conteudo": {
+        "type": "StructuredText",
+        "config": {
+          "label": "conteúdo",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      }
+    },
+    "localização": {
+      "geolocal": {
+        "type": "GeoPoint",
+        "config": {
+          "label": "geoLocal"
+        }
+      }
+    },
+    "membros": {
+      "teste": {
+        "type": "StructuredText",
+        "config": {
+          "label": "teste",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      }
+    }
+  }
+}

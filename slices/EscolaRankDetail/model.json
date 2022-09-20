@@ -1,0 +1,68 @@
+{
+  "id": "teste",
+  "type": "SharedSlice",
+  "name": "EscolaRankDetail",
+  "description": "Teste",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "sktwi1xtmkfgx8626",
+      "description": "Teste",
+      "primary": {
+        "rank": {
+          "type": "Number",
+          "config": {
+            "label": "rank",
+            "placeholder": ""
+          }
+        },
+        "acessibilidade": {
+          "type": "Number",
+          "config": {
+            "label": "acessibilidade",
+            "placeholder": ""
+          }
+        },
+        "estrutura": {
+          "type": "Number",
+          "config": {
+            "label": "estrutura",
+            "placeholder": ""
+          }
+        },
+        "professores": {
+          "type": "Number",
+          "config": {
+            "label": "professores",
+            "placeholder": ""
+          }
+        },
+        "biblioteca": {
+          "type": "Number",
+          "config": {
+            "label": "biblioteca",
+            "placeholder": ""
+          }
+        },
+        "banheiros": {
+          "type": "Number",
+          "config": {
+            "label": "banheiros",
+            "placeholder": ""
+          }
+        },
+        "salas": {
+          "type": "Number",
+          "config": {
+            "label": "salas",
+            "placeholder": ""
+          }
+        }
+      },
+      "items": {},
+      "imageUrl": "https://images.prismic.io/slice-machine/621a5ec4-0387-4bc5-9860-2dd46cbc07cd_default_ss.png?auto=compress,format"
+    }
+  ]
+}

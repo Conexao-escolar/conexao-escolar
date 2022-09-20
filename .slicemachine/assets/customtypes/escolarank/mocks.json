@@ -1,0 +1,86 @@
+{
+  "id": "mock-doc-id",
+  "url": null,
+  "type": "escolarank",
+  "href": null,
+  "tags": [],
+  "first_publication_date": "1970-01-01T00:00:01+0000",
+  "last_publication_date": "1970-01-01T00:00:01+0000",
+  "slugs": [],
+  "linked_documents": [],
+  "lang": "en-us",
+  "alternate_languages": [],
+  "data": {
+    "nome": [
+      {
+        "type": "paragraph",
+        "text": "Labore nulla occaecat magna non do commodo.",
+        "spans": []
+      }
+    ],
+    "rank": 24,
+    "midea": [
+      {
+        "banner": {
+          "dimensions": {
+            "width": 900,
+            "height": 500
+          },
+          "alt": null,
+          "copyright": null,
+          "url": "https://images.unsplash.com/photo-1600804931749-2da4ce26c869"
+        },
+        "profileimg": {
+          "dimensions": {
+            "width": 900,
+            "height": 500
+          },
+          "alt": null,
+          "copyright": null,
+          "url": "https://images.unsplash.com/photo-1587840171670-8b850147754e"
+        }
+      }
+    ],
+    "geo": [
+      {
+        "endereco": [
+          {
+            "type": "paragraph",
+            "text": "Exercitation pariatur non ullamco. Voluptate ea ex ex aliquip esse pariatur eiusmod sunt Lorem cupidatat consequat deserunt.",
+            "spans": []
+          }
+        ],
+        "geoendereco": {
+          "latitude": 48.8703712,
+          "longitude": 2.3865198
+        }
+      }
+    ],
+    "slices": [],
+    "sobre_a_escola": [
+      {
+        "type": "paragraph",
+        "text": "Quis incididunt dolore id Lorem. Exercitation exercitation cupidatat do tempor tempor sunt laborum.",
+        "spans": []
+      }
+    ],
+    "conteudo": [
+      {
+        "type": "paragraph",
+        "text": "Aliqua pariatur in esse nostrud cillum exercitation magna cillum id fugiat.",
+        "spans": []
+      }
+    ],
+    "geolocal": {
+      "latitude": 48.8606111,
+      "longitude": 2.337644
+    },
+    "teste": [
+      {
+        "type": "paragraph",
+        "text": "Aliquip duis commodo amet incididunt laboris excepteur ipsum consectetur labore sunt in aliqua. Laborum eu ex veniam est proident deserunt reprehenderit laboris aliqua irure cupidatat sunt duis. Id esse aliqua sunt veniam.",
+        "spans": []
+      }
+    ]
+  }
+}

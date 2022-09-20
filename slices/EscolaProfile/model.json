@@ -1,0 +1,66 @@
+{
+  "id": "slice_teste_agora_vai",
+  "type": "SharedSlice",
+  "name": "EscolaProfile",
+  "description": "SliceTesteAgoraVai",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "sktwi1xtmkfgx8626",
+      "description": "SliceTesteAgoraVai",
+      "primary": {
+        "escolanome": {
+          "type": "StructuredText",
+          "config": {
+            "label": "escolaNome",
+            "placeholder": "",
+            "allowTargetBlank": true,
+            "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        },
+        "escolaimg": {
+          "type": "Image",
+          "config": {
+            "label": "escolaIMG",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "escolaendereco": {
+          "type": "StructuredText",
+          "config": {
+            "label": "escolaEndereco",
+            "placeholder": "",
+            "allowTargetBlank": true,
+            "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        },
+        "escolarank": {
+          "type": "Number",
+          "config": {
+            "label": "escolaRank",
+            "placeholder": ""
+          }
+        },
+        "escolabanner": {
+          "type": "Image",
+          "config": {
+            "label": "escolaBanner",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "escolageo": {
+          "type": "GeoPoint",
+          "config": {
+            "label": "escolaGEO"
+          }
+        }
+      },
+      "items": {},
+      "imageUrl": "https://images.prismic.io/slice-machine/621a5ec4-0387-4bc5-9860-2dd46cbc07cd_default_ss.png?auto=compress,format"
+    }
+  ]
+}
