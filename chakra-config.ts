@@ -17,6 +17,7 @@ const theme = extendTheme({
             900: "#F35724"
         },
         "_blue": "#009ABC",
+        "_dark_blue": "#0A709B",
         "_green": "#00CF9A",
         "_purple": "#874A9F",
         "_red": "#993950",

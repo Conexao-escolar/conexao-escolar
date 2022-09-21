@@ -1,9 +1,10 @@
-import React from "react"
+import React from "react";
+import Container from "../components/Container";
 
 export default function Home() {
   return (
-    <div>
-      teste123 
-    </div>
-  )
+    <Container>
+      <div>teste123</div>
+    </Container>
+  );
 }
