@@ -22,6 +22,7 @@ const MenuItems: React.FC<{
   }, [activeMenu]);
 
   const formatLink = React.useCallback((l: string) => {
+    if (l == MenuEnum.Home) return "/";
     if (l.split(" ").length > 1) {
       return l.split(" ")[0].toLowerCase();
     }
@@ -58,24 +59,22 @@ const MenuItems: React.FC<{
         display={{
           sm: "none",
           md: "flex",
-          lg: "flex"
+          lg: "flex",
         }}
       >
         <HStack spacing={{ base: "50px", md: "100px" }}>
           {menus.map((_menu) => (
             <Box key={_menu}>
               <Popover trigger="hover" placement="bottom-start">
-                <NextLink href={formatLink(_menu)}>
-                  <PopoverTrigger>
-                    <Text
-                      cursor="pointer"
-                      color="white"
-                      {...validateIsActiveMenu(_menu)}
-                    >
-                      {_menu}
-                    </Text>
-                  </PopoverTrigger>
-                </NextLink>
+                <PopoverTrigger>
+                  <Box
+                    cursor="pointer"
+                    color="white"
+                    {...validateIsActiveMenu(_menu)}
+                  >
+                    <NextLink href={formatLink(_menu)}>{_menu}</NextLink>
+                  </Box>
+                </PopoverTrigger>
                 {havePophouver(_menu) && (
                   <PopoverContent
                     border={0}
