@@ -29,6 +29,7 @@ import {
 } from "@chakra-ui/icons";
 
 import MenuItems from "./MenuItems";
+import MainInput from "../Input";
 
 import { FaUserCircle, FaSearch } from "react-icons/fa";
 
@@ -36,7 +37,7 @@ import Image from "next/image";
 import NextLink from "next/link";
 import Menus from "./MenuOpcoes";
 
-export default function WithSubnavigation() {
+export default function WithSubnavigation({ MenuAtivo }: { MenuAtivo: Menus }) {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
@@ -122,7 +123,7 @@ export default function WithSubnavigation() {
       <Collapse in={isOpen} animateOpacity>
         <MobileNav />
       </Collapse>
-      <MenuItems activeMenu={Menus.Home} />
+      <MenuItems activeMenu={MenuAtivo} />
     </Box>
   );
 }
@@ -130,17 +131,7 @@ export default function WithSubnavigation() {
 const DesktopNav = () => {
   return (
     <Box w="100%" minH="44px">
-      <InputGroup>
-        <Input
-          placeholder="O que você procura?"
-          borderColor="#F35724"
-          focusBorderColor="#FF6736"
-          _hover={{
-            borderColor: "#FF6736",
-          }}
-        />
-        <InputRightElement children={<Icon as={FaSearch} color="#FF6736" />} />
-      </InputGroup>
+      <MainInput placeholder="O que você procura?" icon={FaSearch} />
     </Box>
   );
 };

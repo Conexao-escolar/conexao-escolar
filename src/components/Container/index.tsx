@@ -1,13 +1,24 @@
 import React from "react";
 import { Box, Container as ChakraContainer } from "@chakra-ui/react";
-import IReactComponentType from "../../types/IReactComponentType";
+import { IProps } from "../../types/IReactComponentType";
 import Nav from "../Nav";
+import MenuItems from "../Nav/MenuOpcoes";
 
-const Container: IReactComponentType = ({ children }) => {
+type IContainerProps = IProps & {
+  activeMenu: MenuItems;
+  extraContainer?: JSX.Element | JSX.Element[]
+};
+
+const Container: React.FC<IContainerProps> = ({
+  children,
+  activeMenu = MenuItems.Home,
+  extraContainer
+}) => {
   return (
     <Box h="100vh" bg="_default_bg" overflowX="hidden">
-      <Nav />
-      <ChakraContainer>{children}</ChakraContainer>
+      <Nav MenuAtivo={activeMenu} />
+      {extraContainer}
+      <ChakraContainer maxW="container.xl">{children}</ChakraContainer>
     </Box>
   );
 };
