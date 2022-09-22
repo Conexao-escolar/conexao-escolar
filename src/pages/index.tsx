@@ -14,6 +14,7 @@ import React from "react";
 import Container from "../components/Container";
 import Menus from "../components/Nav/MenuOpcoes";
 import Input, { SelectInput } from "../components/Input";
+import CardEscola, { ICardEscolaProps } from "../components/CardEscola";
 
 import { FaSearch } from "react-icons/fa";
 
@@ -82,9 +83,86 @@ export default function Home() {
     );
   };
 
+  const { escolas }: ICardEscolaProps = {
+    escolas: [
+      {
+        cidade: "Porto Velho RO",
+        endereco: "Avenida Brasil, 6235",
+        modal: "Publico",
+        nome: "E.E.E.F.M Maria Antonia",
+        rank: 4.5,
+      },
+      {
+        cidade: "Porto Velho RO",
+        endereco: "Avenida Brasil, 6235",
+        modal: "Publico",
+        nome: "E.E.E.F.M Maria Antonia",
+        rank: 4.5,
+      },
+      {
+        cidade: "Porto Velho RO",
+        endereco: "Avenida Brasil, 6235",
+        modal: "Publico",
+        nome: "E.E.E.F.M Maria Antonia",
+        rank: 4.5,
+      },
+      {
+        cidade: "Porto Velho RO",
+        endereco: "Avenida Brasil, 6235",
+        modal: "Publico",
+        nome: "E.E.E.F.M Maria Antonia",
+        rank: 4.5,
+      },
+      {
+        cidade: "Porto Velho RO",
+        endereco: "Avenida Brasil, 6235",
+        modal: "Publico",
+        nome: "E.E.E.F.M Maria Antonia",
+        rank: 4.5,
+      },
+      {
+        cidade: "Porto Velho RO",
+        endereco: "Avenida Brasil, 6235",
+        modal: "Publico",
+        nome: "E.E.E.F.M Maria Antonia",
+        rank: 4.5,
+      },
+      {
+        cidade: "Porto Velho RO",
+        endereco: "Avenida Brasil, 6235",
+        modal: "Publico",
+        nome: "E.E.E.F.M Maria Antonia",
+        rank: 4.5,
+      },
+      {
+        cidade: "Porto Velho RO",
+        endereco: "Avenida Brasil, 6235",
+        modal: "Publico",
+        nome: "E.E.E.F.M Maria Antonia",
+        rank: 4.5,
+      },
+      {
+        cidade: "Porto Velho RO",
+        endereco: "Avenida Brasil, 6235",
+        modal: "Publico",
+        nome: "E.E.E.F.M Maria Antonia",
+        rank: 4.5,
+      },
+      {
+        cidade: "Porto Velho RO",
+        endereco: "Avenida Brasil, 6235",
+        modal: "Publico",
+        nome: "E.E.E.F.M Maria Antonia",
+        rank: 4.5,
+      },
+    ],
+  };
+
   return (
     <Container activeMenu={Menus.Home} extraContainer={<BannerFilter />}>
-      <Box bg="red">sdf</Box>
+      <Box>
+        <CardEscola escolas={escolas} />
+      </Box>
     </Container>
   );
 }

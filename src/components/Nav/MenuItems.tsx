@@ -57,9 +57,8 @@ const MenuItems: React.FC<{
         align="center"
         justifyContent="center"
         display={{
-          sm: "none",
+          base: "none",
           md: "flex",
-          lg: "flex",
         }}
       >
         <HStack spacing={{ base: "50px", md: "100px" }}>
