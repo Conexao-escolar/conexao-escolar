@@ -6,11 +6,12 @@ import {
   Flex,
   Heading,
   HStack,
-  Icon,
   InputGroup,
   InputRightElement,
+  Link,
   Stack,
   Text,
+  Icon,
 } from "@chakra-ui/react";
 import React from "react";
 
@@ -20,6 +21,8 @@ import Input, { SelectInput } from "../components/Input";
 import CardEscola, { ICardEscolaProps } from "../components/CardEscola";
 
 import { FaSearch } from "react-icons/fa";
+
+import { MdStar } from "react-icons/md";
 
 export default function Home() {
   const BannerFilter = () => {
@@ -161,6 +164,187 @@ export default function Home() {
     ],
   };
 
+  const PioresEscolas = () => {
+    return (
+      <Box
+        bg="white"
+        flex="1"
+        border="1px solid #B9B9B9"
+        px={5}
+        py={10}
+        textAlign="center"
+        maxW="305px"
+        borderRadius="5px"
+      >
+        <Text fontSize="lg" color="gray.700">
+          Piores escolas
+        </Text>
+        <Box
+          bg="purple.500"
+          borderRadius="5px"
+          textAlign="center"
+          mt={4}
+          p={2}
+          textColor="white"
+        >
+          <Text>Escolas que mais se destacaram nos últimos 30 dias</Text>
+        </Box>
+        <Flex flexDir="column" w="100%" gap="15px" mt={4}>
+          <Flex flex="1" justifyContent="space-around">
+            <Box maxW="10%">
+              <Text color="purple.700" fontSize="lg" fontWeight="semibold">
+                1
+              </Text>
+            </Box>
+            <Box maxW="60%">
+              <Link>
+                <Text noOfLines={1}>EEEFM Juscelino Kubitecheksksks</Text>
+              </Link>
+            </Box>
+            <Box maxW="30%" textColor="gray.600">
+              <Icon as={MdStar} color="purple.700" /> 4,9
+            </Box>
+          </Flex>
+          <Flex flex="1" justifyContent="space-around">
+            <Box maxW="10%">
+              <Text color="purple.700" fontSize="lg" fontWeight="semibold">
+                1
+              </Text>
+            </Box>
+            <Box maxW="60%">
+              <Link>
+                <Text noOfLines={1}>EEEFM Juscelino Kubitecheksksks</Text>
+              </Link>
+            </Box>
+            <Box maxW="30%" textColor="gray.600">
+              <Icon as={MdStar} color="purple.700" /> 4,9
+            </Box>
+          </Flex>
+          <Flex flex="1" justifyContent="space-around">
+            <Box maxW="10%">
+              <Text color="purple.700" fontSize="lg" fontWeight="semibold">
+                1
+              </Text>
+            </Box>
+            <Box maxW="60%">
+              <Link>
+                <Text noOfLines={1}>EEEFM Juscelino Kubitecheksksks</Text>
+              </Link>
+            </Box>
+            <Box maxW="30%" textColor="gray.600">
+              <Icon as={MdStar} color="purple.700" /> 4,9
+            </Box>
+          </Flex>
+          <Flex flex="1" justifyContent="space-around">
+            <Box maxW="10%">
+              <Text color="purple.700" fontSize="lg" fontWeight="semibold">
+                1
+              </Text>
+            </Box>
+            <Box maxW="60%">
+              <Link>
+                <Text noOfLines={1}>EEEFM Juscelino Kubitecheksksks</Text>
+              </Link>
+            </Box>
+            <Box maxW="30%" textColor="gray.600">
+              <Icon as={MdStar} color="purple.700" /> 4,9
+            </Box>
+          </Flex>
+        </Flex>
+      </Box>
+    );
+  };
+  const MelhoresEscolas = () => {
+    return (
+      <Box
+        bg="white"
+        flex="1"
+        border="1px solid #B9B9B9"
+        px={5}
+        py={10}
+        textAlign="center"
+        maxW="305px"
+        borderRadius="5px"
+      >
+        <Text fontSize="lg" color="gray.700">
+          Melhores escolas
+        </Text>
+        <Box
+          bg="green.300"
+          borderRadius="5px"
+          textAlign="center"
+          mt={4}
+          p={2}
+          textColor="white"
+        >
+          <Text>Escolas que mais se destacaram nos últimos 30 dias</Text>
+        </Box>
+        <Flex flexDir="column" w="100%" gap="15px" mt={4}>
+          <Flex flex="1" justifyContent="space-around">
+            <Box maxW="10%">
+              <Text color="_orange.500" fontSize="lg" fontWeight="semibold">
+                1
+              </Text>
+            </Box>
+            <Box maxW="60%">
+              <Link>
+                <Text noOfLines={1}>EEEFM Juscelino Kubitecheksksks</Text>
+              </Link>
+            </Box>
+            <Box maxW="30%" textColor="gray.600">
+              <Icon as={MdStar} color="_orange.500" /> 4,9
+            </Box>
+          </Flex>
+          <Flex flex="1" justifyContent="space-around">
+            <Box maxW="10%">
+              <Text color="_orange.500" fontSize="lg" fontWeight="semibold">
+                1
+              </Text>
+            </Box>
+            <Box maxW="60%">
+              <Link>
+                <Text noOfLines={1}>EEEFM Juscelino Kubitecheksksks</Text>
+              </Link>
+            </Box>
+            <Box maxW="30%" textColor="gray.600">
+              <Icon as={MdStar} color="_orange.500" /> 4,9
+            </Box>
+          </Flex>
+          <Flex flex="1" justifyContent="space-around">
+            <Box maxW="10%">
+              <Text color="_orange.500" fontSize="lg" fontWeight="semibold">
+                1
+              </Text>
+            </Box>
+            <Box maxW="60%">
+              <Link>
+                <Text noOfLines={1}>EEEFM Juscelino Kubitecheksksks</Text>
+              </Link>
+            </Box>
+            <Box maxW="30%" textColor="gray.600">
+              <Icon as={MdStar} color="_orange.500" /> 4,9
+            </Box>
+          </Flex>
+          <Flex flex="1" justifyContent="space-around">
+            <Box maxW="10%">
+              <Text color="_orange.500" fontSize="lg" fontWeight="semibold">
+                1
+              </Text>
+            </Box>
+            <Box maxW="60%">
+              <Link>
+                <Text noOfLines={1}>EEEFM Juscelino Kubitecheksksks</Text>
+              </Link>
+            </Box>
+            <Box maxW="30%" textColor="gray.600">
+              <Icon as={MdStar} color="_orange.500" /> 4,9
+            </Box>
+          </Flex>
+        </Flex>
+      </Box>
+    );
+  };
+
   return (
     <Container activeMenu={Menus.Home} extraContainer={<BannerFilter />}>
       <Box mt="100px">
@@ -196,98 +380,8 @@ export default function Home() {
               Ver ranking completo
             </Button>
           </Box>
-          <Box
-            bg="white"
-            flex="1"
-            border="1px solid #B9B9B9"
-            px={5}
-            py={10}
-            textAlign="center"
-            maxW="305px"
-            borderRadius="5px"
-          >
-            <Text fontSize="lg" color="gray.700">
-              Melhores escolas
-            </Text>
-            <Box
-              bg="green.300"
-              borderRadius="5px"
-              textAlign="center"
-              mt={4}
-              p={2}
-              textColor="white"
-            >
-              <Text>Escolas que mais se destacaram nos últimos 30 dias</Text>
-            </Box>
-            <Flex flexDir="column" w="100%" gap="15px" mt={4}>
-              <Flex flex="1" justifyContent="space-around">
-                <Box>1</Box>
-                <Box>EEEFM Juscelino Kub...</Box>
-                <Box>Star 4,9</Box>
-              </Flex>
-              <Flex flex="1" justifyContent="space-around">
-                <Box>1</Box>
-                <Box>EEEFM Juscelino Kub...</Box>
-                <Box>Star 4,9</Box>
-              </Flex>
-              <Flex flex="1" justifyContent="space-around">
-                <Box>1</Box>
-                <Box>EEEFM Juscelino Kub...</Box>
-                <Box>Star 4,9</Box>
-              </Flex>
-              <Flex flex="1" justifyContent="space-around">
-                <Box>1</Box>
-                <Box>EEEFM Juscelino Kub...</Box>
-                <Box>Star 4,9</Box>
-              </Flex>
-            </Flex>
-          </Box>
-          <Box
-            bg="white"
-            flex="1"
-            border="1px solid #B9B9B9"
-            px={5}
-            py={10}
-            textAlign="center"
-            maxW="305px"
-            borderRadius="5px"
-          >
-            <Text fontSize="lg" color="gray.700">
-              Piores escolas
-            </Text>
-            <Box
-              bg="purple.500"
-              borderRadius="5px"
-              textAlign="center"
-              mt={4}
-              p={2}
-              textColor="white"
-            >
-              <Text>Escolas que mais se destacaram nos últimos 30 dias</Text>
-            </Box>
-            <Flex flexDir="column" w="100%" gap="15px" mt={4}>
-              <Flex flex="1" justifyContent="space-around">
-                <Box>1</Box>
-                <Box>EEEFM Juscelino Kub...</Box>
-                <Box>Star 4,9</Box>
-              </Flex>
-              <Flex flex="1" justifyContent="space-around">
-                <Box>1</Box>
-                <Box>EEEFM Juscelino Kub...</Box>
-                <Box>Star 4,9</Box>
-              </Flex>
-              <Flex flex="1" justifyContent="space-around">
-                <Box>1</Box>
-                <Box>EEEFM Juscelino Kub...</Box>
-                <Box>Star 4,9</Box>
-              </Flex>
-              <Flex flex="1" justifyContent="space-around">
-                <Box>1</Box>
-                <Box>EEEFM Juscelino Kub...</Box>
-                <Box>Star 4,9</Box>
-              </Flex>
-            </Flex>
-          </Box>
+          <MelhoresEscolas />
+          <PioresEscolas />
         </Flex>
         {/* <CardEscola escolas={escolas} /> */}
       </Box>
