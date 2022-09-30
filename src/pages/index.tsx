@@ -1,7 +1,10 @@
 /* eslint-disable react/no-children-prop */
 import {
   Box,
+  Button,
+  Divider,
   Flex,
+  Heading,
   HStack,
   Icon,
   InputGroup,
@@ -160,9 +163,141 @@ export default function Home() {
 
   return (
     <Container activeMenu={Menus.Home} extraContainer={<BannerFilter />}>
-      <Box>
-        <CardEscola escolas={escolas} />
+      <Box mt="100px">
+        <Flex
+          flexDir="row"
+          alignItems="center"
+          justifyContent="space-around"
+          gap="80px"
+          p={4}
+          style={{}}
+        >
+          <Box flex="1" textAlign="left">
+            <Heading fontWeight="semibold">Ranking das escolas</Heading>
+            <Text fontSize="sm" color="gray.400">
+              Referente aos últimos 30 dias
+            </Text>
+            <Box w="100%" p={4}>
+              <Text>
+                {"   "} A partir das avaliações dos pais, alunos e professores
+                sobre as insituições nós construímos o nosso Ranking e, assim,
+                ajudamos pessoas que querem analisar como está a situação das
+                escolas em sua cidade no site, qual sua colocação e servir de
+                apoio na decisão da matrícula.
+              </Text>
+            </Box>
+
+            <Button
+              variant="outline"
+              borderColor="_orange.100"
+              textColor="gray.700"
+              fontWeight="normal"
+            >
+              Ver ranking completo
+            </Button>
+          </Box>
+          <Box
+            bg="white"
+            flex="1"
+            border="1px solid #B9B9B9"
+            px={5}
+            py={10}
+            textAlign="center"
+            maxW="305px"
+            borderRadius="5px"
+          >
+            <Text fontSize="lg" color="gray.700">
+              Melhores escolas
+            </Text>
+            <Box
+              bg="green.300"
+              borderRadius="5px"
+              textAlign="center"
+              mt={4}
+              p={2}
+              textColor="white"
+            >
+              <Text>Escolas que mais se destacaram nos últimos 30 dias</Text>
+            </Box>
+            <Flex flexDir="column" w="100%" gap="15px" mt={4}>
+              <Flex flex="1" justifyContent="space-around">
+                <Box>1</Box>
+                <Box>EEEFM Juscelino Kub...</Box>
+                <Box>Star 4,9</Box>
+              </Flex>
+              <Flex flex="1" justifyContent="space-around">
+                <Box>1</Box>
+                <Box>EEEFM Juscelino Kub...</Box>
+                <Box>Star 4,9</Box>
+              </Flex>
+              <Flex flex="1" justifyContent="space-around">
+                <Box>1</Box>
+                <Box>EEEFM Juscelino Kub...</Box>
+                <Box>Star 4,9</Box>
+              </Flex>
+              <Flex flex="1" justifyContent="space-around">
+                <Box>1</Box>
+                <Box>EEEFM Juscelino Kub...</Box>
+                <Box>Star 4,9</Box>
+              </Flex>
+            </Flex>
+          </Box>
+          <Box
+            bg="white"
+            flex="1"
+            border="1px solid #B9B9B9"
+            px={5}
+            py={10}
+            textAlign="center"
+            maxW="305px"
+            borderRadius="5px"
+          >
+            <Text fontSize="lg" color="gray.700">
+              Piores escolas
+            </Text>
+            <Box
+              bg="purple.500"
+              borderRadius="5px"
+              textAlign="center"
+              mt={4}
+              p={2}
+              textColor="white"
+            >
+              <Text>Escolas que mais se destacaram nos últimos 30 dias</Text>
+            </Box>
+            <Flex flexDir="column" w="100%" gap="15px" mt={4}>
+              <Flex flex="1" justifyContent="space-around">
+                <Box>1</Box>
+                <Box>EEEFM Juscelino Kub...</Box>
+                <Box>Star 4,9</Box>
+              </Flex>
+              <Flex flex="1" justifyContent="space-around">
+                <Box>1</Box>
+                <Box>EEEFM Juscelino Kub...</Box>
+                <Box>Star 4,9</Box>
+              </Flex>
+              <Flex flex="1" justifyContent="space-around">
+                <Box>1</Box>
+                <Box>EEEFM Juscelino Kub...</Box>
+                <Box>Star 4,9</Box>
+              </Flex>
+              <Flex flex="1" justifyContent="space-around">
+                <Box>1</Box>
+                <Box>EEEFM Juscelino Kub...</Box>
+                <Box>Star 4,9</Box>
+              </Flex>
+            </Flex>
+          </Box>
+        </Flex>
+        {/* <CardEscola escolas={escolas} /> */}
       </Box>
+      <Divider mt={4} />
+
+      <Flex mt={8} justifyContent="space-between">
+        <Button colorScheme="green">Deixe sua opinião</Button>
+        <Button colorScheme="_orange">Cadastre uma escola</Button>
+        <Button colorScheme="blue">Entre em contato</Button>
+      </Flex>
     </Container>
   );
 }
