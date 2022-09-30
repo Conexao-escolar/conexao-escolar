@@ -13,15 +13,46 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-// import { Container } from './styles';
-
 import Container from "../components/Container";
 import Menus from "../components/Nav/MenuOpcoes";
 import Inpu, { SelectInput } from "../components/Input";
 import { FaFilter } from "react-icons/fa";
+import getAllSchols from "../services/getAllSchools";
+import separeteSchoolsByRank, {
+  ISchoolOrdenedByRank,
+} from "../services/separeteSchoolsByRank";
+import separeteSchoolsByTag from "../services/separeteSchoolsByTag";
+import ALL_TAGS from "../types/ITags";
+import CardEscola from "../components/CardEscola";
+
+type IListSchool = {
+  [Property in ALL_TAGS]?: ISchoolOrdenedByRank;
+};
+
+import useSchool from "../hooks/useSchool";
 
 const Ranking: React.FC = () => {
+  const [thisSchool, setSchools] = React.useState<IListSchool>({
+    AUTISMO: {
+      asc: [],
+      desc: [],
+    },
+    FISICO: {
+      asc: [],
+      desc: [],
+    },
+    TDH: {
+      asc: [],
+      desc: [],
+    },
+    VISUAL: {
+      asc: [],
+      desc: [],
+    },
+  });
+
   const { isOpen, onToggle } = useDisclosure();
+  const { schools } = useSchool();
 
   const [categoriaFilter, setCategoriaFilters] = React.useState([
     "Autismo",
@@ -29,6 +60,20 @@ const Ranking: React.FC = () => {
     "Fisico",
     "TDH",
   ]);
+
+  React.useEffect(() => {
+    if (!schools.length) return null;
+
+    const byTag = separeteSchoolsByTag(schools);
+    const byRank: IListSchool = {
+      AUTISMO: separeteSchoolsByRank(byTag.AUTISMO, 3, 10),
+      FISICO: separeteSchoolsByRank(byTag.FISICO, 3, 10),
+      TDH: separeteSchoolsByRank(byTag.TDH, 3, 10),
+      VISUAL: separeteSchoolsByRank(byTag.VISUAL, 3, 10),
+    };
+
+    setSchools(byRank);
+  }, [schools]);
 
   const ContainerFilter = () => {
     const CategoriaDetails = (flexProps: FlexProps) => {
@@ -89,7 +134,7 @@ const Ranking: React.FC = () => {
                       <SelectInput elements={[]} placeholder="Categorias" />
                     </Box>
                     <Box w="80%">
-                      <CategoriaDetails alignItems="center"  />
+                      <CategoriaDetails alignItems="center" />
                     </Box>
                   </Flex>
                 </Flex>
@@ -113,7 +158,7 @@ const Ranking: React.FC = () => {
             colorScheme="orange"
           />
         </Center>
-        {!isOpen && <CategoriaDetails  justifyContent="center" p={4}/>}
+        {!isOpen && <CategoriaDetails justifyContent="center" p={4} />}
       </Box>
     );
   };
@@ -149,7 +194,18 @@ const Ranking: React.FC = () => {
       </Box>
 
       <Flex flexDir="column">
-        <Flex flexDir="row" w="100%" justifyContent="space-between" mt={10}>
+        <CardEscola
+          escolas={thisSchool.AUTISMO.desc}
+          main_color="green"
+          title="Melhores escolas em #Autismo"
+          reverse={{
+            escolas: thisSchool.AUTISMO.asc,
+            main_color: "purple",
+            title: "Piores escolas em #Autismo"
+          }}
+        />
+
+        {/* <Flex flexDir="row" w="100%" justifyContent="space-between" mt={10}>
           <Box>Melhor nissso</Box>
           <Box>Melhor nissso</Box>
           <Box>Melhor nissso</Box>
@@ -168,7 +224,7 @@ const Ranking: React.FC = () => {
           <Box>Melhor nissso</Box>
           <Box>Melhor nissso</Box>
           <Box>Melhor nissso</Box>
-        </Flex>
+        </Flex> */}
       </Flex>
     </Container>
   );
