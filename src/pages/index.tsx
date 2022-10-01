@@ -5,13 +5,8 @@ import {
   Divider,
   Flex,
   Heading,
-  HStack,
-  InputGroup,
-  InputRightElement,
-  Link,
   Stack,
-  Text,
-  Icon,
+  Text
 } from "@chakra-ui/react";
 import React from "react";
 
@@ -22,7 +17,6 @@ import CardEscola from "../components/CardEscola";
 
 import { FaSearch } from "react-icons/fa";
 
-import { MdStar } from "react-icons/md";
 import useSchool from "../hooks/useSchool";
 import separeteSchoolsByRank from "../services/separeteSchoolsByRank";
 
@@ -35,8 +29,8 @@ export default function Home() {
   React.useEffect(() => {
     const byRank = separeteSchoolsByRank(schools, 4, 4);
 
-    setGoodSchools(byRank.asc);
-    setBadSchools(byRank.desc);
+    setGoodSchools(byRank.desc);
+    setBadSchools(byRank.asc);
   }, [schools]);
 
   const BannerFilter = () => {

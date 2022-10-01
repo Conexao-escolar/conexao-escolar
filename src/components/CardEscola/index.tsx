@@ -9,7 +9,6 @@ import {
   Link,
   Stack,
   Text,
-  useBreakpointValue,
 } from "@chakra-ui/react";
 // Here we have used react-icons package for the icons
 import { BiLeftArrowAlt, BiRightArrowAlt } from "react-icons/bi";
@@ -18,12 +17,14 @@ import Slider from "react-slick";
 import CloneOBJ from "../../utils/cloneObj";
 import { MdStar } from "react-icons/md";
 import ICardEscla from "../../types/IEscola";
+import SchoolLine from "./SchoolLine";
 
 export interface ICardEscolaProps {
   escolas: ICardEscla[];
   title: string;
   label?: string;
   main_color: "purple" | "green";
+  tag?: string;
 }
 
 type IChildrenCardProps = ICardEscolaProps & {
@@ -36,10 +37,31 @@ const CardEscola: React.FC<IChildrenCardProps> = ({
   main_color,
   title,
   label,
+  tag,
 }) => {
   const BG_LABEL_COLOR = main_color === "purple" ? "purple.500" : "green.300";
 
-  const MAIN_COLOR = main_color === "green" ? "_orange.500" : "purple.700";
+  const MAIN_COLOR = (_color) =>
+    _color === "green" ? "_orange.500" : "purple.700";
+
+  if (!escolas.length) return;
+
+  const Title = ({
+    tag,
+    title,
+    bad = false,
+  }: {
+    tag: string;
+    title: string;
+    bad?: boolean;
+  }) => {
+    return (
+      <Text fontSize="lg" color="gray.700">
+        {`${title}`}
+        <span className={`tag ${bad ? "bad" : ""}`}> #{tag}</span>
+      </Text>
+    );
+  };
 
   return (
     <Box
@@ -52,73 +74,79 @@ const CardEscola: React.FC<IChildrenCardProps> = ({
       maxW="305px"
       borderRadius="5px"
     >
-      <Text fontSize="lg" color="gray.700">
-        {title}
-      </Text>
-      {label && (
-        <Box
-          bg={BG_LABEL_COLOR}
-          borderRadius="5px"
-          textAlign="center"
-          mt={4}
-          p={2}
-          textColor="white"
-        >
-          <Text>{label}</Text>
-        </Box>
-      )}
+      <>
+        <Flex justifyContent="center">
+          <Title tag={tag} title={title} />
+        </Flex>
 
-      <Flex flexDir="column" w="100%" gap="15px" mt={4}>
-        {escolas.map((escola, index) => (
-          <Flex
-            flex="1"
-            justifyContent="space-around"
-            key={`first-${escola.id}`}
+        {label && (
+          <Box
+            bg={BG_LABEL_COLOR}
+            borderRadius="5px"
+            textAlign="center"
+            mt={4}
+            p={2}
+            textColor="white"
           >
-            <Box w="10%">
-              <Text color={MAIN_COLOR} fontSize="lg" fontWeight="semibold">
-                {index}
-              </Text>
-            </Box>
-            <Box w="60%" textAlign="left" paddingLeft={3}>
-              <Link>
-                <Text noOfLines={1}>{escola.nome}</Text>
-              </Link>
-            </Box>
-            <Box w="30%" textColor={MAIN_COLOR}>
-              <Icon as={MdStar} color={MAIN_COLOR} /> {escola.rank}
-            </Box>
-          </Flex>
-        ))}
-      </Flex>
-      {reverse && (
-        <>
-          <Divider my={5} />
-          <Flex flexDir="column" w="100%" gap="15px" mt={4}>
-            {reverse.escolas.map((escola, index) => (
-              <Flex
-                flex="1"
-                justifyContent="space-around"
-                key={`first-${escola.id}`}
-              >
-                <Box w="10%">
-                  <Text color={MAIN_COLOR} fontSize="lg" fontWeight="semibold">
-                    {index}
-                  </Text>
-                </Box>
-                <Box w="60%" textAlign="left" paddingLeft={3}>
-                  <Link>
-                    <Text noOfLines={1}>{escola.nome}</Text>
-                  </Link>
-                </Box>
-                <Box w="30%" textColor={MAIN_COLOR}>
-                  <Icon as={MdStar} color={MAIN_COLOR} /> {escola.rank}
-                </Box>
+            <Text>{label}</Text>
+          </Box>
+        )}
+
+        <Flex flexDir="column" w="100%" gap="15px" mt={4}>
+          {escolas.map((escola, index) => (
+            <SchoolLine
+              {...escola}
+              index={index + 1}
+              color={MAIN_COLOR(main_color)}
+              key={`first-${escola.id}`}
+            />
+            // <Flex
+            //   flex="1"
+            //   justifyContent="space-around"
+            // >
+            //   <Box w="10%">
+            //     <Text color={MAIN_COLOR} fontSize="lg" fontWeight="semibold">
+            //       {index}
+            //     </Text>
+            //   </Box>
+            //   <Box w="60%" textAlign="left" paddingLeft={3}>
+            //     <Link>
+            //       <Text noOfLines={1}>{escola.nome}</Text>
+            //     </Link>
+            //   </Box>
+            //   <Box w="30%" textColor={MAIN_COLOR}>
+            //     <Icon as={MdStar} color={MAIN_COLOR} /> {escola.rank}
+            //   </Box>
+            // </Flex>
+          ))}
+        </Flex>
+        {reverse && (
+          <>
+            <Divider my={5} />
+            <Flex flexDir="column" w="100%" gap="15px" mt={4}>
+              <Flex justifyContent="center">
+                <Title tag={reverse.tag} title={reverse.title} bad />
+
+                <Text
+                  ml={2}
+                  fontSize="lg"
+                  color={MAIN_COLOR(reverse.main_color)}
+                ></Text>
               </Flex>
-            ))}
-          </Flex>
-        </>
-      )}
+
+              <Text fontSize="lg" color="gray.700"></Text>
+              {reverse.escolas.map((escola, index) => (
+                <SchoolLine
+                  {...escola}
+                  index={index + 1}
+                  color={MAIN_COLOR(reverse.main_color)}
+                  key={`first-${escola.id}`}
+                />
+              ))}
+            </Flex>
+          </>
+        )}
+      </>
     </Box>
   );
 };

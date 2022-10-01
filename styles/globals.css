@@ -42,6 +42,14 @@ a {
   position: relative;
 }
 
+.tag {
+  color: #00CF9A;
+  font-weight: 700;
+}
+
+.tag.bad {
+  color: #874A9F;
+}
 /* Acessbilidade de fontes */
 @media (max-width: 1080px) {
   html {
