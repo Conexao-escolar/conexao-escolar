@@ -9,7 +9,8 @@ import {
   Tag,
   useDisclosure,
   Collapse,
-  FlexProps,
+  Grid,
+  GridItem,
 } from "@chakra-ui/react";
 import React from "react";
 
@@ -38,29 +39,40 @@ const Ranking: React.FC = ({ AUTISMO, FISICO, TDH, VISUAL }: IListSchool) => {
     VISUAL,
   });
 
+  //return Object.values(ALL_TAGS)
+  const [categoriaFilter, setCategoriaFilters] = React.useState([]);
+
   const { isOpen, onToggle } = useDisclosure();
 
-  const [categoriaFilter, setCategoriaFilters] = React.useState([
-    "Autismo",
-    "Visual",
-    "Fisico",
-    "TDH",
-  ]);
-
-  const removeTagFilter = React.useCallback((tagRemove: string) => {
-    // setCategoriaFilters((old) => {
-    //   const indexRemove = old.findIndex((el) => el === tagRemove);
-    //   old.splice(indexRemove, 1);
-    //   return old;
-    // });
+  const removeTagFilter = React.useCallback((tagRemove: ALL_TAGS) => {
+    setCategoriaFilters((old) => {
+      const indexRemove = old.findIndex((el) => el === tagRemove);
+      old.splice(indexRemove, 1);
+      return [...old];
+    });
   }, []);
 
-  const addNewTagFilter = React.useCallback((tagAdd: string) => {
-    // setCategoriaFilters((old) => {
-    //   old.push(tagAdd);
-    //   return old;
-    // });
+  const addNewTagFilter = React.useCallback((tagAdd: ALL_TAGS) => {
+    setCategoriaFilters((old) => {
+      old.push(tagAdd);
+      return [...old];
+    });
   }, []);
+
+  const includeThisTag = React.useCallback(
+    (type: ALL_TAGS) => {
+      const haveLength =
+        !!thisSchool[type].asc.length && !!thisSchool[type].desc.length;
+      const haveCatFilter = !!categoriaFilter.length;
+
+      if (!haveCatFilter) return haveLength;
+
+      const haveThisTagOnFilter = categoriaFilter.includes(type);
+
+      return haveLength && haveThisTagOnFilter;
+    },
+    [categoriaFilter]
+  );
 
   // React.useEffect(() => {
   //   if (schools.length) {
@@ -77,29 +89,6 @@ const Ranking: React.FC = ({ AUTISMO, FISICO, TDH, VISUAL }: IListSchool) => {
   // }, [schools]);
 
   const ContainerFilter = () => {
-    const CategoriaDetails = (flexProps: FlexProps) => {
-      return (
-        <Flex
-          flexDir="row"
-          gap="20px"
-          alignItems="center"
-          ml={4}
-          {...flexProps}
-        >
-          {categoriaFilter.map((cat) => (
-            <Tag
-              colorScheme="blue"
-              size="lg"
-              key={`filtro1-${cat}`}
-              as="em"
-              cursor="pointer"
-            >
-              #{cat}
-            </Tag>
-          ))}
-        </Flex>
-      );
-    };
     return (
       <Box position="relative" w="full" minH="50px" bg="#F2F2F2" boxShadow="lg">
         <Collapse in={isOpen} animateOpacity>
@@ -122,10 +111,12 @@ const Ranking: React.FC = ({ AUTISMO, FISICO, TDH, VISUAL }: IListSchool) => {
                       <SelectInput
                         elements={["Rondônia"]}
                         placeholder="Filtrar por Estado"
+                        defaultIndexSelected={0}
                       />
                       <SelectInput
                         elements={["Porto Velho"]}
                         placeholder="Filtarr por Cidade"
+                        defaultIndexSelected={0}
                       />
                     </Flex>
                   </Flex>
@@ -137,6 +128,7 @@ const Ranking: React.FC = ({ AUTISMO, FISICO, TDH, VISUAL }: IListSchool) => {
                       <SelectInput
                         elements={["Público", "Privado", "Ambas"]}
                         placeholder="Filtrar por categoria"
+                        defaultIndexSelected={2}
                       />
                     </Flex>
                   </Flex>
@@ -150,10 +142,24 @@ const Ranking: React.FC = ({ AUTISMO, FISICO, TDH, VISUAL }: IListSchool) => {
                       <SelectInput
                         elements={Object.values(ALL_TAGS)}
                         placeholder="Tag para filtragem"
+                        onSelectItem={addNewTagFilter}
                       />
                     </Box>
                     <Box w="80%">
-                      <CategoriaDetails alignItems="center" />
+                      <Flex flexDir="row" gap="20px" alignItems="center" ml={4}>
+                        {categoriaFilter.map((cat) => (
+                          <Tag
+                            colorScheme="blue"
+                            size="lg"
+                            key={`filtro1-${cat}`}
+                            as="em"
+                            cursor="pointer"
+                            onClick={(e) => removeTagFilter(cat)}
+                          >
+                            #{cat}
+                          </Tag>
+                        ))}
+                      </Flex>
                     </Box>
                   </Flex>
                 </Flex>
@@ -177,21 +183,30 @@ const Ranking: React.FC = ({ AUTISMO, FISICO, TDH, VISUAL }: IListSchool) => {
             colorScheme="orange"
           />
         </Center>
-        {!isOpen && <CategoriaDetails justifyContent="center" p={4} />}
+        {!isOpen && (
+          <Flex
+            flexDir="row"
+            gap="20px"
+            alignItems="center"
+            justifyContent="center"
+            p={4}
+            ml={4}
+          >
+            {categoriaFilter.map((cat) => (
+              <Tag
+                colorScheme="blue"
+                size="lg"
+                key={`filtro1-${cat}`}
+                as="em"
+                cursor="pointer"
+                onClick={(e) => removeTagFilter(cat)}
+              >
+                #{cat}
+              </Tag>
+            ))}
+          </Flex>
+        )}
       </Box>
-    );
-  };
-
-  const Title = ({ tag, title }: { title: string; tag: string }) => {
-    return (
-      <Flex justifyContent="center">
-        <Text fontSize="lg" color="gray.700">
-          {`${title}`}
-          <Text ml={2} fontSize="lg" color="green.600">
-            #{tag}
-          </Text>
-        </Text>
-      </Flex>
     );
   };
 
@@ -226,67 +241,31 @@ const Ranking: React.FC = ({ AUTISMO, FISICO, TDH, VISUAL }: IListSchool) => {
       </Box>
 
       <Flex flexDir="row" flex="1" justifyContent="space-between" mt={8}>
-        {thisSchool.AUTISMO && (
-          <CardEscola
-            escolas={thisSchool.AUTISMO.desc}
-            main_color="green"
-            title="Melhores escolas em"
-            tag="Autismo"
-            reverse={{
-              escolas: thisSchool.AUTISMO.asc,
-              main_color: "purple",
-              tag: "AUSTISMO",
-              title: "Piores escolas em",
-            }}
-          />
-        )}
+        <Grid templateColumns="repeat(3, 1fr)" gap={6}>
+          {Object.values(ALL_TAGS).map((cat) => {
+            const exibir = includeThisTag(cat);
 
-        {thisSchool.FISICO && (
-          <CardEscola
-            escolas={thisSchool.FISICO.desc}
-            main_color="green"
-            title="Melhores escolas em"
-            tag="Fisico"
-            reverse={{
-              escolas: thisSchool.FISICO.asc,
-              main_color: "purple",
-              tag: "FISICO",
-              title: "Piores escolas em",
-            }}
-          />
-        )}
+            console.log(cat, exibir);
 
-        {thisSchool.TDH && (
-          <CardEscola
-            escolas={thisSchool.TDH.desc}
-            main_color="green"
-            tag="TDH"
-            title="Melhores escolas em"
-            reverse={{
-              escolas: thisSchool.TDH.asc,
-              main_color: "purple",
-              tag: "TDH",
-              title: "Piores escolas em",
-            }}
-          />
-        )}
-      </Flex>
-
-      <Flex flexDir="row" flex="1" justifyContent="space-between" mt={8}>
-        {thisSchool.VISUAL && (
-          <CardEscola
-            escolas={thisSchool.VISUAL.desc}
-            main_color="green"
-            tag="VISUAL"
-            title="Melhores escolas em"
-            reverse={{
-              escolas: thisSchool.VISUAL.asc,
-              main_color: "purple",
-              tag: "VISUAL",
-              title: "Piores escolas em",
-            }}
-          />
-        )}
+            if (exibir)
+              return (
+                <GridItem key={`exibir-${cat}`}>
+                  <CardEscola
+                    escolas={thisSchool[cat].desc}
+                    main_color="green"
+                    title="Melhores escolas em"
+                    tag={cat}
+                    reverse={{
+                      escolas: thisSchool[cat].asc,
+                      main_color: "purple",
+                      tag: cat,
+                      title: "Piores escolas em",
+                    }}
+                  />
+                </GridItem>
+              );
+          })}
+        </Grid>
       </Flex>
     </Container>
   );

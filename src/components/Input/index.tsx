@@ -58,7 +58,7 @@ export const SelectInput: React.FC<SelectInputProps> = ({
   defaultIndexSelected,
   disabledIndex,
   popHouverMessageOnDisabledItems,
-  onSelectItem
+  onSelectItem,
 }) => {
   const diabledPropreties = React.useCallback(
     (index) => {
@@ -90,7 +90,9 @@ export const SelectInput: React.FC<SelectInputProps> = ({
       _hover={{
         borderColor: "#FF6736",
       }}
-      onChange={(e) => onSelectItem(e.target.value)}
+      onChange={(e) => {
+        if (onSelectItem) onSelectItem(e.target.value);
+      }}
     >
       {elements.map((item, index) => (
         <option

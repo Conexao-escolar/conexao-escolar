@@ -4,18 +4,8 @@ import {
   Box,
   Divider,
   Flex,
-  Icon,
-  IconButton,
-  Link,
-  Stack,
   Text,
 } from "@chakra-ui/react";
-// Here we have used react-icons package for the icons
-import { BiLeftArrowAlt, BiRightArrowAlt } from "react-icons/bi";
-// And react-slick as our Carousel Lib
-import Slider from "react-slick";
-import CloneOBJ from "../../utils/cloneObj";
-import { MdStar } from "react-icons/md";
 import ICardEscla from "../../types/IEscola";
 import SchoolLine from "./SchoolLine";
 
@@ -75,7 +65,7 @@ const CardEscola: React.FC<IChildrenCardProps> = ({
       borderRadius="5px"
     >
       <>
-        <Flex justifyContent="center">
+        <Flex justifyContent="center" h="50px">
           <Title tag={tag} title={title} />
         </Flex>
 
@@ -100,41 +90,15 @@ const CardEscola: React.FC<IChildrenCardProps> = ({
               color={MAIN_COLOR(main_color)}
               key={`first-${escola.id}`}
             />
-            // <Flex
-            //   flex="1"
-            //   justifyContent="space-around"
-            // >
-            //   <Box w="10%">
-            //     <Text color={MAIN_COLOR} fontSize="lg" fontWeight="semibold">
-            //       {index}
-            //     </Text>
-            //   </Box>
-            //   <Box w="60%" textAlign="left" paddingLeft={3}>
-            //     <Link>
-            //       <Text noOfLines={1}>{escola.nome}</Text>
-            //     </Link>
-            //   </Box>
-            //   <Box w="30%" textColor={MAIN_COLOR}>
-            //     <Icon as={MdStar} color={MAIN_COLOR} /> {escola.rank}
-            //   </Box>
-            // </Flex>
           ))}
         </Flex>
         {reverse && (
           <>
             <Divider my={5} />
             <Flex flexDir="column" w="100%" gap="15px" mt={4}>
-              <Flex justifyContent="center">
+              <Flex justifyContent="center" h="50px">
                 <Title tag={reverse.tag} title={reverse.title} bad />
-
-                <Text
-                  ml={2}
-                  fontSize="lg"
-                  color={MAIN_COLOR(reverse.main_color)}
-                ></Text>
               </Flex>
-
-              <Text fontSize="lg" color="gray.700"></Text>
               {reverse.escolas.map((escola, index) => (
                 <SchoolLine
                   {...escola}
