@@ -36,9 +36,15 @@ import { FaUserCircle, FaSearch } from "react-icons/fa";
 import Image from "next/image";
 import NextLink from "next/link";
 import Menus from "./MenuOpcoes";
+import { useRouter } from "next/router";
 
 export default function WithSubnavigation({ MenuAtivo }: { MenuAtivo: Menus }) {
   const { isOpen, onToggle } = useDisclosure();
+  const { prefetch } = useRouter();
+
+  React.useEffect(() => {
+    Object.keys(Menus).map((el) => prefetch(`/${el}`));
+  }, [prefetch]);
 
   return (
     <Box boxShadow="md" w="full">
