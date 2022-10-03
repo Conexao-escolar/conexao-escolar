@@ -1,7 +1,8 @@
 import generateSchols from "../utils/generateRandomSchools";
-import IEscola from "../types/IEscola";
+import IEscola, { IEscolaProfile } from "../types/IEscola";
+import generateRandomSchoolDetail from "../utils/generateRandomSchoolDetail";
 
-async function getSchoolDetail(schoolId: string) {
+async function getSchoolDetail(schoolId: string): Promise<IEscolaProfile> {
   const ENV_IS_DEVELOPMENT = process.env.NODE_ENV !== "production";
 
   if (ENV_IS_DEVELOPMENT) {
@@ -11,7 +12,8 @@ async function getSchoolDetail(schoolId: string) {
       ...allSchools[0],
       id: schoolId,
     };
-    return thisSchool;
+
+    return generateRandomSchoolDetail(thisSchool);
   }
 }
 
