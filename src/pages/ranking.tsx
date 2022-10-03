@@ -1,3 +1,5 @@
+import React from "react";
+
 import {
   Box,
   Flex,
@@ -12,11 +14,10 @@ import {
   Grid,
   GridItem,
 } from "@chakra-ui/react";
-import React from "react";
 
 import Container from "../components/Container";
 import Menus from "../components/Nav/MenuOpcoes";
-import Inpu, { SelectInput } from "../components/Input";
+import { SelectInput } from "../components/Input";
 import { FaFilter } from "react-icons/fa";
 import getAllSchols from "../services/getAllSchools";
 import separeteSchoolsByRank, {
@@ -25,7 +26,6 @@ import separeteSchoolsByRank, {
 import separeteSchoolsByTag from "../services/separeteSchoolsByTag";
 import ALL_TAGS from "../types/ITags";
 import CardEscola from "../components/CardEscola";
-import ICardEscola from "../types/IEscola";
 
 type IListSchool = {
   [Property in ALL_TAGS]?: ISchoolOrdenedByRank;
@@ -71,7 +71,7 @@ const Ranking: React.FC = ({ AUTISMO, FISICO, TDH, VISUAL }: IListSchool) => {
 
       return haveLength && haveThisTagOnFilter;
     },
-    [categoriaFilter]
+    [categoriaFilter, thisSchool]
   );
 
   // React.useEffect(() => {
