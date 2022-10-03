@@ -24,10 +24,10 @@ const MenuItems: React.FC<{
   const formatLink = React.useCallback((l: string) => {
     if (l == MenuEnum.Home) return "/";
     if (l.split(" ").length > 1) {
-      return l.split(" ")[0].toLowerCase();
+      return `/${l.split(" ")[0].toLowerCase()}`
     }
 
-    return l.toLowerCase();
+    return `/${l.toLowerCase()}`;
   }, []);
 
   const validateIsActiveMenu = React.useCallback(
