@@ -27,7 +27,7 @@ type ICardEscla = {
   tags: Array<ALL_TAGS>;
 };
 
-type IReputacao = {
+export type IReputacao = {
   [Property in ALL_TAGS]?: {
     rank: number;
   };

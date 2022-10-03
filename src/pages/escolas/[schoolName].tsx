@@ -20,13 +20,14 @@ import Container from "../../components/Container";
 import Menus from "../../components/Nav/MenuOpcoes";
 import { useRouter } from "next/router";
 import getSchoolDetail from "../../services/getSchoolDetail";
-import IEscola from "../../types/IEscola";
+import IEscola, { IEscolaProfile } from "../../types/IEscola";
 
 import { MdPhotoCamera, MdStar } from "react-icons/md";
 import formatRank from "../../utils/formatRank";
+import SchoolTabs from "../../components/SchoolDetails/Tabs";
 
 const SchoolDetail: React.FC = () => {
-  const [schoolDetail, setScholDetail] = React.useState<IEscola>({} as IEscola);
+  const [schoolDetail, setScholDetail] = React.useState<IEscolaProfile>({} as IEscolaProfile);
 
   const {
     query: { schoolName },
@@ -143,7 +144,6 @@ const SchoolDetail: React.FC = () => {
     );
   };
 
-  console.log(schoolName);
   return (
     <Container activeMenu={Menus.Escolas} extraContainer={<BannerSchool />}>
       <Divider mt={4} />
@@ -164,158 +164,7 @@ const SchoolDetail: React.FC = () => {
             </TabList>
           </Flex>
           <Flex flex="1" w="full">
-            <TabPanels w="full">
-              <TabPanel>
-                <Grid templateColumns="repeat(3, 1fr)" gap={6}>
-                  <GridItem>
-                    <Box p={5}>
-                      <Flex
-                        flexDir="column"
-                        alignItems="center"
-                        justifyContent="space-around"
-                        border="1px solid #6C6C6C"
-                        borderRadius="5px"
-                        minH="150px"
-                      >
-                        <Text>
-                          Reputação em
-                          <span className="tag"> #Autismo</span>
-                        </Text>
-                        <Text
-                          fontSize="3xl"
-                          fontWeight="bold"
-                          textColor="#FF6736"
-                        >
-                          Excelente
-                        </Text>
-                        <Flex
-                          flexDir="row"
-                          justifyContent="space-around"
-                          w="full"
-                        >
-                          <Flex>
-                            <Icon as={MdStar} boxSize={5} color="#FF6736" />
-                            <Text>4,9</Text>
-                          </Flex>
-                          <Text>Ver reputação detalhada</Text>
-                        </Flex>
-                      </Flex>
-                    </Box>
-                  </GridItem>
-                  <GridItem>
-                    <Box p={5}>
-                      <Flex
-                        flexDir="column"
-                        alignItems="center"
-                        justifyContent="space-around"
-                        border="1px solid #6C6C6C"
-                        borderRadius="5px"
-                        minH="150px"
-                      >
-                        <Text>
-                          Reputação em
-                          <span className="tag"> #Autismo</span>
-                        </Text>
-                        <Text
-                          fontSize="3xl"
-                          fontWeight="bold"
-                          textColor="#FF6736"
-                        >
-                          Excelente
-                        </Text>
-                        <Flex
-                          flexDir="row"
-                          justifyContent="space-around"
-                          w="full"
-                        >
-                          <Flex>
-                            <Icon as={MdStar} boxSize={5} color="#FF6736" />
-                            <Text>4,9</Text>
-                          </Flex>
-                          <Text>Ver reputação detalhada</Text>
-                        </Flex>
-                      </Flex>
-                    </Box>
-                  </GridItem>
-                  <GridItem>
-                    <Box p={5}>
-                      <Flex
-                        flexDir="column"
-                        alignItems="center"
-                        justifyContent="space-around"
-                        border="1px solid #6C6C6C"
-                        borderRadius="5px"
-                        minH="150px"
-                      >
-                        <Text>
-                          Reputação em
-                          <span className="tag"> #Autismo</span>
-                        </Text>
-                        <Text
-                          fontSize="3xl"
-                          fontWeight="bold"
-                          textColor="#FF6736"
-                        >
-                          Excelente
-                        </Text>
-                        <Flex
-                          flexDir="row"
-                          justifyContent="space-around"
-                          w="full"
-                        >
-                          <Flex>
-                            <Icon as={MdStar} boxSize={5} color="#FF6736" />
-                            <Text>4,9</Text>
-                          </Flex>
-                          <Text>Ver reputação detalhada</Text>
-                        </Flex>
-                      </Flex>
-                    </Box>
-                  </GridItem>
-                  <GridItem>
-                    <Box p={5}>
-                      <Flex
-                        flexDir="column"
-                        alignItems="center"
-                        justifyContent="space-around"
-                        border="1px solid #6C6C6C"
-                        borderRadius="5px"
-                        minH="150px"
-                      >
-                        <Text>
-                          Reputação em
-                          <span className="tag"> #Autismo</span>
-                        </Text>
-                        <Text
-                          fontSize="3xl"
-                          fontWeight="bold"
-                          textColor="#FF6736"
-                        >
-                          Excelente
-                        </Text>
-                        <Flex
-                          flexDir="row"
-                          justifyContent="space-around"
-                          w="full"
-                        >
-                          <Flex>
-                            <Icon as={MdStar} boxSize={5} color="#FF6736" />
-                            <Text>4,9</Text>
-                          </Flex>
-                          <Text>Ver reputação detalhada</Text>
-                        </Flex>
-                      </Flex>
-                    </Box>
-                  </GridItem>
-                </Grid>
-              </TabPanel>
-              <TabPanel>
-                <p>two!</p>
-              </TabPanel>
-              <TabPanel>
-                <p>three!</p>
-              </TabPanel>
-            </TabPanels>
+            <SchoolTabs school={schoolDetail} />
           </Flex>
         </Tabs>
       </Flex>
