@@ -1,6 +1,7 @@
 import ALL_TAGS from "./ITags";
 
 type IPrimaryComents = {
+  _id: string;
   author_id: string;
   message: string;
   rate: number;

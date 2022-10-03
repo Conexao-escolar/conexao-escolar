@@ -3,38 +3,6 @@ import IEscola, { IEscolaProfile } from "../types/IEscola";
 import ALL_TAGS from "../types/ITags";
 import generateSchols from "./generateRandomSchools";
 
-/**
- *   profile_img?: string;
-  sobre?: string;
-  conteudo?: Array<string>;
-  localização?: {
-    lat: number;
-    lon: number;
-  };
-  membros: Array<IProfessor>;
-  comentarios: Array<IComents>
- */
-
-/**
-   *   nome: string;
-        cargo: string;
-   */
-
-/**
- * type IPrimaryComents = {
-  author_id: string;
-  message: string;
-  rate: number;
-  created_date: Date | string;
-  tags: Array<ALL_TAGS>;
-};
-
-type IComents = IPrimaryComents & {
-  replyed: Array<IPrimaryComents>;
-};
-
- * 
- */
 const profile_img = () => {
   return faker.image.abstract();
 };
@@ -64,11 +32,12 @@ const members = () => {
 };
 
 const coments = () => {
-  const qtd = faker.datatype.number(5);
-  const qtd_2 = faker.datatype.number(2);
+  const qtd = faker.datatype.number(8);
+  const qtd_2 = faker.datatype.number(4);
 
   const generateComent = () => {
     return {
+      _id: faker.datatype.uuid(),
       author_id: faker.datatype.uuid(),
       message: faker.lorem.lines(2),
       rate: faker.datatype.number({
