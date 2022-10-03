@@ -37,7 +37,11 @@ function generateSchols(length: number = 1): IEscola[] {
     cidade: "Porto Velho",
     endereco: faker.address.street(),
     modal: randomModal(),
-    nome: faker.name.firstName("female") + " " + faker.name.firstName("male"),
+    nome:
+      `E.E.E.F.M. ` +
+      faker.name.firstName("female") +
+      " " +
+      faker.name.firstName("male"),
     rank: randonRank(),
     tags: generateTags(),
   }));
