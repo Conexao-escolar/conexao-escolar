@@ -14,8 +14,8 @@ type Props = Omit<
 
 const SchoolLine: React.FC<Props> = ({ color, id, nome, rank, index }) => {
   const formatedLink = React.useMemo(() => {
-    return nome.replaceAll(" ", "")
-  }, [nome])
+    return id.replaceAll(" ", "")
+  }, [id])
   return (
     <Flex flex="1" justifyContent="space-around" key={`first-${id}`}>
       <Box w="10%">
@@ -24,7 +24,7 @@ const SchoolLine: React.FC<Props> = ({ color, id, nome, rank, index }) => {
         </Text>
       </Box>
       <Box w="60%" textAlign="left" paddingLeft={3}>
-        <NextLink href={`/school/${formatedLink}`}>
+        <NextLink href={`/escolas/${formatedLink}`}>
           <Link>
             <Text noOfLines={1}>{nome}</Text>
           </Link>
