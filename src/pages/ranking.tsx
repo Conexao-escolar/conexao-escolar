@@ -245,8 +245,6 @@ const Ranking: React.FC = ({ AUTISMO, FISICO, TDH, VISUAL }: IListSchool) => {
           {Object.values(ALL_TAGS).map((cat) => {
             const exibir = includeThisTag(cat);
 
-            console.log(cat, exibir);
-
             if (exibir)
               return (
                 <GridItem key={`exibir-${cat}`}>
