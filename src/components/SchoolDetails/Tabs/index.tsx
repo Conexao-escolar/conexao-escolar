@@ -12,6 +12,7 @@ type Props = {
   school: IEscolaProfile;
 };
 
+// https://www.google.com/maps/@-8.7688652,-63.8699125,21z?hl=en
 const Tabs: React.FC<Props> = ({ school = {} as IEscolaProfile }) => {
   return (
     <TabPanels w="full">
@@ -27,7 +28,9 @@ const Tabs: React.FC<Props> = ({ school = {} as IEscolaProfile }) => {
         <Conteudo />
       </TabPanel>
       <TabPanel>
-        <Localizacao />
+        <Localizacao
+          localizacao={school.localizacao}
+        />
       </TabPanel>
       <TabPanel>
         <Comentarios />
