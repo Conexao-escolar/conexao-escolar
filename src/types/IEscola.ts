@@ -37,9 +37,10 @@ export type IEscolaProfile = ICardEscla & {
   profile_img?: string;
   sobre?: string;
   conteudo?: Array<string>;
-  localização?: {
-    lat: string;
-    lon: string;
+  localizacao?: {
+    lat?: string;
+    lon?: string;
+    g_link: string
   };
   membros: Array<IProfessor>;
   comentarios: Array<IComents>;

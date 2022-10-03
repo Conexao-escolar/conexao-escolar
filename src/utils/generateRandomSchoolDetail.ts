@@ -43,6 +43,8 @@ const local = () => {
   return {
     lat: faker.address.latitude(),
     lon: faker.address.longitude(),
+    g_link:
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d985.7954105214177!2d-63.87037708882529!3d-8.768974774655558!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x92325c992c24b3cb%3A0xd3452d5f8342d5b3!2sEeefm%20Prof%20Orlando%20Freire!5e0!3m2!1sen!2sbr!4v1664806790170!5m2!1sen!2sbr",
   };
 };
 
@@ -107,7 +109,7 @@ function generateRandomSchoolDetail(schoolCard?: IEscola): IEscolaProfile {
     profile_img: profile_img(),
     sobre: faker.lorem.lines(3),
     conteudo: [],
-    localização: local(),
+    localizacao: local(),
     membros: members(),
     comentarios: coments(),
     reputacao: {
