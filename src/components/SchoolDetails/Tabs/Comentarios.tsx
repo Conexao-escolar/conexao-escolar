@@ -51,9 +51,9 @@ const Comentarios: React.FC<IProp> = ({ comentarios = [] }) => {
   const allTags = React.useMemo(() => Object.keys(ALL_TAGS), []);
 
   return (
-    <Flex mt={4} flexDir="column" alignItems="center" gap={4} p={8}>
+    <Flex flexDir="column" alignItems="center" gap={4} p={2}>
       <Container w="full">
-        <Flex w="full" px={8} py={4} flexDir="column">
+        <Flex w="full" px={8} flexDir="column">
           <Textarea
             placeholder="Escreva aqui seu comentário anônimo"
             size="lg"
