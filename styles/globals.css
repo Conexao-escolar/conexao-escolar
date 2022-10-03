@@ -50,6 +50,11 @@ a {
 .tag.bad {
   color: #874A9F;
 }
+
+.time {
+  color: rgb(164, 166, 171);
+  font-size: 0.8rem;
+}
 /* Acessbilidade de fontes */
 @media (max-width: 1080px) {
   html {

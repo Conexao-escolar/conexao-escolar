@@ -2,10 +2,15 @@ import { Box, Flex } from "@chakra-ui/react";
 import React from "react";
 import { IEscolaProfile } from "../../../types/IEscola";
 
-
 // import { Container } from './styles';
 
-const Localizacao: React.FC<Pick<IEscolaProfile, "localizacao">> = ({ localizacao }) => {
+type IProp = Pick<IEscolaProfile, "localizacao">;
+
+const Localizacao: React.FC<IProp> = ({
+  localizacao = {
+    g_link: "",
+  },
+}) => {
   return (
     <Flex w="full" mt={4} alignItems="center" justifyContent="center">
       <iframe
