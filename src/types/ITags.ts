@@ -5,6 +5,7 @@ enum ALL_TAGS {
   "VISUAL" = "VISUAL",
   "FISICO" = "FISICO",
   "TDH" = "TDH",
+  "AUDITIVO" = "AUDITIVO"
 }
 
 export default ALL_TAGS;

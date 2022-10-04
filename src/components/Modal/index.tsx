@@ -21,6 +21,7 @@ import {
   useDisclosure,
   CheckboxGroup,
   Checkbox,
+  ModalProps,
 } from "@chakra-ui/react";
 
 // import { Container } from './styles';
@@ -33,6 +34,7 @@ type IProps = {
   body: JSX.Element | JSX.Element[];
   positve_label?: string;
   negative_label?: string;
+  modalProps?: Omit<Omit<Omit<ModalProps, "children">, "isOpen">, "onClose">
 };
 
 const ModalApp: React.FC<IProps> = ({
@@ -43,9 +45,10 @@ const ModalApp: React.FC<IProps> = ({
   body,
   negative_label,
   positve_label,
+  modalProps
 }) => {
   return (
-    <Modal isOpen={isOpen} onClose={() => onClose(false)}>
+    <Modal isOpen={isOpen} onClose={() => onClose(false)} {...modalProps}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{title}</ModalHeader>

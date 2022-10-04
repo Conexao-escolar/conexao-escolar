@@ -8,12 +8,26 @@ import {
   GridItem,
   Heading,
   Icon,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Select,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
   Text,
+  useDisclosure,
+  Checkbox,
+  CheckboxGroup,
+  VStack,
+  Slider,
+  SliderTrack,
+  SliderFilledTrack,
+  SliderThumb,
+  SliderMark,
+  Tooltip,
 } from "@chakra-ui/react";
 
 import Container from "../../components/Container";
@@ -25,13 +39,24 @@ import IEscola, { IEscolaProfile } from "../../types/IEscola";
 import { MdPhotoCamera, MdStar } from "react-icons/md";
 import formatRank from "../../utils/formatRank";
 import SchoolTabs from "../../components/SchoolDetails/Tabs";
+import Modal from "../../components/Modal";
+import { BiPhoneIncoming } from "react-icons/bi";
+import ALL_TAGS from "../../types/ITags";
+
+import EvaluationMode from "../../components/SchoolDetails/EvaluationMode";
 
 const SchoolDetail: React.FC = () => {
-  const [schoolDetail, setScholDetail] = React.useState<IEscolaProfile>({} as IEscolaProfile);
+  const [schoolDetail, setScholDetail] = React.useState<IEscolaProfile>(
+    {} as IEscolaProfile
+  );
+  const [sliderValue, setSliderValue] = React.useState(0);
+  const [showTooltip, setShowTooltip] = React.useState(false);
 
   const {
     query: { schoolName },
   } = useRouter();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const Reputacao = React.useMemo(() => {
     const rank = formatRank(schoolDetail.rank);
@@ -136,7 +161,9 @@ const SchoolDetail: React.FC = () => {
               {Reputacao}
             </Flex>
             <Flex mt={3} alignItems="center" justifyContent="center">
-              <Button colorScheme="teal">Deixe sua opinião</Button>
+              <Button onClick={onOpen} colorScheme="teal">
+                Deixe sua opinião
+              </Button>
             </Flex>
           </Flex>
         </Flex>
@@ -144,32 +171,37 @@ const SchoolDetail: React.FC = () => {
     );
   };
 
+  const setReputacao = (e: number) => {};
+
   return (
-    <Container activeMenu={Menus.Escolas} extraContainer={<BannerSchool />}>
-      <Divider mt={4} />
-      <Flex mt={4} w="full">
-        <Tabs w="full" colorScheme="orange">
-          <Flex
-            flexDir="row"
-            w="full"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <TabList>
-              <Tab>Reputação</Tab>
-              <Tab>Sobre</Tab>
-              <Tab>Conteúdo</Tab>
-              <Tab>Localização</Tab>
-              <Tab>Comentários</Tab>
-            </TabList>
-          </Flex>
-          <Flex flex="1" w="full">
-            <SchoolTabs school={schoolDetail} />
-          </Flex>
-        </Tabs>
-      </Flex>
-      {/* <Box>{schoolDetail.cidade}</Box> */}
-    </Container>
+    <>
+      <EvaluationMode isOpen={isOpen} onClose={onClose} />
+      <Container activeMenu={Menus.Escolas} extraContainer={<BannerSchool />}>
+        <Divider mt={4} />
+        <Flex mt={4} w="full">
+          <Tabs w="full" colorScheme="orange">
+            <Flex
+              flexDir="row"
+              w="full"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <TabList>
+                <Tab>Reputação</Tab>
+                <Tab>Sobre</Tab>
+                <Tab>Conteúdo</Tab>
+                <Tab>Localização</Tab>
+                <Tab>Comentários</Tab>
+              </TabList>
+            </Flex>
+            <Flex flex="1" w="full">
+              <SchoolTabs school={schoolDetail} />
+            </Flex>
+          </Tabs>
+        </Flex>
+        {/* <Box>{schoolDetail.cidade}</Box> */}
+      </Container>
+    </>
   );
 };
 
