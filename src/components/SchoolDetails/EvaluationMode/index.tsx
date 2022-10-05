@@ -1,162 +1,75 @@
 import React from "react";
-import {
-  Box,
-  Button,
-  Divider,
-  Flex,
-  Grid,
-  GridItem,
-  Heading,
-  Icon,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Select,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Text,
-  useDisclosure,
-  Checkbox,
-  CheckboxGroup,
-  VStack,
-  Slider,
-  SliderTrack,
-  SliderFilledTrack,
-  SliderThumb,
-  SliderMark,
-  Tooltip,
-  Textarea,
-} from "@chakra-ui/react";
+import { Box, Flex, Input, Text, Checkbox, Textarea } from "@chakra-ui/react";
 
 import ModalApp from "../../Modal";
 import ALL_TAGS from "../../../types/ITags";
-import formatRank from "../../../utils/formatRank";
-// import { Container } from './styles';
+import EvaluationModeSliderInput, { IRefProps } from "./Slider";
+
+export type IOncloseProps = {
+  rankResult: {
+    infraAcessibilityResult: number;
+    infraRestroomResult: number;
+    pedagogiAcessibilityResult: number;
+    pedagogiPreparationResult: number;
+  };
+  profile: string;
+  modal: Array<ALL_TAGS>;
+  infraConsideracao: string;
+  pedadogiConsideracao: string;
+  freeComent: string;
+};
 
 type Props = {
   isOpen: boolean;
-  onClose(): void;
+  onClose(prop: IOncloseProps): void;
 };
 
 const EvaluationMode: React.FC<Props> = ({ isOpen, onClose }) => {
   const [thisProfile, setThisProfile] = React.useState<string>();
   const [modalCategoria, setModalCategoria] = React.useState<Array<ALL_TAGS>>(
     []
-  ); //ALL_TAGS
-
-  const mappedValues = React.useMemo(
-    () => ({
-      1: 1,
-      2: 1.5,
-      3: 2,
-      4: 2.5,
-      5: 3,
-      6: 3.5,
-      7: 4,
-      8: 4.5,
-      10: 5,
-    }),
-    []
   );
+
+  const [freeComent, setFreeComent] = React.useState("");
+  const [pedagogiConsideracao, setPedagogiConsideracao] = React.useState("");
+  const [considecaraoInfra, setConsideracaoInfra] = React.useState<string>("");
 
   const inputRef = React.useRef<HTMLInputElement>(null);
 
-  // INFRA
-  const [showTolTipAcessbilityRank, setShowTolTipAcessbilityRank] =
-    React.useState(false);
-  const [infraAccessibilityRank, setInfraAccessibilityRank] =
-    React.useState<number>(0);
-  const [infraAccessibilityResult, setInfraAccessibilityResult] =
-    React.useState<string>("");
+  const infraAcessibilityRef = React.useRef<IRefProps>(null);
+  const infraRestroomRef = React.useRef<IRefProps>(null);
+  const pedagogiAcessibilityRef = React.useRef<IRefProps>(null);
+  const pedagogiPreparationRef = React.useRef<IRefProps>(null);
 
-  const [
-    showTolIipinfraAccessibilityRestroomRank,
-    setShowTolIipinfraAccessibilityRestroomRank,
-  ] = React.useState(false);
+  const _onClose = React.useCallback(() => {
+    const infraAcessibilityResult = infraAcessibilityRef.current.value();
+    const infraRestroomResult = infraRestroomRef.current.value();
+    const pedagogiAcessibilityResult = pedagogiAcessibilityRef.current.value();
+    const pedagogiPreparationResult = pedagogiPreparationRef.current.value();
 
-  const [infraAccessibilityRestroomRank, setInfraAccessibilityRestroomRank] =
-    React.useState<number>(0);
-  const [
-    infraAccessibilityRestroomResult,
-    setInfraAccessibilityRestroomResult,
-  ] = React.useState<string>("");
+    const body: IOncloseProps = {
+      rankResult: {
+        infraAcessibilityResult,
+        infraRestroomResult,
+        pedagogiAcessibilityResult,
+        pedagogiPreparationResult,
+      },
+      freeComent,
+      infraConsideracao: considecaraoInfra,
+      modal: modalCategoria,
+      pedadogiConsideracao: pedagogiConsideracao,
+      profile: thisProfile,
+    };
 
-  const [considecaraoInfra, setConsideracaoInfra] = React.useState<string>("");
-
-  // PEDAGOGIA
-  const [
-    showTolTipPedagogicalAccessibilityRank,
-    setShowTolPipPedagogicalAccessibilityRank,
-  ] = React.useState(false);
-  const [pedagogicalAccessibilityRank, setPedagogicalAccessibilityRank] =
-    React.useState<number>(0);
-  const [pedagogicalAccessibilityResult, setPedagogicalAccessibilityResult] =
-    React.useState<string>("");
-
-  const [
-    showTolTipPedagogicalPreparationRank,
-    setShowTolPippedagogicalPreparationRank,
-  ] = React.useState(false);
-  const [pedagogicalPreparationRank, setPedagogicalPreparationRank] =
-    React.useState<number>(0);
-  const [pedagogicalPreparationResult, setPedagogicalPreparationResult] =
-    React.useState<string>("");
-
-  const [considecaraoPedagogical, setConsideracaoPedagogical] =
-    React.useState<string>("");
-
-  const [consideracaoFinal, setConsideracaoFinal] = React.useState("");
-
-  const _setInfraAccessibilityRank = React.useCallback(
-    (e: number) => {
-      const mappedResult = mappedValues[e];
-
-      const result = formatRank(mappedResult);
-
-      setInfraAccessibilityRank(mappedResult);
-      setInfraAccessibilityResult(result);
-    },
-    [mappedValues]
-  );
-
-  const _setInfraAccessibilityRestroomRank = React.useCallback(
-    (e: number) => {
-      const mappedResult = mappedValues[e];
-
-      const result = formatRank(mappedResult);
-
-      setInfraAccessibilityRestroomRank(mappedResult);
-      setInfraAccessibilityRestroomResult(result);
-    },
-    [mappedValues]
-  );
-
-  const _setPedagogicalAccessibilityRank = React.useCallback(
-    (e: number) => {
-      const mappedResult = mappedValues[e];
-
-      const result = formatRank(mappedResult);
-
-      setPedagogicalAccessibilityRank(mappedResult);
-      setPedagogicalAccessibilityResult(result);
-    },
-    [mappedValues]
-  );
-
-  const _setPedagogicalPreparationRank = React.useCallback(
-    (e: number) => {
-      const mappedResult = mappedValues[e];
-
-      const result = formatRank(mappedResult);
-
-      setPedagogicalPreparationRank(mappedResult);
-      setPedagogicalPreparationResult(result);
-    },
-    [mappedValues]
-  );
+    onClose(body);
+  }, [
+    considecaraoInfra,
+    freeComent,
+    modalCategoria,
+    onClose,
+    pedagogiConsideracao,
+    thisProfile,
+  ]);
 
   const checkAllCateg = React.useCallback((e: boolean) => {
     if (e) {
@@ -350,108 +263,18 @@ const EvaluationMode: React.FC<Props> = ({ isOpen, onClose }) => {
             <Text fontWeight="bold" fontSize="lg">
               Infraestrutura :
             </Text>
-            <Box mt={4} px={4}>
-              <Text fontWeight="bold">
-                Como você avalia no geral a acessibilidade da escola em relação
-                a rampas, corredores acessíveis e guias para deficientes visuais
-              </Text>
-              <Flex flexDir="column" px={8} mt={5}>
-                <Slider
-                  aria-label="slider-ex-1"
-                  defaultValue={0}
-                  onChange={(val) => _setInfraAccessibilityRank(val)}
-                  max={10}
-                  onMouseEnter={() => setShowTolTipAcessbilityRank(true)}
-                  onMouseLeave={() => setShowTolTipAcessbilityRank(false)}
-                >
-                  <SliderMark value={1}>1</SliderMark>
-                  <SliderMark value={2}>1.5</SliderMark>
-                  <SliderMark value={3}>2</SliderMark>
-                  <SliderMark value={4}>2.5</SliderMark>
-                  <SliderMark value={5}>3</SliderMark>
-                  <SliderMark value={6}>3.5</SliderMark>
-                  <SliderMark value={7}>4</SliderMark>
-                  <SliderMark value={8}>4.5</SliderMark>
-                  <SliderMark value={10}>5</SliderMark>
-                  <SliderTrack>
-                    <SliderFilledTrack />
-                  </SliderTrack>
-                  <Tooltip
-                    hasArrow
-                    bg="teal.500"
-                    color="white"
-                    placement="top"
-                    isOpen={showTolTipAcessbilityRank}
-                    label={infraAccessibilityResult}
-                  >
-                    <SliderThumb />
-                  </Tooltip>
-                </Slider>
-                <Flex
-                  flexDir="row"
-                  w="full"
-                  justifyContent="space-between"
-                  mt={5}
-                >
-                  <Text>Muito ruim</Text>
-                  <Text>Muito bom</Text>
-                </Flex>
-              </Flex>
-            </Box>
-            <Box mt={4} px={4}>
-              <Text fontWeight="bold">
-                Como você avalia no geral a acessibilidade da escola em relação
-                ao banheiro. Há sanitários limpos e acessíveis a pessoas com
-                necessidades especiais? Como barras de apoio por exemplo e guias
-                no chão.
-              </Text>
-              <Flex flexDir="column" px={8} mt={5}>
-                <Slider
-                  aria-label="slider-ex-1"
-                  defaultValue={0}
-                  onChange={(val) => _setInfraAccessibilityRestroomRank(val)}
-                  max={10}
-                  onMouseEnter={() =>
-                    setShowTolIipinfraAccessibilityRestroomRank(true)
-                  }
-                  onMouseLeave={() =>
-                    setShowTolIipinfraAccessibilityRestroomRank(false)
-                  }
-                >
-                  <SliderMark value={1}>1</SliderMark>
-                  <SliderMark value={2}>1.5</SliderMark>
-                  <SliderMark value={3}>2</SliderMark>
-                  <SliderMark value={4}>2.5</SliderMark>
-                  <SliderMark value={5}>3</SliderMark>
-                  <SliderMark value={6}>3.5</SliderMark>
-                  <SliderMark value={7}>4</SliderMark>
-                  <SliderMark value={8}>4.5</SliderMark>
-                  <SliderMark value={10}>5</SliderMark>
-                  <SliderTrack>
-                    <SliderFilledTrack />
-                  </SliderTrack>
-                  <Tooltip
-                    hasArrow
-                    bg="teal.500"
-                    color="white"
-                    placement="top"
-                    isOpen={showTolIipinfraAccessibilityRestroomRank}
-                    label={""}
-                  >
-                    <SliderThumb />
-                  </Tooltip>
-                </Slider>
-                <Flex
-                  flexDir="row"
-                  w="full"
-                  justifyContent="space-between"
-                  mt={5}
-                >
-                  <Text>Muito ruim</Text>
-                  <Text>Muito bom</Text>
-                </Flex>
-              </Flex>
-            </Box>
+            <EvaluationModeSliderInput
+              label="Como você avalia no geral a acessibilidade da escola em relação
+              a rampas, corredores acessíveis e guias para deficientes visuais"
+              ref={infraAcessibilityRef}
+            />
+            <EvaluationModeSliderInput
+              label="Como você avalia no geral a acessibilidade da escola em relação
+              ao banheiro. Há sanitários limpos e acessíveis a pessoas com
+              necessidades especiais? Como barras de apoio por exemplo e guias
+              no chão."
+              ref={infraRestroomRef}
+            />
 
             <Box mt={8} px={4}>
               <Text>
@@ -470,137 +293,31 @@ const EvaluationMode: React.FC<Props> = ({ isOpen, onClose }) => {
             <Text fontWeight="bold" fontSize="lg">
               Pedagogia :
             </Text>
-            <Box mt={4} px={4}>
-              <Text fontWeight="bold">
-                Como você avalia no geral o nível de acessibilidade pedagógica,
-                que envolve elementos e equipamentos que possibilitam uma melhor
-                experiência e vivência para o aluno especial? A escola
-                proporciona uma melhor vivência no meio escolar?
-              </Text>
-              <Flex flexDir="column" px={8} mt={5}>
-                <Slider
-                  aria-label="slider-ex-1"
-                  defaultValue={0}
-                  onChange={(val) => _setPedagogicalAccessibilityRank(val)}
-                  max={10}
-                  onMouseEnter={() =>
-                    setShowTolPipPedagogicalAccessibilityRank(true)
-                  }
-                  onMouseLeave={() =>
-                    setShowTolPipPedagogicalAccessibilityRank(false)
-                  }
-                >
-                  <SliderMark value={1}>1</SliderMark>
-                  <SliderMark value={2}>1.5</SliderMark>
-                  <SliderMark value={3}>2</SliderMark>
-                  <SliderMark value={4}>2.5</SliderMark>
-                  <SliderMark value={5}>3</SliderMark>
-                  <SliderMark value={6}>3.5</SliderMark>
-                  <SliderMark value={7}>4</SliderMark>
-                  <SliderMark value={8}>4.5</SliderMark>
-                  <SliderMark value={10}>5</SliderMark>
-                  <SliderTrack>
-                    <SliderFilledTrack />
-                  </SliderTrack>
-                  <Tooltip
-                    hasArrow
-                    bg="teal.500"
-                    color="white"
-                    placement="top"
-                    isOpen={showTolTipPedagogicalAccessibilityRank}
-                    label={pedagogicalAccessibilityResult}
-                  >
-                    <SliderThumb />
-                  </Tooltip>
-                </Slider>
-                <Flex
-                  flexDir="row"
-                  w="full"
-                  justifyContent="space-between"
-                  mt={5}
-                >
-                  <Text>Muito ruim</Text>
-                  <Text>Muito bom</Text>
-                </Flex>
-              </Flex>
-            </Box>
-            {/* <Box mt={4} px={4}>
-              <Text>Há alguma consideração ou motivo para sua resposta?</Text>
-              <Input
-                placeholder="Escreva aqui suas considerações"
-                onChange={({ target: { value } }) =>
-                  setConsideracaoPedagogicalAccessibility(value)
-                }
-                value={considecaraoPedagogicalAccessibility}
-              />
-            </Box> */}
-            <Box mt={4} px={4}>
-              <Text fontWeight="bold">
-                Como você avalia no geral o nível de preparo dos profissionais
-                da instituições para lidar com os alunos especiais?
-              </Text>
-              <Flex flexDir="column" px={8} mt={5}>
-                <Slider
-                  aria-label="slider-ex-1"
-                  defaultValue={0}
-                  onChange={(val) => _setPedagogicalPreparationRank(val)}
-                  max={10}
-                  onMouseEnter={() =>
-                    setShowTolPippedagogicalPreparationRank(true)
-                  }
-                  onMouseLeave={() =>
-                    setShowTolPippedagogicalPreparationRank(false)
-                  }
-                >
-                  <SliderMark value={1}>1</SliderMark>
-                  <SliderMark value={2}>1.5</SliderMark>
-                  <SliderMark value={3}>2</SliderMark>
-                  <SliderMark value={4}>2.5</SliderMark>
-                  <SliderMark value={5}>3</SliderMark>
-                  <SliderMark value={6}>3.5</SliderMark>
-                  <SliderMark value={7}>4</SliderMark>
-                  <SliderMark value={8}>4.5</SliderMark>
-                  <SliderMark value={10}>5</SliderMark>
-                  <SliderTrack>
-                    <SliderFilledTrack />
-                  </SliderTrack>
-                  <Tooltip
-                    hasArrow
-                    bg="teal.500"
-                    color="white"
-                    placement="top"
-                    isOpen={showTolTipPedagogicalPreparationRank}
-                    label={`Penîs`}
-                  >
-                    <SliderThumb />
-                  </Tooltip>
-                </Slider>
-                <Flex
-                  flexDir="row"
-                  w="full"
-                  justifyContent="space-between"
-                  mt={5}
-                >
-                  <Text>Muito ruim</Text>
-                  <Text>Muito bom</Text>
-                </Flex>
-              </Flex>
-            </Box>
-            {/* <Box mt={4} px={4}>
-              <Text>Há alguma consideração ou motivo para sua resposta?</Text>
-              <Input
-                placeholder="Escreva aqui suas considerações"
-                onChange={({ target: { value } }) =>
-                  setConsideracaoPedagogicalPreparation(value)
-                }
-                value={considecaraoPedagogicalPreparation}
-              />
-            </Box> */}
+            <EvaluationModeSliderInput
+              label="Como você avalia no geral o nível de acessibilidade pedagógica,
+              que envolve elementos e equipamentos que possibilitam uma melhor
+              experiência e vivência para o aluno especial? A escola
+              proporciona uma melhor vivência no meio escolar?"
+              ref={pedagogiAcessibilityRef}
+            />
+
+            <EvaluationModeSliderInput
+              label="Como você avalia no geral o nível de preparo dos profissionais
+              da instituições para lidar com os alunos especiais?"
+              ref={pedagogiPreparationRef}
+            />
+
             <Box mt={8} px={4}>
               <Text>
                 Há alguma consideração ou sugestão de melhoria para a escola?
               </Text>
-              <Input placeholder="Escreva aqui suas considerações" />
+              <Input
+                value={pedagogiConsideracao}
+                onChange={({ target: { value } }) =>
+                  setPedagogiConsideracao(value)
+                }
+                placeholder="Escreva aqui suas considerações"
+              />
             </Box>
           </Flex>
           <Flex mt={4} flexDir="column" border="1px solid #e1e1e1" p={2}>
@@ -609,7 +326,11 @@ const EvaluationMode: React.FC<Props> = ({ isOpen, onClose }) => {
                 Use esse espaço para reclamar ou deixar recomendações gerais.
                 Ele será visível no perfil da escola:
               </Text>
-              <Textarea placeholder="Aba livre para comentários, fique a vontade!" />
+              <Textarea
+                onChange={({ target: { value } }) => setFreeComent(value)}
+                value={freeComent}
+                placeholder="Aba livre para comentários, fique a vontade!"
+              />
             </Box>
           </Flex>
         </Flex>
@@ -617,7 +338,7 @@ const EvaluationMode: React.FC<Props> = ({ isOpen, onClose }) => {
       isOpen={isOpen}
       label="Esse formulário tem o intuito de coletar informações gerais sobre as escolas em Geral.
         Fique a vontade para colocar suas considerações, pois as respostas são anônimas e tem o intuito de levar mais conhecimento para o público em Geral."
-      onClose={onClose}
+      onClose={_onClose}
       title="Avaliar a escola"
       negative_label="Cancelar"
       positve_label="Enviar"
