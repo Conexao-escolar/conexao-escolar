@@ -43,7 +43,9 @@ import Modal from "../../components/Modal";
 import { BiPhoneIncoming } from "react-icons/bi";
 import ALL_TAGS from "../../types/ITags";
 
-import EvaluationMode from "../../components/SchoolDetails/EvaluationMode";
+import EvaluationMode, {
+  IOncloseProps,
+} from "../../components/SchoolDetails/EvaluationMode";
 
 const SchoolDetail: React.FC = () => {
   const [schoolDetail, setScholDetail] = React.useState<IEscolaProfile>(
@@ -171,11 +173,14 @@ const SchoolDetail: React.FC = () => {
     );
   };
 
-  const setReputacao = (e: number) => {};
+  const _onClose = React.useCallback((e: IOncloseProps) => {
+    console.log(e);
+    onClose();
+  }, [onClose]);
 
   return (
     <>
-      <EvaluationMode isOpen={isOpen} onClose={onClose} />
+      <EvaluationMode isOpen={isOpen} onClose={_onClose} />
       <Container activeMenu={Menus.Escolas} extraContainer={<BannerSchool />}>
         <Divider mt={4} />
         <Flex mt={4} w="full">
