@@ -39,8 +39,10 @@ import EvaluationMode, {
 import { toast } from "react-toastify";
 
 import firebase from "../../database";
-import { getFirestore, getDoc, doc } from "firebase/firestore";
+import { getFirestore, getDoc, doc, updateDoc } from "firebase/firestore";
 import School from "../../models/school";
+
+import { faker } from "@faker-js/faker";
 
 type ISchoolDetail = {
   exists: boolean;
@@ -51,7 +53,21 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
   exists = true,
   detail = {},
 }) => {
-  const [schoolDetail, setScholDetail] = React.useState<IEscolaProfile>(detail as IEscolaProfile);
+  const [schoolDetail, setScholDetail] = React.useState<IEscolaProfile>(() => {
+    const newComents = (detail as IEscolaProfile).comentarios.map((coment) => ({
+      ...coment,
+      replyed: coment.replyed.map((el) => ({
+        ...el,
+        created_date: new Date(el.created_date),
+      })),
+      created_date: new Date(coment.created_date),
+    }));
+
+    return {
+      ...detail,
+      comentarios: newComents,
+    } as IEscolaProfile;
+  });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -172,20 +188,30 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
 
   const _onComentEnter = React.useCallback(
     async ({ comment, tags }: ICommentCallBackProps) => {
+      const { comentarios, id } = schoolDetail;
+      const db = getFirestore(firebase);
+
+      const docRef = doc(db, "schools", id);
+
+      const thisComent = [
+        {
+          _id: faker.datatype.uuid(),
+          author_id: "aaa",
+          created_date: new Date(),
+          message: comment,
+          rate: 0.0,
+          replyed: [],
+          tags,
+        },
+        ...comentarios,
+      ];
+      await updateDoc(docRef, {
+        comentarios: thisComent,
+      });
+
       setScholDetail((old) => ({
         ...old,
-        comentarios: [
-          {
-            _id: "New",
-            author_id: "aaa",
-            created_date: new Date(),
-            message: comment,
-            rate: 0.0,
-            replyed: [],
-            tags,
-          },
-          ...old.comentarios,
-        ],
+        comentarios: thisComent,
       }));
 
       toast.success(
@@ -195,19 +221,23 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
         }
       );
     },
-    []
+    [schoolDetail]
   );
 
   const _onComentReplyedEnter = React.useCallback(
-    (e: IReplyedCommentCallBackProps) => {
+    async (e: IReplyedCommentCallBackProps) => {
       const { coment_id, comment } = e;
 
       const { comentarios } = schoolDetail;
 
+      const db = getFirestore(firebase);
+
+      const docRef = doc(db, "schools", schoolDetail.id);
+
       const thisComent = comentarios.map((coment) => {
         if (coment._id === coment_id) {
           coment.replyed.push({
-            _id: "New",
+            _id: faker.datatype.uuid(),
             author_id: "aa",
             created_date: new Date(),
             message: comment,
@@ -218,10 +248,21 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
         return coment;
       });
 
+      await updateDoc(docRef, {
+        comentarios: thisComent,
+      });
+
       setScholDetail((old) => ({
         ...old,
         comentarios: thisComent,
       }));
+
+      toast.success(
+        "Comentário adicionado com sucesso!, nosso time irá avalia-lo",
+        {
+          theme: "colored",
+        }
+      );
     },
     [schoolDetail]
   );
@@ -241,8 +282,8 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
             >
               <TabList>
                 <Tab>Reputação</Tab>
-                <Tab>Sobre</Tab>
-                <Tab>Conteúdo</Tab>
+                {/* <Tab>Sobre</Tab>
+                <Tab>Conteúdo</Tab> */}
                 <Tab>Localização</Tab>
                 <Tab>Comentários</Tab>
               </TabList>
@@ -252,14 +293,14 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
                 <TabPanel>
                   <TabReputacao reputacao={schoolDetail.reputacao} />
                 </TabPanel>
-                <TabPanel>
+                {/* <TabPanel>
                   <Flex w="full" bg="red">
                     asdf
                   </Flex>
-                </TabPanel>
-                <TabPanel>
+                </TabPanel> */}
+                {/* <TabPanel>
                   <Conteudo />
-                </TabPanel>
+                </TabPanel> */}
                 <TabPanel>
                   <Localizacao localizacao={schoolDetail.localizacao} />
                 </TabPanel>

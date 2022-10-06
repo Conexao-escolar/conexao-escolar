@@ -47,6 +47,8 @@ const Comentarios: React.FC<IComentProp> = ({
       coment_id: _id,
       comment: replyedComment,
     });
+
+    setReplyedComment("")
   }, [_id, onComentReplyedEnter, replyedComment]);
 
   return (
