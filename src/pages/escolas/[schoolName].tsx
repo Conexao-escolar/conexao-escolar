@@ -38,14 +38,20 @@ import EvaluationMode, {
 
 import { toast } from "react-toastify";
 
-const SchoolDetail: React.FC = () => {
-  const [schoolDetail, setScholDetail] = React.useState<IEscolaProfile>(
-    {} as IEscolaProfile
-  );
+import firebase from "../../database";
+import { getFirestore, getDoc, doc } from "firebase/firestore";
+import School from "../../models/school";
 
-  const {
-    query: { schoolName },
-  } = useRouter();
+type ISchoolDetail = {
+  exists: boolean;
+  detail: IEscolaProfile;
+};
+
+const SchoolDetail: React.FC<ISchoolDetail> = ({
+  exists = true,
+  detail = {},
+}) => {
+  const [schoolDetail, setScholDetail] = React.useState<IEscolaProfile>(detail as IEscolaProfile);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -96,12 +102,6 @@ const SchoolDetail: React.FC = () => {
       </>
     );
   }, [schoolDetail]);
-
-  React.useEffect(() => {
-    getSchoolDetail(String(schoolName)).then((result) =>
-      setScholDetail(result)
-    );
-  }, [schoolName]);
 
   const BannerSchool = () => {
     return (
@@ -281,6 +281,24 @@ const SchoolDetail: React.FC = () => {
 };
 
 export default SchoolDetail;
+
+export async function getServerSideProps(context) {
+  const { schoolName } = context.query;
+
+  const db = getFirestore(firebase);
+
+  const docRef = doc(db, "schools", schoolName);
+  const docSnap = await getDoc(docRef);
+
+  const data = new School(docSnap);
+
+  return {
+    props: {
+      exists: docSnap.exists(),
+      detail: data.get(),
+    },
+  };
+}
 
 // export async function getStaticProps({ params }) {
 //   console.log(params);

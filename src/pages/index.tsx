@@ -6,9 +6,12 @@ import {
   Flex,
   Heading,
   Stack,
-  Text
+  Text,
 } from "@chakra-ui/react";
 import React from "react";
+
+import firebase from "../database";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
 
 import Container from "../components/Container";
 import Menus from "../components/Nav/MenuOpcoes";
@@ -19,19 +22,25 @@ import { FaSearch } from "react-icons/fa";
 
 import useSchool from "../hooks/useSchool";
 import separeteSchoolsByRank from "../services/separeteSchoolsByRank";
+import ICardEscla, { IEscolaProfile } from "../types/IEscola";
+import School from "../models/school";
 
-export default function Home() {
-  const [goodSchols, setGoodSchools] = React.useState([]);
-  const [badSchools, setBadSchools] = React.useState([]);
+import { useRouter } from "next/router";
 
-  const { schools } = useSchool();
+export default function Home({ schools, god, bad }) {
+  const [goodSchols, setGoodSchools] = React.useState([...god]);
+  const [badSchools, setBadSchools] = React.useState([...bad]);
 
-  React.useEffect(() => {
-    const byRank = separeteSchoolsByRank(schools, 4, 4);
+  const { push } = useRouter();
 
-    setGoodSchools(byRank.desc);
-    setBadSchools(byRank.asc);
-  }, [schools]);
+  // const { schools } = useSchool();
+
+  // React.useEffect(() => {
+  //   const byRank = separeteSchoolsByRank(schools, 4, 4);
+
+  //   setGoodSchools(byRank.desc);
+  //   setBadSchools(byRank.asc);
+  // }, [schools]);
 
   const BannerFilter = () => {
     const listOfStates = React.useMemo(() => ["Rondônia", "Mato Grosso"], []);
@@ -114,6 +123,18 @@ export default function Home() {
     />
   );
 
+  const goToFeedback = React.useCallback(() => {
+    window.open("https://forms.gle/caPPkkTW5ZrpiLZP6", "_blank");
+
+  }, []);
+  const goToRegisterNewInstituicao = React.useCallback(() => {
+    window.open("https://forms.gle/ZgRfzsB6GDsgohVVA", "_blank");
+  }, []);
+
+  const goToEmail = React.useCallback(() => {
+    window.open("mailto:conexao.escolar.pvh@gmail.com", "_blank");
+  }, []);
+
   return (
     <Container activeMenu={Menus.Home} extraContainer={<BannerFilter />}>
       <Box mt="100px">
@@ -145,6 +166,7 @@ export default function Home() {
               borderColor="_orange.100"
               textColor="gray.700"
               fontWeight="normal"
+              onClick={() => push("/ranking")}
             >
               Ver ranking completo
             </Button>
@@ -157,10 +179,45 @@ export default function Home() {
       <Divider mt={4} />
 
       <Flex mt={8} justifyContent="space-between">
-        <Button colorScheme="green">Deixe sua opinião</Button>
-        <Button colorScheme="_orange">Cadastre uma escola</Button>
-        <Button colorScheme="blue">Entre em contato</Button>
+        <Button colorScheme="green" onClick={goToFeedback}>
+          Deixe sua opinião
+        </Button>
+        <Button colorScheme="_orange" onClick={goToRegisterNewInstituicao}>
+          Cadastre uma escola
+        </Button>
+        <Button colorScheme="blue" onClick={goToEmail}>
+          Entre em contato
+        </Button>
       </Flex>
     </Container>
   );
+}
+
+export async function getStaticProps() {
+  const db = getFirestore(firebase);
+
+  const schoolsCollections = collection(db, "schools");
+  const allSchools = await getDocs(schoolsCollections)
+    .then((el) => {
+      const result = el.docs.map((ab) => {
+        const school = new School(ab);
+        return school.get();
+      });
+
+      return result;
+    })
+    .catch((err) => {
+      console.error("Erro ao buscar no database ", err.message || err);
+      return [] as IEscolaProfile[];
+    });
+
+  const { asc, desc } = separeteSchoolsByRank(allSchools, 4, 4);
+
+  return {
+    props: {
+      schools: allSchools,
+      god: desc,
+      bad: asc,
+    },
+  };
 }

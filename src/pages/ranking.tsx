@@ -27,6 +27,11 @@ import separeteSchoolsByTag from "../services/separeteSchoolsByTag";
 import ALL_TAGS from "../types/ITags";
 import CardEscola from "../components/CardEscola";
 
+import { collection, getDocs, getFirestore } from "firebase/firestore";
+import firebase from "../database";
+import { IEscolaProfile } from "../types/IEscola";
+import School from "../models/school";
+
 type IListSchool = {
   [Property in ALL_TAGS]?: ISchoolOrdenedByRank;
 };
@@ -62,7 +67,9 @@ const Ranking: React.FC = ({ AUTISMO, FISICO, TDH, VISUAL }: IListSchool) => {
   const includeThisTag = React.useCallback(
     (type: ALL_TAGS) => {
       const haveLength =
-        !!thisSchool[type].asc.length && !!thisSchool[type].desc.length;
+        !!thisSchool[type] &&
+        !!thisSchool[type].asc.length &&
+        !!thisSchool[type].desc.length;
       const haveCatFilter = !!categoriaFilter.length;
 
       if (!haveCatFilter) return haveLength;
@@ -213,7 +220,7 @@ const Ranking: React.FC = ({ AUTISMO, FISICO, TDH, VISUAL }: IListSchool) => {
   return (
     <Container
       activeMenu={Menus.Ranking}
-      extraContainer={<ContainerFilter />}
+      // extraContainer={<ContainerFilter />}
       containerSize="container.lg"
     >
       <Box mt={10}>
@@ -269,14 +276,61 @@ const Ranking: React.FC = ({ AUTISMO, FISICO, TDH, VISUAL }: IListSchool) => {
   );
 };
 
+// export async function getStaticProps() {
+//   const db = getFirestore(firebase);
+
+//   const schoolsCollections = collection(db, "schools");
+//   const allSchools = await getDocs(schoolsCollections)
+//     .then((el) => {
+//       const result = el.docs.map((ab) => {
+//         const school = new School(ab);
+//         return school.get();
+//       });
+
+//       return result;
+//     })
+//     .catch((err) => {
+//       console.error("Erro ao buscar no database ", err.message || err);
+//       return [] as IEscolaProfile[];
+//     });
+
+//   const { asc, desc } = separeteSchoolsByRank(allSchools, 4, 4);
+
+//   return {
+//     props: {
+//       schools: allSchools,
+//       god: desc,
+//       bad: asc,
+//     },
+//   };
+// }
+
 export async function getStaticProps() {
-  const allSchools = await getAllSchols();
+  const db = getFirestore(firebase);
+
+  const schoolsCollections = collection(db, "schools");
+  const allSchools = await getDocs(schoolsCollections)
+    .then((el) => {
+      const result = el.docs.map((ab) => {
+        const school = new School(ab);
+        return school.get();
+      });
+
+      return result;
+    })
+    .catch((err) => {
+      console.error("Erro ao buscar no database ", err.message || err);
+      return [] as IEscolaProfile[];
+    });
+
+  // const allSchools = await getAllSchols();
   const byTag = separeteSchoolsByTag(allSchools);
   const byRank: IListSchool = {
     AUTISMO: separeteSchoolsByRank(byTag.AUTISMO, 3, 10),
     FISICO: separeteSchoolsByRank(byTag.FISICO, 3, 10),
     TDH: separeteSchoolsByRank(byTag.TDH, 3, 10),
     VISUAL: separeteSchoolsByRank(byTag.VISUAL, 3, 10),
+    AUDITIVO: separeteSchoolsByRank(byTag.AUDITIVO, 3, 10),
   };
 
   return {

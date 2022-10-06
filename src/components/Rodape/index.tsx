@@ -1,21 +1,17 @@
 import React from "react";
 import {
-    Box,
-    Flex,
-    Text,
-    Icon,
-    Link as ChakraLink,
-    Heading,
-    Center,
-  } from "@chakra-ui/react";
-  import NextImg from "next/image";
-  import {
-    FaFacebook,
-    FaInstagram,
-    FaWhatsapp,
-  } from "react-icons/fa";
-  import { MdEmail } from "react-icons/md";
-  
+  Box,
+  Flex,
+  Text,
+  Icon,
+  Link as ChakraLink,
+  Heading,
+  Center,
+} from "@chakra-ui/react";
+import NextImg from "next/image";
+import { FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
+import { MdEmail } from "react-icons/md";
+import NextLink from "next/link";
 
 const Rodape: React.FC = () => {
   return (
@@ -31,10 +27,10 @@ const Rodape: React.FC = () => {
               eiusmod tempor incididunt ut labore et dolore magna aliqua
             </Text>
           </Box>
-          <Flex gap={3} mt={4}>
+          {/* <Flex gap={3} mt={4}>
             <Icon as={FaFacebook} color="white" cursor="pointer" boxSize={5} />
             <Icon as={FaInstagram} color="white" cursor="pointer" boxSize={5} />
-          </Flex>
+          </Flex> */}
         </Flex>
         <Flex flexDirection="column" gap={5}>
           <Box>
@@ -43,10 +39,20 @@ const Rodape: React.FC = () => {
             </Heading>
 
             <Flex flexDir="column" gap="10px" textColor="gray.100" mt={4}>
-              <ChakraLink>Compare as escolas</ChakraLink>
-              <ChakraLink>Ranking</ChakraLink>
-              <ChakraLink>Recomende uma escola</ChakraLink>
-              <ChakraLink>Fazer avaliação</ChakraLink>
+              {/* <ChakraLink>Compare as escolas</ChakraLink> */}
+              <NextLink href="/ranking">Ranking</NextLink>
+              <NextLink
+                href="https://forms.gle/ZgRfzsB6GDsgohVVA"
+                target="_blank"
+              >
+                Recomende uma escola
+              </NextLink>
+              <NextLink
+                href="https://forms.gle/caPPkkTW5ZrpiLZP6"
+                target="_blank"
+              >
+                Fazer avaliação
+              </NextLink>
             </Flex>
           </Box>
         </Flex>
@@ -69,12 +75,23 @@ const Rodape: React.FC = () => {
 
             <Flex flexDir="column" gap="10px" textColor="gray.100" mt={4}>
               <Flex textAlign="center" alignItems="center">
+                {/*  */}
                 <Icon as={FaWhatsapp} boxSize={5} mr={2} />
-                <ChakraLink>(69) 9 9999-9999</ChakraLink>
+                <NextLink
+                  target="_blank"
+                  href="https://api.whatsapp.com/send?phone=556993014603&text=Ol%C3%A1%2C%20vim%20do%20site%20-%20Conex%C3%A3o%20escolar"
+                >
+                  Whatsapp
+                </NextLink>
               </Flex>
               <Flex textAlign="center" alignItems="center">
                 <Icon as={MdEmail} boxSize={5} mr={2} />
-                <ChakraLink>conexaoescolar@email.com</ChakraLink>
+                <NextLink
+                  href="mailto:conexao.escolar.pvh@gmail.com"
+                  target="_blank"
+                >
+                  conexao.escolar.pvh@gmail.com
+                </NextLink>
               </Flex>
             </Flex>
           </Box>
@@ -90,4 +107,4 @@ const Rodape: React.FC = () => {
   );
 };
 
-export default Rodape;
+export default React.memo(Rodape);

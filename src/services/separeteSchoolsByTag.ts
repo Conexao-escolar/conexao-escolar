@@ -10,6 +10,12 @@ function separeteSchoolsByTag(orders: ICardEscla[]): SchoolsByTag {
     (prev, curr) => {
       const thisTags = curr.tags;
       const tagsNotIncluded = thisTags.filter((tag) => {
+
+        if(!prev[tag]) {
+          console.log("i")
+          console.log(tag)
+          console.log(prev[tag])
+        }
         const alredyIncluded = prev[tag].find(
           (school) => school.id === curr.id
         );
@@ -24,6 +30,7 @@ function separeteSchoolsByTag(orders: ICardEscla[]): SchoolsByTag {
       VISUAL: [],
       FISICO: [],
       TDH: [],
+      AUDITIVO: []
     }
   );
 

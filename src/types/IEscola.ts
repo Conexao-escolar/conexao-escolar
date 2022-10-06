@@ -13,7 +13,7 @@ export type IComents = IPrimaryComents & {
   replyed: Array<Omit<IPrimaryComents, "tags">>;
 };
 
-type IProfessor = {
+export type IProfessor = {
   nome: string;
   cargo: string;
 };
@@ -39,8 +39,6 @@ export type IEscolaProfile = ICardEscla & {
   sobre?: string;
   conteudo?: Array<string>;
   localizacao?: {
-    lat?: string;
-    lon?: string;
     g_link: string
   };
   membros: Array<IProfessor>;
