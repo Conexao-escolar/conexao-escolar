@@ -28,6 +28,7 @@ import TabReputacao from "../../components/SchoolDetails/Tabs/Reputacao";
 import Conteudo from "../../components/SchoolDetails/Tabs/Conteudo";
 import Comentarios, {
   ICommentCallBackProps,
+  IReplyedCommentCallBackProps,
 } from "../../components/SchoolDetails/Tabs/Comentarios/index";
 import Localizacao from "../../components/SchoolDetails/Tabs/Localizacao";
 
@@ -197,6 +198,34 @@ const SchoolDetail: React.FC = () => {
     []
   );
 
+  const _onComentReplyedEnter = React.useCallback(
+    (e: IReplyedCommentCallBackProps) => {
+      const { coment_id, comment } = e;
+
+      const { comentarios } = schoolDetail;
+
+      const thisComent = comentarios.map((coment) => {
+        if (coment._id === coment_id) {
+          coment.replyed.push({
+            _id: "New",
+            author_id: "aa",
+            created_date: new Date(),
+            message: comment,
+            rate: 0.0,
+          });
+        }
+
+        return coment;
+      });
+
+      setScholDetail((old) => ({
+        ...old,
+        comentarios: thisComent,
+      }));
+    },
+    [schoolDetail]
+  );
+
   return (
     <>
       <EvaluationMode isOpen={isOpen} onClose={_onClose} />
@@ -237,6 +266,7 @@ const SchoolDetail: React.FC = () => {
                 <TabPanel>
                   <Comentarios
                     onComentEnter={_onComentEnter}
+                    onComentReplyedEnter={_onComentReplyedEnter}
                     comentarios={schoolDetail.comentarios}
                   />
                 </TabPanel>
