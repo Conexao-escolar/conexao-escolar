@@ -1,6 +1,6 @@
 import ALL_TAGS from "./ITags";
 
-type IPrimaryComents = {
+export type IPrimaryComents = {
   _id: string;
   author_id: string;
   message: string;
@@ -9,7 +9,7 @@ type IPrimaryComents = {
   tags: Array<ALL_TAGS>;
 };
 
-type IComents = IPrimaryComents & {
+export type IComents = IPrimaryComents & {
   replyed: Array<Omit<IPrimaryComents, "tags">>;
 };
 

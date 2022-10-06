@@ -21,14 +21,42 @@ import { MdSend } from "react-icons/md";
 import { FiAlertCircle } from "react-icons/fi";
 import { BiLike, BiDislike } from "react-icons/bi";
 
-import { SelectInput } from "../../Input";
-import ALL_TAGS from "../../../types/ITags";
-import { IEscolaProfile } from "../../../types/IEscola";
-import Modal from "../../Modal";
+import { SelectInput } from "../../../Input";
+import ALL_TAGS from "../../../../types/ITags";
+import { IEscolaProfile } from "../../../../types/IEscola";
+import Modal from "../../../Modal";
 
-type IProp = Pick<IEscolaProfile, "comentarios">;
+import ComentLine from "./Coment";
 
-const Comentarios: React.FC<IProp> = ({ comentarios = [] }) => {
+export type ICommentCallBackProps = {
+  comment: string;
+  tags: ALL_TAGS[];
+};
+
+export type IReplyedCommentCallBackProps = {
+  comment: string;
+  coment_id: string;
+};
+
+export type IComentProps = {
+  data: string;
+  message: string;
+  _id: string;
+  tags: Array<ALL_TAGS>;
+};
+
+export type IComentFunctionsProps = {
+  onComentEnter(props: ICommentCallBackProps): void;
+  onComentReplyedEnter(props: IReplyedCommentCallBackProps): void;
+};
+
+type IProp = Pick<IEscolaProfile, "comentarios"> & IComentFunctionsProps;
+
+const Comentarios: React.FC<IProp> = ({
+  comentarios = [],
+  onComentEnter,
+  onComentReplyedEnter,
+}) => {
   const [selectedTagsToComent, setSelectedTagsToComent] = React.useState<
     Array<ALL_TAGS>
   >([]);
@@ -37,6 +65,7 @@ const Comentarios: React.FC<IProp> = ({ comentarios = [] }) => {
   const [ofensiveComent, setOfensiveComent] = React.useState(false);
   const [tendicioseComent, setTendencioseComent] = React.useState(false);
   const [racismComent, setRacismComent] = React.useState(false);
+  const [comment, setComment] = React.useState("");
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -44,6 +73,15 @@ const Comentarios: React.FC<IProp> = ({ comentarios = [] }) => {
     onOpen: onOpenConfirmDenuncia,
     onClose: onCloseConfirmDenuncia,
   } = useDisclosure();
+
+  const reset = React.useCallback(() => {
+    setSelectedTagsToComent([]);
+    setMappedFunction(null);
+    setOfensiveComent(false);
+    setTendencioseComent(false);
+    setRacismComent(false);
+    setComment("");
+  }, []);
 
   const onSelectTagsToComent = React.useCallback(
     (e: ALL_TAGS) =>
@@ -68,34 +106,69 @@ const Comentarios: React.FC<IProp> = ({ comentarios = [] }) => {
   const allTags = React.useMemo(() => Object.keys(ALL_TAGS), []);
 
   const reportComent = React.useCallback((comentId: string) => {
-    console.log(`Close 1 ${comentId}`);
+    console.log(`report comment ${comentId}`);
   }, []);
 
   const reportReplyedComment = React.useCallback(
     (comentId: string, replyedId: string) => {
-      console.log(`close 2 ${comentId} ${replyedId}`);
+      console.log(`report replyed ${comentId} ${replyedId}`);
     },
     []
   );
 
   const _closeModal = React.useCallback(
     (e: boolean) => {
+      onClose();
+
       if (mappedFunction && e) {
         mappedFunction();
+        onOpenConfirmDenuncia();
       }
-      onClose();
-      onOpenConfirmDenuncia();
     },
     [mappedFunction, onClose, onOpenConfirmDenuncia]
   );
 
-  const _onOpen = React.useCallback(
-    (fn: Function) => {
-      setMappedFunction(() => fn);
+  const _onComentEnter = React.useCallback(() => {
+    const body: ICommentCallBackProps = {
+      comment,
+      tags: selectedTagsToComent,
+    };
+
+    onComentEnter(body);
+    reset();
+  }, [comment, onComentEnter, selectedTagsToComent, reset]);
+
+  const _onComentReplyedEnter = React.useCallback(
+    ({ coment_id, comment }: IReplyedCommentCallBackProps) => {
+      const body: IReplyedCommentCallBackProps = {
+        comment,
+        coment_id,
+      };
+
+      onComentReplyedEnter(body);
+      reset();
+    },
+    [onComentReplyedEnter, reset]
+  );
+
+  const _reportComment = React.useCallback(
+    (comentId: string, replyedId: string) => {
+      if (replyedId) {
+        setMappedFunction(
+          () => () => reportReplyedComment(comentId, replyedId)
+        );
+      } else {
+        setMappedFunction(() => () => reportComent(comentId));
+      }
+
       onOpen();
     },
-    [onOpen]
+    [onOpen, reportComent, reportReplyedComment]
   );
+
+  React.useEffect(() => {
+    return () => reset();
+  }, [reset]);
 
   return (
     <>
@@ -148,6 +221,8 @@ const Comentarios: React.FC<IProp> = ({ comentarios = [] }) => {
         <Container w="full">
           <Flex w="full" px={8} flexDir="column">
             <Textarea
+              value={comment}
+              onChange={({ target: { value } }) => setComment(value)}
               placeholder="Escreva aqui seu comentário anônimo"
               size="lg"
             />
@@ -175,13 +250,35 @@ const Comentarios: React.FC<IProp> = ({ comentarios = [] }) => {
                 ))}
               </Flex>
             </Flex>
-            <Button mt={4} colorScheme="green" rightIcon={<Icon as={MdSend} />}>
+            <Button
+              mt={4}
+              onClick={_onComentEnter}
+              colorScheme="green"
+              rightIcon={<Icon as={MdSend} />}
+            >
               Comentar
             </Button>
           </Flex>
           <VStack w="full" mt={4}>
             {comentarios.map((coment) => (
-              <Flex
+              <ComentLine
+                {...coment}
+                report={_reportComment}
+                key={`first-coments-${coment._id}`}
+                onComentReplyedEnter={_onComentReplyedEnter}
+              />
+            ))}
+          </VStack>
+        </Container>
+      </Flex>
+    </>
+  );
+};
+
+export default Comentarios;
+
+/**
+ * <Flex
                 key={`first-coments-${coment._id}`}
                 w="full"
                 p={4}
@@ -245,6 +342,7 @@ const Comentarios: React.FC<IProp> = ({ comentarios = [] }) => {
                     mt={4}
                     colorScheme="green"
                     rightIcon={<Icon as={MdSend} />}
+                    onClick={_onComentReplyedEnter}
                   >
                     Responder comentário
                   </Button>
@@ -303,12 +401,4 @@ const Comentarios: React.FC<IProp> = ({ comentarios = [] }) => {
                   ))}
                 </Box>
               </Flex>
-            ))}
-          </VStack>
-        </Container>
-      </Flex>
-    </>
-  );
-};
-
-export default Comentarios;
+ */

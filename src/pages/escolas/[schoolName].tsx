@@ -4,14 +4,8 @@ import {
   Button,
   Divider,
   Flex,
-  Grid,
-  GridItem,
   Heading,
   Icon,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Select,
   Tab,
   TabList,
   TabPanel,
@@ -19,40 +13,34 @@ import {
   Tabs,
   Text,
   useDisclosure,
-  Checkbox,
-  CheckboxGroup,
-  VStack,
-  Slider,
-  SliderTrack,
-  SliderFilledTrack,
-  SliderThumb,
-  SliderMark,
-  Tooltip,
 } from "@chakra-ui/react";
 
 import Container from "../../components/Container";
 import Menus from "../../components/Nav/MenuOpcoes";
 import { useRouter } from "next/router";
 import getSchoolDetail from "../../services/getSchoolDetail";
-import IEscola, { IEscolaProfile } from "../../types/IEscola";
+import { IEscolaProfile } from "../../types/IEscola";
 
 import { MdPhotoCamera, MdStar } from "react-icons/md";
 import formatRank from "../../utils/formatRank";
-import SchoolTabs from "../../components/SchoolDetails/Tabs";
-import Modal from "../../components/Modal";
-import { BiPhoneIncoming } from "react-icons/bi";
-import ALL_TAGS from "../../types/ITags";
+
+import TabReputacao from "../../components/SchoolDetails/Tabs/Reputacao";
+import Conteudo from "../../components/SchoolDetails/Tabs/Conteudo";
+import Comentarios, {
+  ICommentCallBackProps,
+} from "../../components/SchoolDetails/Tabs/Comentarios/index";
+import Localizacao from "../../components/SchoolDetails/Tabs/Localizacao";
 
 import EvaluationMode, {
   IOncloseProps,
 } from "../../components/SchoolDetails/EvaluationMode";
 
+import { toast } from "react-toastify";
+
 const SchoolDetail: React.FC = () => {
   const [schoolDetail, setScholDetail] = React.useState<IEscolaProfile>(
     {} as IEscolaProfile
   );
-  const [sliderValue, setSliderValue] = React.useState(0);
-  const [showTooltip, setShowTooltip] = React.useState(false);
 
   const {
     query: { schoolName },
@@ -173,10 +161,41 @@ const SchoolDetail: React.FC = () => {
     );
   };
 
-  const _onClose = React.useCallback((e: IOncloseProps) => {
-    console.log(e);
-    onClose();
-  }, [onClose]);
+  const _onClose = React.useCallback(
+    (e: IOncloseProps) => {
+      console.log(e);
+      onClose();
+    },
+    [onClose]
+  );
+
+  const _onComentEnter = React.useCallback(
+    async ({ comment, tags }: ICommentCallBackProps) => {
+      setScholDetail((old) => ({
+        ...old,
+        comentarios: [
+          {
+            _id: "New",
+            author_id: "aaa",
+            created_date: new Date(),
+            message: comment,
+            rate: 0.0,
+            replyed: [],
+            tags,
+          },
+          ...old.comentarios,
+        ],
+      }));
+
+      toast.success(
+        "Comentário adicionado com sucesso!, nosso time irá avalia-lo",
+        {
+          theme: "colored",
+        }
+      );
+    },
+    []
+  );
 
   return (
     <>
@@ -200,7 +219,28 @@ const SchoolDetail: React.FC = () => {
               </TabList>
             </Flex>
             <Flex flex="1" w="full">
-              <SchoolTabs school={schoolDetail} />
+              <TabPanels w="full">
+                <TabPanel>
+                  <TabReputacao reputacao={schoolDetail.reputacao} />
+                </TabPanel>
+                <TabPanel>
+                  <Flex w="full" bg="red">
+                    asdf
+                  </Flex>
+                </TabPanel>
+                <TabPanel>
+                  <Conteudo />
+                </TabPanel>
+                <TabPanel>
+                  <Localizacao localizacao={schoolDetail.localizacao} />
+                </TabPanel>
+                <TabPanel>
+                  <Comentarios
+                    onComentEnter={_onComentEnter}
+                    comentarios={schoolDetail.comentarios}
+                  />
+                </TabPanel>
+              </TabPanels>
             </Flex>
           </Tabs>
         </Flex>
