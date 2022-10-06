@@ -38,7 +38,7 @@ const Reputacao: React.FC<IProps> = ({ reputacao = {} }) => {
                 <Icon as={MdStar} boxSize={5} color="#874A9F" />
                 <Text>{rank}</Text>
               </Flex>
-              <Text>Ver reputação detalhada</Text>
+              {/* <Text>Ver reputação detalhada</Text> */}
             </Flex>
           </>
         );
@@ -58,7 +58,7 @@ const Reputacao: React.FC<IProps> = ({ reputacao = {} }) => {
                 <Icon as={MdStar} boxSize={5} color="#FF6736" />
                 <Text>{rank}</Text>
               </Flex>
-              <Text>Ver reputação detalhada</Text>
+              {/* <Text>Ver reputação detalhada</Text> */}
             </Flex>
           </>
         );
@@ -78,7 +78,7 @@ const Reputacao: React.FC<IProps> = ({ reputacao = {} }) => {
               <Icon as={MdStar} boxSize={5} color="#00CF9A" />
               <Text>{rank}</Text>
             </Flex>
-            <Text>Ver reputação detalhada</Text>
+            {/* <Text>Ver reputação detalhada</Text> */}
           </Flex>
         </>
       );

@@ -39,7 +39,14 @@ import EvaluationMode, {
 import { toast } from "react-toastify";
 
 import firebase from "../../database";
-import { getFirestore, getDoc, doc, updateDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  getDoc,
+  doc,
+  updateDoc,
+  addDoc,
+  collection,
+} from "firebase/firestore";
 import School from "../../models/school";
 
 import { faker } from "@faker-js/faker";
@@ -119,6 +126,31 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
     );
   }, [schoolDetail]);
 
+  const _onClose = React.useCallback(
+    async (e: IOncloseProps) => {
+      if (
+        (e.modal.length && e.rankResult.infraAcessibilityResult) ||
+        e.rankResult.infraRestroomResult ||
+        e.rankResult.pedagogiAcessibilityResult ||
+        e.rankResult.pedagogiPreparationResult
+      ) {
+        const db = getFirestore(firebase);
+        const ref = collection(db, "evaluation");
+
+        await addDoc(ref, {
+          school: schoolDetail.id,
+          form: e
+        });
+        toast.success("Avaliação enviada com sucesso. Obrigado!", {
+          theme: "colored",
+        });
+      }
+
+      onClose();
+    },
+    [onClose, schoolDetail.id]
+  );
+
   const BannerSchool = () => {
     return (
       <Box w="full" h="350px">
@@ -177,14 +209,6 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
       </Box>
     );
   };
-
-  const _onClose = React.useCallback(
-    (e: IOncloseProps) => {
-      console.log(e);
-      onClose();
-    },
-    [onClose]
-  );
 
   const _onComentEnter = React.useCallback(
     async ({ comment, tags }: ICommentCallBackProps) => {
