@@ -19,7 +19,8 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",
-    "react-slick": "^0.29.0"
+    "react-slick": "^0.29.0",
+    "react-toastify": "^9.0.8"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.2.0",
