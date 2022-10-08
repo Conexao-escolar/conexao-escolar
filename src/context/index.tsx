@@ -4,12 +4,15 @@ import { ChakraProvider } from "@chakra-ui/react";
 import theme from "../../chakra-config";
 import { SchoolProvider } from "./SchoolContext";
 import { ToastContainer } from "react-toastify";
+import { AuthProvider } from "./Auth";
 
 const AppContext: IReactComponentType = ({ children }) => {
   return (
     <ChakraProvider theme={theme}>
       <ToastContainer position="top-right" pauseOnHover draggable newestOnTop />
-      <SchoolProvider>{children}</SchoolProvider>
+      <AuthProvider>
+        <SchoolProvider>{children}</SchoolProvider>
+      </AuthProvider>
     </ChakraProvider>
   );
 };

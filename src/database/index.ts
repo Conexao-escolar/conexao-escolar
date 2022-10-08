@@ -2,7 +2,6 @@ import {
     getApps,
     initializeApp
 } from "firebase/app";
-import "firebase/auth";
 
 function _initializeApp() {
   if (!getApps().length) {
