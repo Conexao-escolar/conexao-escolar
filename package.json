@@ -13,6 +13,7 @@
     "@chakra-ui/react": "^2.3.4",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@faker-js/faker": "^7.2.0",
     "firebase": "^9.10.0",
     "framer-motion": "^7.3.6",
     "lodash": "^4.17.21",
@@ -21,8 +22,7 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",
     "react-slick": "^0.29.0",
-    "react-toastify": "^9.0.8",
-    "@faker-js/faker": "^7.2.0"
+    "react-toastify": "^9.0.8"
   },
   "devDependencies": {
     "@types/node": "^18.7.18",

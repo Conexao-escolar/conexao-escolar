@@ -1,4 +1,3 @@
-/* eslint-disable react/no-children-prop */
 import React from "react";
 import {
   Box,
@@ -10,17 +9,16 @@ import {
   Collapse,
   Icon,
   Link,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
   useColorModeValue,
-  useBreakpointValue,
   useDisclosure,
-  Input,
-  InputGroup,
-  InputRightElement,
-  useColorMode,
+  Center,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
 } from "@chakra-ui/react";
+
 import {
   HamburgerIcon,
   CloseIcon,
@@ -31,106 +29,169 @@ import {
 import MenuItems from "./MenuItems";
 import MainInput from "../Input";
 
-import { FaUserCircle, FaSearch } from "react-icons/fa";
+import {
+  FaUserCircle,
+  FaSearch,
+  FaGoogle,
+  FaChevronDown,
+  FaUser,
+  FaBackspace,
+} from "react-icons/fa";
 
 import Image from "next/image";
 import NextLink from "next/link";
 import Menus from "./MenuOpcoes";
 import { useRouter } from "next/router";
 
+import ModalApp from "../Modal";
+
+import useAuth from "../../hooks/useAuth";
+
 export default function WithSubnavigation({ MenuAtivo }: { MenuAtivo: Menus }) {
   const { isOpen, onToggle } = useDisclosure();
   const { prefetch } = useRouter();
+
+  const { isOpen: modalIsOpen, onOpen, onClose } = useDisclosure();
+  const { logIn, user, logOut } = useAuth();
+
+  const googleLogin = React.useCallback(() => {
+    logIn().then(() => onClose());
+  }, [logIn, onClose]);
 
   React.useEffect(() => {
     Object.keys(Menus).map((el) => prefetch(`/${el}`));
   }, [prefetch]);
 
   return (
-    <Box boxShadow="md" w="full">
-      <Flex
-        color={useColorModeValue("gray.600", "white")}
-        minH={"60px"}
-        py={{ base: 2 }}
-        px={{ base: 4 }}
-        borderBottom={1}
-        borderStyle={"solid"}
-        borderColor={useColorModeValue("gray.200", "gray.900")}
-        align={"center"}
-        justifyContent="space-between"
-      >
+    <>
+      <Box boxShadow="md" w="full">
         <Flex
-          flex={{ base: 1 }}
-          justify={{ base: "center", md: "space-around" }}
-          alignItems="center"
+          color={useColorModeValue("gray.600", "white")}
+          minH={"60px"}
+          py={{ base: 2 }}
+          px={{ base: 4 }}
+          borderBottom={1}
+          borderStyle={"solid"}
+          borderColor={useColorModeValue("gray.200", "gray.900")}
+          align={"center"}
+          justifyContent="space-between"
         >
           <Flex
-            flex={{ base: 1, md: "auto" }}
-            ml={{ base: -2 }}
-            display={{ base: "flex", md: "none" }}
+            flex={{ base: 1 }}
+            justify={{ base: "center", md: "space-around" }}
+            alignItems="center"
           >
-            <IconButton
-              onClick={onToggle}
-              icon={
-                isOpen ? (
-                  <CloseIcon w={3} h={3} />
-                ) : (
-                  <HamburgerIcon w={5} h={5} />
-                )
-              }
-              variant={"ghost"}
-              aria-label={"Toggle Navigation"}
-            />
-          </Flex>
-          <NextLink href="/">
-            <Image
-              src="/logo.png"
-              width="119px"
-              height="71px"
-              alt="conexãoe escolar logo"
-              style={{
-                cursor: "pointer",
-              }}
-            />
-          </NextLink>
+            <Flex
+              flex={{ base: 1, md: "auto" }}
+              ml={{ base: -2 }}
+              display={{ base: "flex", md: "none" }}
+            >
+              <IconButton
+                onClick={onToggle}
+                icon={
+                  isOpen ? (
+                    <CloseIcon w={3} h={3} />
+                  ) : (
+                    <HamburgerIcon w={5} h={5} />
+                  )
+                }
+                variant={"ghost"}
+                aria-label={"Toggle Navigation"}
+              />
+            </Flex>
+            <NextLink href="/">
+              <Image
+                src="/logo.png"
+                width="119px"
+                height="71px"
+                alt="conexãoe escolar logo"
+                style={{
+                  cursor: "pointer",
+                }}
+              />
+            </NextLink>
 
-          <Flex display={{ base: "none", md: "flex" }} ml={10}>
-            <DesktopNav />
+            <Flex display={{ base: "none", md: "flex" }} ml={10}>
+              <DesktopNav />
+            </Flex>
+            {!user ? (
+              <Stack
+                flex={{ base: 1, md: 0 }}
+                justify={"flex-end"}
+                direction={"row"}
+                spacing={6}
+              >
+                <Button
+                  display={{ base: "none", md: "inline-flex" }}
+                  fontSize={"sm"}
+                  fontWeight={600}
+                  color={"white"}
+                  colorScheme="_orange"
+                  onClick={onOpen}
+                >
+                  Cadastrar-se
+                </Button>
+                <Button
+                  fontSize={"sm"}
+                  fontWeight={400}
+                  variant={"link"}
+                  leftIcon={<Icon as={FaUserCircle} />}
+                  onClick={onOpen}
+                >
+                  Fazer o login
+                </Button>
+              </Stack>
+            ) : (
+              <Box>
+                <Menu>
+                  <MenuButton
+                    as={Button}
+                    rightIcon={<Icon as={FaChevronDown} />}
+                  >
+                    {user.nome}
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem icon={<Icon as={FaUser} />}>Meu perfil</MenuItem>
+                    <MenuDivider />
+                    <MenuItem icon={<Icon as={FaBackspace} />} onClick={logOut}>
+                      Sair
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
+              </Box>
+            )}
           </Flex>
-          <Stack
-            flex={{ base: 1, md: 0 }}
-            justify={"flex-end"}
-            direction={"row"}
-            spacing={6}
-          >
-            <Button
-              display={{ base: "none", md: "inline-flex" }}
-              fontSize={"sm"}
-              fontWeight={600}
-              color={"white"}
-              colorScheme="_orange"
-            >
-              Cadastrar-se
-            </Button>
-            <Button
-              as={"a"}
-              fontSize={"sm"}
-              fontWeight={400}
-              variant={"link"}
-              href={"#"}
-              leftIcon={<Icon as={FaUserCircle} />}
-            >
-              Fazer o login
-            </Button>
-          </Stack>
         </Flex>
-      </Flex>
 
-      <Collapse in={isOpen} animateOpacity>
-        <MobileNav />
-      </Collapse>
-      <MenuItems activeMenu={MenuAtivo} />
-    </Box>
+        <Collapse in={isOpen} animateOpacity>
+          <MobileNav />
+        </Collapse>
+        <MenuItems activeMenu={MenuAtivo} />
+      </Box>
+      <ModalApp
+        body={
+          <Box w="full">
+            <Center mt={4}>
+              <Button
+                variant="outline"
+                borderRadius="20px"
+                leftIcon={<Icon as={FaGoogle} color="blue" />}
+                onClick={googleLogin}
+              >
+                Google
+              </Button>
+            </Center>
+          </Box>
+        }
+        isOpen={modalIsOpen}
+        label="Faça login com sua conta do Google"
+        modalProps={{
+          size: "xl",
+        }}
+        onClose={onClose}
+        title="Login"
+      />
+    </>
   );
 }
 
