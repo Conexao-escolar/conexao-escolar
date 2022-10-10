@@ -89,6 +89,7 @@ const ReplyedComents: React.FC<IReplyedComents> = ({
               leftIcon={<Icon as={BiLike} />}
               variant="ghost"
               colorScheme="blue"
+              size="sm"
               onClick={() =>
                 addLike({
                   commnetId: _id,
@@ -105,6 +106,7 @@ const ReplyedComents: React.FC<IReplyedComents> = ({
               leftIcon={<Icon as={BiDislike} />}
               variant="ghost"
               colorScheme="red"
+              size="sm"
               onClick={() =>
                 addDislike({
                   commnetId: _id,
