@@ -6,11 +6,8 @@ import {
   Flex,
   Textarea,
   VStack,
-  IconButton,
   Icon,
-  Text,
   Tag,
-  Divider,
   useDisclosure,
   CheckboxGroup,
   Checkbox,
@@ -18,8 +15,8 @@ import {
 } from "@chakra-ui/react";
 
 import { MdSend } from "react-icons/md";
-import { FiAlertCircle } from "react-icons/fi";
-import { BiLike, BiDislike } from "react-icons/bi";
+
+import useAuth from "../../../../hooks/useAuth";
 
 import { SelectInput } from "../../../Input";
 import ALL_TAGS from "../../../../types/ITags";
@@ -45,9 +42,13 @@ export type IComentProps = {
   tags: Array<ALL_TAGS>;
 };
 
+export type IPropLikeAndDislike = { commnetId: string; replyedId?: string, newQtd: number };
+
 export type IComentFunctionsProps = {
   onComentEnter(props: ICommentCallBackProps): void;
   onComentReplyedEnter(props: IReplyedCommentCallBackProps): void;
+  addLike(props: IPropLikeAndDislike): void;
+  addDislike(props: IPropLikeAndDislike): void;
 };
 
 type IProp = Pick<IEscolaProfile, "comentarios"> & IComentFunctionsProps;
@@ -56,6 +57,8 @@ const Comentarios: React.FC<IProp> = ({
   comentarios = [],
   onComentEnter,
   onComentReplyedEnter,
+  addDislike,
+  addLike,
 }) => {
   const [selectedTagsToComent, setSelectedTagsToComent] = React.useState<
     Array<ALL_TAGS>
@@ -67,7 +70,10 @@ const Comentarios: React.FC<IProp> = ({
   const [racismComent, setRacismComent] = React.useState(false);
   const [comment, setComment] = React.useState("");
 
+  const { user, logIn } = useAuth();
+
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   const {
     isOpen: confirmIsOpen,
     onOpen: onOpenConfirmDenuncia,
@@ -129,6 +135,10 @@ const Comentarios: React.FC<IProp> = ({
   );
 
   const _onComentEnter = React.useCallback(() => {
+    if (!user) {
+      alert("Faça login para poder comentar");
+      return logIn();
+    }
     const body: ICommentCallBackProps = {
       comment,
       tags: selectedTagsToComent,
@@ -136,7 +146,7 @@ const Comentarios: React.FC<IProp> = ({
 
     onComentEnter(body);
     reset();
-  }, [comment, onComentEnter, selectedTagsToComent, reset]);
+  }, [user, comment, selectedTagsToComent, onComentEnter, reset, logIn]);
 
   const _onComentReplyedEnter = React.useCallback(
     ({ coment_id, comment }: IReplyedCommentCallBackProps) => {
@@ -266,6 +276,8 @@ const Comentarios: React.FC<IProp> = ({
                 report={_reportComment}
                 key={`first-coments-${coment._id}`}
                 onComentReplyedEnter={_onComentReplyedEnter}
+                addDislike={addDislike}
+                addLike={addLike}
               />
             ))}
           </VStack>
