@@ -4,9 +4,13 @@ export type IPrimaryComents = {
   _id: string;
   author_id: string;
   message: string;
-  rate: number;
   created_date: Date | string;
   tags: Array<ALL_TAGS>;
+  like: number;
+  dislike: number;
+  aproved: boolean;
+  user_like: Array<string>,
+  user_dislike: Array<string>
 };
 
 export type IComents = IPrimaryComents & {

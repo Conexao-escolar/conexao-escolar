@@ -40,11 +40,17 @@ const coments = () => {
       _id: faker.datatype.uuid(),
       author_id: faker.datatype.uuid(),
       message: faker.lorem.lines(2),
-      rate: faker.datatype.number({
-        max: 5,
+      aproved: true,
+      like: faker.datatype.number({
+        max: 10,
         min: 0,
-        precision: 0.1,
       }),
+      dislike: faker.datatype.number({
+        max: 10,
+        min: 0
+      }),
+      user_like: [],
+      user_dislike: [],
       created_date: faker.date.past(10, new Date()),
       tags: [ALL_TAGS.AUTISMO, ALL_TAGS.FISICO],
     };

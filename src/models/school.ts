@@ -39,12 +39,16 @@ class School implements IEscolaProfile {
       const newReplyed = coment.replyed.map((rep) => ({
         ...rep,
         created_date: rep.created_date.toDate().toString(),
+        like: rep.like || 0,
+        dislike: rep.dislike || 0
       }));
 
       return {
         ...coment,
         created_date: coment.created_date.toDate().toString(),
         replyed: newReplyed,
+        like: coment.like || 0,
+        dislike: coment.dislike || 0
       };
     });
 
