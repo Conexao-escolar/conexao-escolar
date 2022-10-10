@@ -19,7 +19,7 @@ import Container from "../../components/Container";
 import Menus from "../../components/Nav/MenuOpcoes";
 import { useRouter } from "next/router";
 import getSchoolDetail from "../../services/getSchoolDetail";
-import { IEscolaProfile } from "../../types/IEscola";
+import { IComents, IEscolaProfile } from "../../types/IEscola";
 
 import { MdPhotoCamera, MdStar } from "react-icons/md";
 import formatRank from "../../utils/formatRank";
@@ -29,6 +29,7 @@ import Conteudo from "../../components/SchoolDetails/Tabs/Conteudo";
 import Comentarios, {
   ICommentCallBackProps,
   IReplyedCommentCallBackProps,
+  IPropLikeAndDislike,
 } from "../../components/SchoolDetails/Tabs/Comentarios/index";
 import Localizacao from "../../components/SchoolDetails/Tabs/Localizacao";
 
@@ -51,6 +52,8 @@ import School from "../../models/school";
 
 import { faker } from "@faker-js/faker";
 
+import useAuth from "../../hooks/useAuth";
+
 type ISchoolDetail = {
   exists: boolean;
   detail: IEscolaProfile;
@@ -60,23 +63,21 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
   exists = true,
   detail = {},
 }) => {
-  const [schoolDetail, setScholDetail] = React.useState<IEscolaProfile>(() => {
-    const newComents = (detail as IEscolaProfile).comentarios.map((coment) => ({
-      ...coment,
-      replyed: coment.replyed.map((el) => ({
-        ...el,
-        created_date: new Date(el.created_date),
-      })),
-      created_date: new Date(coment.created_date),
-    }));
-
-    return {
-      ...detail,
-      comentarios: newComents,
-    } as IEscolaProfile;
-  });
+  const [schoolDetail, setScholDetail] = React.useState<IEscolaProfile>(
+    [] as unknown as IEscolaProfile
+  );
+  const [loading, setLoading] = React.useState(true);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { user, logIn } = useAuth();
+
+  const _onOpen = React.useCallback(() => {
+    if (!user) {
+      logIn();
+    } else {
+      onOpen();
+    }
+  }, [logIn, onOpen, user]);
 
   const Reputacao = React.useMemo(() => {
     const rank = formatRank(schoolDetail.rank);
@@ -139,7 +140,7 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
 
         await addDoc(ref, {
           school: schoolDetail.id,
-          form: e
+          form: e,
         });
         toast.success("Avaliação enviada com sucesso. Obrigado!", {
           theme: "colored",
@@ -149,6 +150,151 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
       onClose();
     },
     [onClose, schoolDetail.id]
+  );
+
+  const _onComentEnter = React.useCallback(
+    async ({ comment, tags }: ICommentCallBackProps) => {
+      if (!user) {
+        alert("Necessário estar logado para poder comentar");
+        return;
+      }
+
+      const { comentarios, id } = schoolDetail;
+      const db = getFirestore(firebase);
+
+      const docRef = doc(db, "schools", id);
+
+      const thisComent: IComents[] = [
+        {
+          _id: faker.datatype.uuid(),
+          author_id: user.id,
+          created_date: new Date(),
+          message: comment,
+          like: 0,
+          dislike: 0,
+          replyed: [],
+          tags,
+          aproved: false,
+          user_dislike: [],
+          user_like: []
+        },
+        ...comentarios,
+      ];
+      await updateDoc(docRef, {
+        comentarios: thisComent,
+      });
+
+      setScholDetail((old) => ({
+        ...old,
+        comentarios: thisComent,
+      }));
+
+      toast.success(
+        "Comentário adicionado com sucesso!, nosso time irá avalia-lo",
+        {
+          theme: "colored",
+        }
+      );
+    },
+    [schoolDetail, user]
+  );
+
+  const addLike = React.useCallback(
+    async ({ commnetId, newQtd, replyedId }: IPropLikeAndDislike) => {
+      try {
+        const { id, comentarios } = schoolDetail;
+        const db = getFirestore(firebase);
+
+        const thisComent = comentarios.map((comment) => {
+          if (comment._id === commnetId) {
+            if (!replyedId)
+              return {
+                ...comment,
+                like: newQtd,
+              };
+
+            const newReplyed = comment.replyed.map((thisComment) => {
+              if (thisComment._id === replyedId) {
+                return {
+                  ...thisComment,
+                  like: newQtd,
+                };
+              }
+            });
+
+            return {
+              ...comment,
+              replyed: newReplyed,
+            };
+          }
+          return comment;
+        });
+        setScholDetail((old) => ({
+          ...old,
+          comentarios: thisComent,
+        }));
+
+        const docRef = doc(db, "schools", id);
+
+        await updateDoc(docRef, {
+          comentarios: thisComent,
+        });
+      } catch (err) {
+        toast.error("Ocorreu um erro ao tentarmos publicar seu comentário!");
+        console.error(err);
+      }
+    },
+    [schoolDetail]
+  );
+
+  const addDislike = React.useCallback(
+    async ({ commnetId, replyedId, newQtd }: IPropLikeAndDislike) => {
+      try {
+        const { id, comentarios } = schoolDetail;
+        const db = getFirestore(firebase);
+
+        const thisComent = comentarios.map((comment) => {
+          if (comment._id === commnetId) {
+            if (!replyedId)
+              return {
+                ...comment,
+                disLike: newQtd,
+              };
+
+            const newReplyed = comment.replyed.map((thisComment) => {
+              if (thisComment._id === replyedId) {
+                return {
+                  ...thisComment,
+                  disLike: newQtd,
+                };
+              }
+            });
+
+            return {
+              ...comment,
+              replyed: newReplyed,
+            };
+          }
+
+          return comment;
+        });
+
+        setScholDetail((old) => ({
+          ...old,
+          comentarios: thisComent,
+        }));
+
+        const docRef = doc(db, "schools", id);
+
+        await updateDoc(docRef, {
+          comentarios: thisComent,
+        });
+      } catch (err) {
+        toast.error("Ocorreu um erro ao tentarmos publicar seu comentário!");
+        console.error(err);
+      }
+    },
+    [schoolDetail]
   );
 
   const BannerSchool = () => {
@@ -200,7 +346,7 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
               {Reputacao}
             </Flex>
             <Flex mt={3} alignItems="center" justifyContent="center">
-              <Button onClick={onOpen} colorScheme="teal">
+              <Button onClick={_onOpen} colorScheme="teal">
                 Deixe sua opinião
               </Button>
             </Flex>
@@ -210,46 +356,13 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
     );
   };
 
-  const _onComentEnter = React.useCallback(
-    async ({ comment, tags }: ICommentCallBackProps) => {
-      const { comentarios, id } = schoolDetail;
-      const db = getFirestore(firebase);
-
-      const docRef = doc(db, "schools", id);
-
-      const thisComent = [
-        {
-          _id: faker.datatype.uuid(),
-          author_id: "aaa",
-          created_date: new Date(),
-          message: comment,
-          rate: 0.0,
-          replyed: [],
-          tags,
-        },
-        ...comentarios,
-      ];
-      await updateDoc(docRef, {
-        comentarios: thisComent,
-      });
-
-      setScholDetail((old) => ({
-        ...old,
-        comentarios: thisComent,
-      }));
-
-      toast.success(
-        "Comentário adicionado com sucesso!, nosso time irá avalia-lo",
-        {
-          theme: "colored",
-        }
-      );
-    },
-    [schoolDetail]
-  );
-
   const _onComentReplyedEnter = React.useCallback(
     async (e: IReplyedCommentCallBackProps) => {
+      if (!user) {
+        alert("Necessário estar logado para poder comentar");
+        return;
+      }
+
       const { coment_id, comment } = e;
 
       const { comentarios } = schoolDetail;
@@ -262,10 +375,14 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
         if (coment._id === coment_id) {
           coment.replyed.push({
             _id: faker.datatype.uuid(),
-            author_id: "aa",
+            author_id: user.id,
             created_date: new Date(),
             message: comment,
-            rate: 0.0,
+            like: 0,
+            dislike: 0,
+            aproved: false,
+            user_dislike: [],
+            user_like: []
           });
         }
 
@@ -288,13 +405,52 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
         }
       );
     },
-    [schoolDetail]
+    [schoolDetail, user]
   );
+
+  React.useEffect(() => {
+    const { comentarios } = detail as IEscolaProfile;
+
+    const aproved = (_aproved: boolean, author_id: string) => {
+      if (!!user && author_id === user.id) return true;
+      return _aproved;
+    };
+
+    const commentFiltered = comentarios
+      .map((el) => {
+        const _aproveThisComment = aproved(el.aproved, el.author_id);
+        if (!_aproveThisComment) return null;
+        const replyed = el.replyed
+          .filter((rep) => aproved(rep.aproved, rep.author_id))
+          .map((ab) => ({
+            ...ab,
+            created_date: new Date(ab.created_date),
+          }));
+
+        return {
+          ...el,
+          replyed: replyed,
+          created_date: new Date(el.created_date),
+        };
+      })
+      .filter((el) => !!el);
+
+    setScholDetail({
+      ...(detail as IEscolaProfile),
+      comentarios: commentFiltered,
+    });
+
+    setLoading(false);
+  }, [detail, user]);
 
   return (
     <>
       <EvaluationMode isOpen={isOpen} onClose={_onClose} />
-      <Container activeMenu={Menus.Escolas} extraContainer={<BannerSchool />}>
+      <Container
+        activeMenu={Menus.Escolas}
+        extraContainer={<BannerSchool />}
+        loading={loading}
+      >
         <Divider mt={4} />
         <Flex mt={4} w="full">
           <Tabs w="full" colorScheme="orange">
@@ -333,6 +489,8 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
                     onComentEnter={_onComentEnter}
                     onComentReplyedEnter={_onComentReplyedEnter}
                     comentarios={schoolDetail.comentarios}
+                    addDislike={addDislike}
+                    addLike={addLike}
                   />
                 </TabPanel>
               </TabPanels>
