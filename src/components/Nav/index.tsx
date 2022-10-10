@@ -11,7 +11,6 @@ import {
   Link,
   useColorModeValue,
   useDisclosure,
-  Center,
   Menu,
   MenuButton,
   MenuList,
@@ -32,7 +31,6 @@ import MainInput from "../Input";
 import {
   FaUserCircle,
   FaSearch,
-  FaGoogle,
   FaChevronDown,
   FaUser,
   FaBackspace,
@@ -43,7 +41,6 @@ import NextLink from "next/link";
 import Menus from "./MenuOpcoes";
 import { useRouter } from "next/router";
 
-import ModalApp from "../Modal";
 
 import useAuth from "../../hooks/useAuth";
 
@@ -51,12 +48,11 @@ export default function WithSubnavigation({ MenuAtivo }: { MenuAtivo: Menus }) {
   const { isOpen, onToggle } = useDisclosure();
   const { prefetch } = useRouter();
 
-  const { isOpen: modalIsOpen, onOpen, onClose } = useDisclosure();
   const { logIn, user, logOut } = useAuth();
 
   const googleLogin = React.useCallback(() => {
-    logIn().then(() => onClose());
-  }, [logIn, onClose]);
+    logIn();
+  }, [logIn]);
 
   React.useEffect(() => {
     Object.keys(Menus).map((el) => prefetch(`/${el}`));
@@ -127,7 +123,7 @@ export default function WithSubnavigation({ MenuAtivo }: { MenuAtivo: Menus }) {
                   fontWeight={600}
                   color={"white"}
                   colorScheme="_orange"
-                  onClick={onOpen}
+                  onClick={googleLogin}
                 >
                   Cadastrar-se
                 </Button>
@@ -136,7 +132,7 @@ export default function WithSubnavigation({ MenuAtivo }: { MenuAtivo: Menus }) {
                   fontWeight={400}
                   variant={"link"}
                   leftIcon={<Icon as={FaUserCircle} />}
-                  onClick={onOpen}
+                  onClick={googleLogin}
                 >
                   Fazer o login
                 </Button>
@@ -168,29 +164,6 @@ export default function WithSubnavigation({ MenuAtivo }: { MenuAtivo: Menus }) {
         </Collapse>
         <MenuItems activeMenu={MenuAtivo} />
       </Box>
-      <ModalApp
-        body={
-          <Box w="full">
-            <Center mt={4}>
-              <Button
-                variant="outline"
-                borderRadius="20px"
-                leftIcon={<Icon as={FaGoogle} color="blue" />}
-                onClick={googleLogin}
-              >
-                Google
-              </Button>
-            </Center>
-          </Box>
-        }
-        isOpen={modalIsOpen}
-        label="Faça login com sua conta do Google"
-        modalProps={{
-          size: "xl",
-        }}
-        onClose={onClose}
-        title="Login"
-      />
     </>
   );
 }
