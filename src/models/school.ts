@@ -24,6 +24,8 @@ class School implements IEscolaProfile {
   cidade: string;
   rank: number;
   tags: Array<ALL_TAGS>;
+  user_dislike: Array<string>;
+  user_like: Array<string>;
 
   constructor(firebaseDocument: QueryDocumentSnapshot<DocumentData>) {
     const data = firebaseDocument.data();
@@ -40,7 +42,9 @@ class School implements IEscolaProfile {
         ...rep,
         created_date: rep.created_date.toDate().toString(),
         like: rep.like || 0,
-        dislike: rep.dislike || 0
+        dislike: rep.dislike || 0,
+        user_like: rep.user_like || [],
+        user_dislike: rep.user_like || [],
       }));
 
       return {
@@ -48,7 +52,9 @@ class School implements IEscolaProfile {
         created_date: coment.created_date.toDate().toString(),
         replyed: newReplyed,
         like: coment.like || 0,
-        dislike: coment.dislike || 0
+        dislike: coment.dislike || 0,
+        user_like: coment.user_like || [],
+        user_dislike: coment.user_like || [],
       };
     });
 
@@ -89,6 +95,9 @@ class School implements IEscolaProfile {
     this.cidade = _initialData.cidade;
     this.rank = _initialData.rank;
     this.tags = _initialData.tags;
+
+    this.user_dislike = _initialData.user_dislike;
+    this.user_like = _initialData.user_like;
   }
 
   get(): IEscolaProfile {
