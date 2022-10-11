@@ -19,6 +19,7 @@ import { FiAlertCircle, FiAlertOctagon } from "react-icons/fi";
 import { IPrimaryComents } from "../../../../types/IEscola";
 import { IComentFunctionsProps } from "./";
 // import { Container } from './styles';
+import useAuth from "../../../../hooks/useAuth";
 
 export type IReplyedComents = Omit<IPrimaryComents, "tags"> &
   Omit<Omit<IComentFunctionsProps, "onComentEnter">, "onComentReplyedEnter"> & {
@@ -32,10 +33,14 @@ const ReplyedComents: React.FC<IReplyedComents> = ({
   report,
   dislike,
   aproved,
+  user_dislike,
+  user_like,
   like,
   addDislike,
   addLike,
 }) => {
+  const { user } = useAuth();
+
   const _report = React.useCallback(() => {
     report(_id);
   }, [report, _id]);
@@ -47,6 +52,22 @@ const ReplyedComents: React.FC<IReplyedComents> = ({
 
     return created_date;
   }, [created_date]);
+
+  const userAlredyLiked = React.useMemo(() => {
+    if (user) {
+      return user_like.includes(user.id);
+    }
+
+    return false;
+  }, [user, user_like]);
+
+  const userAlredyDisLiked = React.useMemo(() => {
+    if (user) {
+      return user_dislike.includes(user.id);
+    }
+
+    return false;
+  }, [user, user_dislike]);
 
   return (
     <Box position="relative">
@@ -87,36 +108,34 @@ const ReplyedComents: React.FC<IReplyedComents> = ({
           <Box>
             <Button
               leftIcon={<Icon as={BiLike} />}
-              variant="ghost"
+              variant={userAlredyLiked ? "solid" : "ghost"}
               colorScheme="blue"
               size="sm"
               onClick={() =>
                 addLike({
                   commnetId: _id,
-                  newQtd: Number(like) + 1,
                 })
               }
             >
               Gostei
             </Button>
-            - {like}
+            {" "} - {like}
           </Box>
           <Box ml={5}>
             <Button
               leftIcon={<Icon as={BiDislike} />}
-              variant="ghost"
+              variant={userAlredyDisLiked ? "solid" : "ghost"}
               colorScheme="red"
               size="sm"
               onClick={() =>
                 addDislike({
                   commnetId: _id,
-                  newQtd: Number(dislike) + 1,
                 })
               }
             >
               Não gostei
             </Button>
-            - {dislike}
+            {" "} - {dislike}
           </Box>
         </Flex>
         <Box>

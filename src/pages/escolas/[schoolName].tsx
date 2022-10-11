@@ -53,6 +53,7 @@ import School from "../../models/school";
 import { faker } from "@faker-js/faker";
 
 import useAuth from "../../hooks/useAuth";
+import IRankSchool from "../../types/IRankSchool";
 
 type ISchoolDetail = {
   exists: boolean;
@@ -84,7 +85,7 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
 
     if (!schoolDetail.rank) return;
 
-    if (rank === "Ruim" || rank === "Péssimo")
+    if (rank === IRankSchool.Ruim || rank === IRankSchool.Pessimo)
       return (
         <>
           <Flex alignItems="center" justifyContent="center">
@@ -98,7 +99,7 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
         </>
       );
 
-    if (rank === "Excelente") {
+    if (rank === IRankSchool["Muito bom"]) {
       return (
         <>
           <Flex alignItems="center" justifyContent="center">
@@ -140,7 +141,10 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
 
         await addDoc(ref, {
           school: schoolDetail.id,
-          form: e,
+          form: {
+            ...e,
+            user_id: user.id,
+          },
         });
         toast.success("Avaliação enviada com sucesso. Obrigado!", {
           theme: "colored",
@@ -149,7 +153,7 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
 
       onClose();
     },
-    [onClose, schoolDetail.id]
+    [onClose, schoolDetail.id, user]
   );
 
   const _onComentEnter = React.useCallback(
@@ -176,7 +180,7 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
           tags,
           aproved: false,
           user_dislike: [],
-          user_like: []
+          user_like: [],
         },
         ...comentarios,
       ];
@@ -200,24 +204,62 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
   );
 
   const addLike = React.useCallback(
-    async ({ commnetId, newQtd, replyedId }: IPropLikeAndDislike) => {
+    async ({ commnetId, replyedId }: IPropLikeAndDislike) => {
       try {
+        if (!user || !user.id) {
+          alert("Faça login para interagir com os comentários");
+          return;
+        }
         const { id, comentarios } = schoolDetail;
         const db = getFirestore(firebase);
 
+        const thisComment = comentarios.find(
+          (comment) => comment._id === commnetId
+        );
+
+        const thisReplyed = replyedId
+          ? thisComment.replyed.find((comment) => comment._id === replyedId)
+          : null;
+
+        const userAlredyLiked = (_thisComment: { user_like: Array<string> }) =>
+          _thisComment.user_like.includes(user.id);
+
         const thisComent = comentarios.map((comment) => {
           if (comment._id === commnetId) {
-            if (!replyedId)
+            if (!thisReplyed) {
+              const _userAlredyLiked = userAlredyLiked(comment);
+
+              const user_like = _userAlredyLiked
+                ? comment.user_like.filter((el) => el !== user.id)
+                : [...comment.user_like, user.id];
+
+              const qtd = _userAlredyLiked
+                ? comment.like - 1
+                : comment.like + 1;
+
               return {
                 ...comment,
-                like: newQtd,
+                like: qtd,
+                user_like: user_like,
               };
+            }
 
             const newReplyed = comment.replyed.map((thisComment) => {
-              if (thisComment._id === replyedId) {
+              if (thisComment._id === thisReplyed._id) {
+                const _userAlredyLiked = userAlredyLiked(thisReplyed);
+
+                const user_like = _userAlredyLiked
+                  ? thisComment.user_like.filter((el) => el !== user.id)
+                  : [...thisComment.user_like, user.id];
+
+                const qtd = _userAlredyLiked
+                  ? thisComment.like - 1
+                  : thisComment.like + 1;
+
                 return {
                   ...thisComment,
-                  like: newQtd,
+                  like: qtd,
+                  user_like: user_like,
                 };
               }
             });
@@ -244,28 +286,67 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
         console.error(err);
       }
     },
-    [schoolDetail]
+    [schoolDetail, user]
   );
 
   const addDislike = React.useCallback(
-    async ({ commnetId, replyedId, newQtd }: IPropLikeAndDislike) => {
+    async ({ commnetId, replyedId }: IPropLikeAndDislike) => {
       try {
+        if (!user && !user.id) {
+          alert("Faça login para interagir com os comentários");
+          return;
+        }
         const { id, comentarios } = schoolDetail;
         const db = getFirestore(firebase);
 
+        const thisComment = comentarios.find(
+          (comment) => comment._id === commnetId
+        );
+
+        const thisReplyed = replyedId
+          ? thisComment.replyed.find((comment) => comment._id === replyedId)
+          : null;
+
+        const userAlredyLiked = (_thisComment: {
+          user_dislike: Array<string>;
+        }) => _thisComment.user_dislike.includes(user.id);
+
         const thisComent = comentarios.map((comment) => {
           if (comment._id === commnetId) {
-            if (!replyedId)
+            if (!thisReplyed) {
+              const _userAlredyLiked = userAlredyLiked(comment);
+
+              const user_dislike = _userAlredyLiked
+                ? comment.user_dislike.filter((el) => el !== user.id)
+                : [...comment.user_dislike, user.id];
+
+              const qtd = _userAlredyLiked
+                ? comment.dislike - 1
+                : comment.dislike + 1;
+
               return {
                 ...comment,
-                disLike: newQtd,
+                dislike: qtd,
+                user_dislike,
               };
+            }
 
             const newReplyed = comment.replyed.map((thisComment) => {
-              if (thisComment._id === replyedId) {
+              if (thisComment._id === thisReplyed._id) {
+                const _userAlredyLiked = userAlredyLiked(thisReplyed);
+
+                const user_dislike = _userAlredyLiked
+                  ? thisComment.user_dislike.filter((el) => el !== user.id)
+                  : [...thisComment.user_dislike, user.id];
+
+                const qtd = _userAlredyLiked
+                  ? thisComment.dislike - 1
+                  : thisComment.dislike + 1;
+
                 return {
                   ...thisComment,
-                  disLike: newQtd,
+                  dislike: qtd,
+                  user_dislike,
                 };
               }
             });
@@ -275,10 +356,8 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
               replyed: newReplyed,
             };
           }
-
           return comment;
         });
-
         setScholDetail((old) => ({
           ...old,
           comentarios: thisComent,
@@ -294,7 +373,7 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
         console.error(err);
       }
     },
-    [schoolDetail]
+    [schoolDetail, user]
   );
 
   const BannerSchool = () => {
@@ -382,7 +461,7 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
             dislike: 0,
             aproved: false,
             user_dislike: [],
-            user_like: []
+            user_like: [],
           });
         }
 

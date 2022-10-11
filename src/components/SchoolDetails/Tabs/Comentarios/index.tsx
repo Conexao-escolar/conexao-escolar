@@ -42,7 +42,7 @@ export type IComentProps = {
   tags: Array<ALL_TAGS>;
 };
 
-export type IPropLikeAndDislike = { commnetId: string; replyedId?: string, newQtd: number };
+export type IPropLikeAndDislike = { commnetId: string; replyedId?: string };
 
 export type IComentFunctionsProps = {
   onComentEnter(props: ICommentCallBackProps): void;

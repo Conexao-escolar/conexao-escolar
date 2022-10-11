@@ -23,7 +23,7 @@ import { MdSend } from "react-icons/md";
 import { IComents } from "../../../../types/IEscola";
 import { IComentFunctionsProps } from "./";
 import ReplyedComment from "./Replyed";
-// import { Container } from './styles';
+
 import useAuth from "../../../../hooks/useAuth";
 
 export type IComentProp = IComents &
@@ -38,6 +38,8 @@ const Comentarios: React.FC<IComentProp> = ({
   replyed,
   dislike,
   aproved,
+  user_like = [],
+  user_dislike = [],
   like,
   report,
   tags,
@@ -48,7 +50,6 @@ const Comentarios: React.FC<IComentProp> = ({
   const [replyedComment, setReplyedComment] = React.useState<string>("");
 
   const { user } = useAuth();
-
   const formatedDate = React.useMemo(() => {
     if (created_date instanceof Date) {
       return created_date.toISOString();
@@ -56,6 +57,22 @@ const Comentarios: React.FC<IComentProp> = ({
 
     return created_date;
   }, [created_date]);
+
+  const userAlredyLiked = React.useMemo(() => {
+    if (user) {
+      return user_like.includes(user.id);
+    }
+
+    return false;
+  }, [user, user_like]);
+
+  const userAlredyDisLiked = React.useMemo(() => {
+    if (user) {
+      return user_dislike.includes(user.id);
+    }
+
+    return false;
+  }, [user, user_dislike]);
 
   const _onComentReplyedEnter = React.useCallback(() => {
     onComentReplyedEnter({
@@ -70,16 +87,14 @@ const Comentarios: React.FC<IComentProp> = ({
     console.log(_id);
     addLike({
       commnetId: _id,
-      newQtd: Number(like) + 1,
     });
-  }, [_id, addLike, like]);
+  }, [_id, addLike]);
 
   const _addDislike = React.useCallback(() => {
     addDislike({
       commnetId: _id,
-      newQtd: Number(dislike) + 1,
     });
-  }, [_id, addDislike, dislike]);
+  }, [_id, addDislike]);
 
   return (
     <Flex
@@ -138,24 +153,24 @@ const Comentarios: React.FC<IComentProp> = ({
           <Box>
             <Button
               leftIcon={<Icon as={BiLike} />}
-              variant="ghost"
+              variant={userAlredyLiked ? "solid" : "ghost"}
               colorScheme="blue"
               onClick={_addLike}
             >
               Gostei
             </Button>
-            - {like}
+            {" "}- {like}
           </Box>
           <Box ml={5}>
             <Button
               leftIcon={<Icon as={BiDislike} />}
-              variant="ghost"
               colorScheme="red"
               onClick={_addDislike}
+              variant={userAlredyDisLiked ? "solid" : "ghost"}
             >
               Não gostei
             </Button>
-            - {dislike}
+            {" "}- {dislike}
           </Box>
         </Flex>
         <IconButton
@@ -190,18 +205,16 @@ const Comentarios: React.FC<IComentProp> = ({
             <ReplyedComment
               {...rep}
               report={(e: string) => report(_id, e)}
-              addDislike={({ commnetId, newQtd }) =>
+              addDislike={({ commnetId }) =>
                 addDislike({
                   commnetId: _id,
                   replyedId: commnetId,
-                  newQtd,
                 })
               }
-              addLike={({ commnetId, newQtd }) =>
+              addLike={({ commnetId }) =>
                 addLike({
                   commnetId: _id,
                   replyedId: commnetId,
-                  newQtd,
                 })
               }
             />
