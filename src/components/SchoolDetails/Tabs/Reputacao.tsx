@@ -2,6 +2,7 @@ import { Box, Flex, Grid, GridItem, Icon, Text } from "@chakra-ui/react";
 import React from "react";
 import { MdStar } from "react-icons/md";
 import { IReputacao } from "../../../types/IEscola";
+import IRankSchool from "../../../types/IRankSchool";
 // import { Container } from './styles';
 import formatRank from "../../../utils/formatRank";
 
@@ -19,11 +20,11 @@ const Reputacao: React.FC<IProps> = ({ reputacao = {} }) => {
 
   const Reputacao = React.useCallback(
     (
-      reputacao: "Péssimo" | "Ruim" | "Bom" | "Muito bom" | "Excelente",
+      reputacao: IRankSchool,
       rank: number,
       key: string
     ) => {
-      if (reputacao === "Ruim" || reputacao === "Péssimo")
+      if (reputacao === IRankSchool.Ruim || reputacao === IRankSchool.Pessimo)
         return (
           <>
             <Text>
@@ -43,7 +44,7 @@ const Reputacao: React.FC<IProps> = ({ reputacao = {} }) => {
           </>
         );
 
-      if (reputacao === "Excelente") {
+      if (reputacao === IRankSchool["Muito bom"]) {
         return (
           <>
             <Text>
