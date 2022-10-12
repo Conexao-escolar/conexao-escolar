@@ -38,9 +38,8 @@ import {
 
 import Image from "next/image";
 import NextLink from "next/link";
-import Menus from "./MenuOpcoes";
+import Menus, { MenuOpcoes } from "./MenuOpcoes";
 import { useRouter } from "next/router";
-
 
 import useAuth from "../../hooks/useAuth";
 
@@ -108,7 +107,7 @@ export default function WithSubnavigation({ MenuAtivo }: { MenuAtivo: Menus }) {
             </NextLink>
 
             <Flex display={{ base: "none", md: "flex" }} ml={10}>
-              <DesktopNav />
+              {/* <DesktopNav /> */}
             </Flex>
             {!user ? (
               <Stack
@@ -214,15 +213,28 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
 };
 
 const MobileNav = () => {
+  const allMenus = MenuOpcoes;
+
+  const formatLink = React.useCallback((l: string) => {
+    if (l == Menus.Home) return "/";
+    if (l.split(" ").length > 1) {
+      return `/${l.split(" ")[0].toLowerCase()}`;
+    }
+
+    return `/${l.toLowerCase()}`;
+  }, []);
   return (
     <Stack
       bg={useColorModeValue("white", "gray.800")}
       p={4}
       display={{ md: "none" }}
     >
-      {NAV_ITEMS.map((navItem) => (
-        <MobileNavItem key={navItem.label} {...navItem} />
+      {allMenus.map((menu) => (
+        <MobileNavItem key={menu} label={menu} href={formatLink(menu)} />
       ))}
+      {/* {NAV_ITEMS.map((navItem) => (
+        <MobileNavItem key={navItem.label} {...navItem} />
+      ))} */}
     </Stack>
   );
 };
@@ -234,8 +246,6 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
     <Stack spacing={4} onClick={children && onToggle}>
       <Flex
         py={2}
-        as={Link}
-        href={href ?? "#"}
         justify={"space-between"}
         align={"center"}
         _hover={{
@@ -246,7 +256,7 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
           fontWeight={600}
           color={useColorModeValue("gray.600", "gray.200")}
         >
-          {label}
+          <NextLink href={href}>{label}</NextLink>
         </Text>
         {children && (
           <Icon

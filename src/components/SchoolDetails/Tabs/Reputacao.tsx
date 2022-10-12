@@ -88,7 +88,7 @@ const Reputacao: React.FC<IProps> = ({ reputacao = {} }) => {
   );
 
   return (
-    <Grid templateColumns="repeat(3, 1fr)" gap={6}>
+    <Grid templateColumns={["repeat(2, 1fr)", "repeat(2, 1fr)", "repeat(3, 1fr)"]} gap={6}>
       {AllKeys.map((key) => {
         const { rank = 0 } = reputacao[key];
 
@@ -96,7 +96,7 @@ const Reputacao: React.FC<IProps> = ({ reputacao = {} }) => {
 
         return (
           <GridItem key={`tab-reputacao-${key}`}>
-            <Box p={5}>
+            <Box p={[0, 0, 5]}>
               <Flex
                 flexDir="column"
                 alignItems="center"

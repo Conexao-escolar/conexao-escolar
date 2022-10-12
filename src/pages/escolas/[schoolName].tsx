@@ -378,8 +378,14 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
 
   const BannerSchool = () => {
     return (
-      <Box w="full" h="350px">
-        <Box w="full" bg="_blue" h="40%" position="relative" px="100px">
+      <Box w="full" h={["450px", "350px"]}>
+        <Box
+          w="full"
+          bg="_blue"
+          h={["30%", "40%"]}
+          position="relative"
+          px={["30px", "100px"]}
+        >
           <Flex
             w="120px"
             h="120px"
@@ -391,6 +397,7 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
             alignItems="center"
             justifyContent="center"
             zIndex={2}
+            margin="0 auto"
           >
             <Icon as={MdPhotoCamera} boxSize={8} color="gray.600" />
           </Flex>
@@ -402,9 +409,11 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
         <Flex
           w="full"
           bg="white"
+          flexDir={["column", "row"]}
           h="60%"
           position="relative"
-          px="100px"
+          px={["50px", "100px"]}
+          mt={[10, 0]}
           justifyContent="space-around"
           alignItems="center"
         >

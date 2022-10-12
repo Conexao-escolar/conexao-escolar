@@ -2,6 +2,7 @@
 import {
   Box,
   Button,
+  Center,
   Divider,
   Flex,
   Heading,
@@ -26,6 +27,8 @@ import ICardEscla, { IEscolaProfile } from "../types/IEscola";
 import School from "../models/school";
 
 import { useRouter } from "next/router";
+
+import NextImg from "next/image";
 
 export default function Home({ schools, god, bad }) {
   const [goodSchols, setGoodSchools] = React.useState([...god]);
@@ -64,7 +67,12 @@ export default function Home({ schools, god, bad }) {
         <Text color="white" fontSize="3xl" fontWeight="semibold">
           Pesquise a escola desejada
         </Text>
-        <Stack
+        <Center mt={4}>
+          <Box bg="white" borderRadius="10px">
+            <NextImg src="/logo.png" width="150px" height="100%" />
+          </Box>
+        </Center>
+        {/* <Stack
           mt={8}
           direction={{
             base: "column",
@@ -101,7 +109,7 @@ export default function Home({ schools, god, bad }) {
             disabledIndex={[1]}
             popHouverMessageOnDisabledItems="Em breve..."
           />
-        </Stack>
+        </Stack> */}
       </Flex>
     );
   };
@@ -125,7 +133,6 @@ export default function Home({ schools, god, bad }) {
 
   const goToFeedback = React.useCallback(() => {
     window.open("https://forms.gle/caPPkkTW5ZrpiLZP6", "_blank");
-
   }, []);
   const goToRegisterNewInstituicao = React.useCallback(() => {
     window.open("https://forms.gle/ZgRfzsB6GDsgohVVA", "_blank");
@@ -139,7 +146,7 @@ export default function Home({ schools, god, bad }) {
     <Container activeMenu={Menus.Home} extraContainer={<BannerFilter />}>
       <Box mt="100px">
         <Flex
-          flexDir="row"
+          flexDir={["column", "column", "row"]}
           alignItems="center"
           justifyContent="space-around"
           gap="80px"
@@ -177,15 +184,19 @@ export default function Home({ schools, god, bad }) {
         {/* <CardEscola escolas={escolas} /> */}
       </Box>
       <Divider mt={4} />
-
-      <Flex mt={8} justifyContent="space-between">
-        <Button colorScheme="green" onClick={goToFeedback}>
+      {/* ["row", "column"] */}
+      <Flex flexDir={["column", "row"]} mt={8} justifyContent="space-between">
+        <Button mt={[4, 0]} colorScheme="green" onClick={goToFeedback}>
           Deixe sua opinião
         </Button>
-        <Button colorScheme="_orange" onClick={goToRegisterNewInstituicao}>
+        <Button
+          mt={[4, 0]}
+          colorScheme="_orange"
+          onClick={goToRegisterNewInstituicao}
+        >
           Cadastre uma escola
         </Button>
-        <Button colorScheme="blue" onClick={goToEmail}>
+        <Button mt={[4, 0]} colorScheme="blue" onClick={goToEmail}>
           Entre em contato
         </Button>
       </Flex>
