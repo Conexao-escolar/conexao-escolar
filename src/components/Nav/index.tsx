@@ -146,8 +146,8 @@ export default function WithSubnavigation({ MenuAtivo }: { MenuAtivo: Menus }) {
                     {user.nome}
                   </MenuButton>
                   <MenuList>
-                    <MenuItem icon={<Icon as={FaUser} />}>Meu perfil</MenuItem>
-                    <MenuDivider />
+                    {/* <MenuItem icon={<Icon as={FaUser} />}>Meu perfil</MenuItem> */}
+                    {/* <MenuDivider /> */}
                     <MenuItem icon={<Icon as={FaBackspace} />} onClick={logOut}>
                       Sair
                     </MenuItem>

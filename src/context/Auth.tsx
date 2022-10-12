@@ -53,6 +53,7 @@ export const AuthProvider: React.FC<{
         });
 
         toast.success("Bem vindo!");
+        window.location.reload();
       })
       .catch((err) => {
         console.error(err);

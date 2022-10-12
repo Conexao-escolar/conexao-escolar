@@ -130,28 +130,36 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
 
   const _onClose = React.useCallback(
     async (e: IOncloseProps) => {
-      if (
-        (e.modal.length && e.rankResult.infraAcessibilityResult) ||
-        e.rankResult.infraRestroomResult ||
-        e.rankResult.pedagogiAcessibilityResult ||
-        e.rankResult.pedagogiPreparationResult
-      ) {
-        const db = getFirestore(firebase);
-        const ref = collection(db, "evaluation");
+      try {
+        if (
+          (e.modal.length && e.rankResult.infraAcessibilityResult) ||
+          e.rankResult.infraRestroomResult ||
+          e.rankResult.pedagogiAcessibilityResult ||
+          e.rankResult.pedagogiPreparationResult
+        ) {
+          const db = getFirestore(firebase);
+          
+          const ref = collection(db, "evaluation");
 
-        await addDoc(ref, {
-          school: schoolDetail.id,
-          form: {
-            ...e,
-            user_id: user.id,
-          },
-        });
-        toast.success("Avaliação enviada com sucesso. Obrigado!", {
+          await addDoc(ref, {
+            school: schoolDetail.id,
+            form: {
+              ...e,
+              user_id: user.id,
+            },
+          });
+          toast.success("Avaliação enviada com sucesso. Obrigado!", {
+            theme: "colored",
+          });
+        }
+
+        onClose();
+      } catch (error) {
+        toast.error("Tivemos um problema em enviar sua avaliação", {
           theme: "colored",
         });
+        console.log(error);
       }
-
-      onClose();
     },
     [onClose, schoolDetail.id, user]
   );
