@@ -116,7 +116,7 @@ export default function WithSubnavigation({ MenuAtivo }: { MenuAtivo: Menus }) {
                 direction={"row"}
                 spacing={6}
               >
-                <Button
+                {/* <Button
                   display={{ base: "none", md: "inline-flex" }}
                   fontSize={"sm"}
                   fontWeight={600}
@@ -125,7 +125,7 @@ export default function WithSubnavigation({ MenuAtivo }: { MenuAtivo: Menus }) {
                   onClick={googleLogin}
                 >
                   Cadastrar-se
-                </Button>
+                </Button> */}
                 <Button
                   fontSize={"sm"}
                   fontWeight={400}
