@@ -16,15 +16,18 @@ import NextLink from "next/link";
 const Rodape: React.FC = () => {
   return (
     <Box mt={20} bg="#0A709B" px={20} pt={20} pb={8}>
-      <Flex flexDir={["column", "column", "row"]} justifyContent="space-between">
-        <Flex flexDirection="column" gap={5} >
+      <Flex
+        flexDir={["column", "column", "row"]}
+        justifyContent="space-between"
+      >
+        <Flex flexDirection="column" gap={5}>
           <Box>
             <NextImg src="/logo.png" width="135px" height="96px" />
           </Box>
           <Box maxW="300px">
             <Text textColor="white" fontSize="sm" fontWeight="light">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua
+              Em virtude dos problemas existentes nas escolas brasileiras acerca
+              da educação inclusiva.
             </Text>
           </Box>
           {/* <Flex gap={3} mt={4}>
