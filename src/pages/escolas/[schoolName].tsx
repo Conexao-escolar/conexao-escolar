@@ -173,7 +173,7 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
         console.log(error);
       }
     },
-    [onClose, query, schoolDetail, user.id]
+    [onClose, query, schoolDetail, user]
   );
 
   const _onComentEnter = React.useCallback(
