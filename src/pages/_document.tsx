@@ -1,5 +1,6 @@
 import React from "react";
 import NextDocuments, { Html, Head, Main, NextScript } from "next/document";
+import Script from "next/script";
 
 export default class Document extends NextDocuments {
   render() {
@@ -25,6 +26,24 @@ export default class Document extends NextDocuments {
           <Main />
           <NextScript />
         </body>
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-QRVG6KD3K3"
+          strategy="afterInteractive"
+        ></Script>
+        {process.env.NODE_ENV === "production" ? (
+          <Script id="google-analytics" strategy="afterInteractive">
+            {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-QRVG6KD3K3');
+        `}
+          </Script>
+        ) : (
+          ""
+        )}
       </Html>
     );
   }

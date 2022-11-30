@@ -31,8 +31,12 @@ import { useRouter } from "next/router";
 import NextImg from "next/image";
 
 export default function Home({ schools, god, bad }) {
-  const [goodSchols, setGoodSchools] = React.useState([...god]);
-  const [badSchools, setBadSchools] = React.useState([...bad]);
+  const [goodSchols, setGoodSchools] = React.useState<ICardEscla[]>(() => {
+    if (god) return JSON.parse(god);
+  });
+  const [badSchools, setBadSchools] = React.useState<ICardEscla[]>(() => {
+    if (bad) return JSON.parse(bad);
+  });
 
   const { push } = useRouter();
 
@@ -226,9 +230,9 @@ export async function getStaticProps() {
 
   return {
     props: {
-      schools: allSchools,
-      god: desc,
-      bad: asc,
+      schools: JSON.stringify(allSchools),
+      god: JSON.stringify(desc),
+      bad: JSON.stringify(asc),
     },
   };
 }
