@@ -6,6 +6,7 @@ import {
   Flex,
   Heading,
   Icon,
+  Img,
   Tab,
   TabList,
   TabPanel,
@@ -48,6 +49,9 @@ import {
   addDoc,
   collection,
 } from "firebase/firestore";
+
+import { logEvent, getAnalytics } from "firebase/analytics";
+
 import School from "../../models/school";
 
 import { faker } from "@faker-js/faker";
@@ -57,20 +61,21 @@ import IRankSchool from "../../types/IRankSchool";
 
 type ISchoolDetail = {
   exists: boolean;
-  detail: IEscolaProfile;
+  detail: string;
 };
 
 const SchoolDetail: React.FC<ISchoolDetail> = ({
   exists = true,
-  detail = {},
+  detail = "",
 }) => {
   const [schoolDetail, setScholDetail] = React.useState<IEscolaProfile>(
-    [] as unknown as IEscolaProfile
+    {} as IEscolaProfile
   );
   const [loading, setLoading] = React.useState(true);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { user, logIn } = useAuth();
+  const { query } = useRouter();
 
   const _onOpen = React.useCallback(() => {
     if (!user) {
@@ -138,7 +143,7 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
           e.rankResult.pedagogiPreparationResult
         ) {
           const db = getFirestore(firebase);
-          
+
           const ref = collection(db, "evaluation");
 
           await addDoc(ref, {
@@ -151,6 +156,13 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
           toast.success("Avaliação enviada com sucesso. Obrigado!", {
             theme: "colored",
           });
+
+          const analityc = getAnalytics(firebase);
+          logEvent(analityc, "evaluation", {
+            page_path: String(query.schoolName),
+            page_title: schoolDetail.nome,
+            user_id: user.id,
+          });
         }
 
         onClose();
@@ -161,7 +173,7 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
         console.log(error);
       }
     },
-    [onClose, schoolDetail.id, user]
+    [onClose, query, schoolDetail, user.id]
   );
 
   const _onComentEnter = React.useCallback(
@@ -289,12 +301,20 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
         await updateDoc(docRef, {
           comentarios: thisComent,
         });
+
+        const analityc = getAnalytics(firebase);
+        logEvent(analityc, "like_comment", {
+          page_path: String(query.schoolName),
+          page_title: schoolDetail.nome,
+          comment_id: thisComment._id,
+          qtd_like: thisComment.like,
+        });
       } catch (err) {
         toast.error("Ocorreu um erro ao tentarmos publicar seu comentário!");
         console.error(err);
       }
     },
-    [schoolDetail, user]
+    [query, schoolDetail, user]
   );
 
   const addDislike = React.useCallback(
@@ -376,21 +396,42 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
         await updateDoc(docRef, {
           comentarios: thisComent,
         });
+
+        const analityc = getAnalytics(firebase);
+        logEvent(analityc, "unlike_comment", {
+          page_path: String(query.schoolName),
+          page_title: schoolDetail.nome,
+          comment_id: thisComment._id,
+          qtd_like: thisComment.like,
+        });
       } catch (err) {
         toast.error("Ocorreu um erro ao tentarmos publicar seu comentário!");
         console.error(err);
       }
     },
-    [schoolDetail, user]
+    [query, schoolDetail, user]
   );
+
+  React.useEffect(() => {
+    const { nome } = JSON.parse(detail) as IEscolaProfile;
+
+    if (!!firebase) {
+      const analityc = getAnalytics(firebase);
+      logEvent(analityc, "page_view", {
+        page_path: String(query.schoolName),
+        page_title: nome,
+      });
+    }
+  }, [query, detail]);
 
   const BannerSchool = () => {
     return (
       <Box w="full" h={["450px", "350px"]}>
-        <Box
+        <Flex
           w="full"
           bg="_blue"
           h={["30%", "40%"]}
+          justifyContent={["center", "flex-start"]}
           position="relative"
           px={["30px", "100px"]}
         >
@@ -407,13 +448,17 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
             zIndex={2}
             margin="0 auto"
           >
-            <Icon as={MdPhotoCamera} boxSize={8} color="gray.600" />
+            {schoolDetail.profile_img ? (
+              <Img src={schoolDetail.profile_img} alt="Profile IMG" />
+            ) : (
+              <Icon as={MdPhotoCamera} boxSize={8} color="gray.600" />
+            )}
           </Flex>
 
-          <Box position="absolute" right="50px" bottom="0">
+          {/* <Box position="absolute" right="50px" bottom="0">
             Capa
-          </Box>
-        </Box>
+          </Box> */}
+        </Flex>
         <Flex
           w="full"
           bg="white"
@@ -500,12 +545,20 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
           theme: "colored",
         }
       );
+
+      const analityc = getAnalytics(firebase);
+      logEvent(analityc, "new_comment", {
+        page_path: String(query.schoolName),
+        page_title: schoolDetail.nome,
+        qtd_comments: thisComent.length,
+      });
     },
-    [schoolDetail, user]
+    [query, schoolDetail, user]
   );
 
   React.useEffect(() => {
-    const { comentarios } = detail as IEscolaProfile;
+    const schoolParsed = JSON.parse(detail) as IEscolaProfile;
+    const { comentarios } = schoolParsed;
 
     const aproved = (_aproved: boolean, author_id: string) => {
       if (!!user && author_id === user.id) return true;
@@ -532,7 +585,7 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
       .filter((el) => !!el);
 
     setScholDetail({
-      ...(detail as IEscolaProfile),
+      ...schoolParsed,
       comentarios: commentFiltered,
     });
 
@@ -609,12 +662,12 @@ export async function getServerSideProps(context) {
   const docRef = doc(db, "schools", schoolName);
   const docSnap = await getDoc(docRef);
 
-  const data = new School(docSnap);
+  const data = new School(docSnap).get();
 
   return {
     props: {
       exists: docSnap.exists(),
-      detail: data.get(),
+      detail: JSON.stringify(data),
     },
   };
 }
