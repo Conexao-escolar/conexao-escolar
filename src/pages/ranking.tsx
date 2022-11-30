@@ -36,12 +36,16 @@ type IListSchool = {
   [Property in ALL_TAGS]?: ISchoolOrdenedByRank;
 };
 
-const Ranking: React.FC = ({ AUTISMO, FISICO, TDH, VISUAL }: IListSchool) => {
-  const [thisSchool, setSchools] = React.useState<IListSchool>({
-    AUTISMO,
-    FISICO,
-    TDH,
-    VISUAL,
+const Ranking: React.FC = ({ distribution }: any) => {
+  const [thisSchool, setSchools] = React.useState<IListSchool>(() => {
+    const { AUTISMO, FISICO, TDH, VISUAL } = JSON.parse(distribution);
+
+    return {
+      AUTISMO,
+      FISICO,
+      TDH,
+      VISUAL,
+    };
   });
 
   //return Object.values(ALL_TAGS)
@@ -334,7 +338,9 @@ export async function getStaticProps() {
   };
 
   return {
-    props: byRank,
+    props: {
+      distribution: JSON.stringify(byRank),
+    },
   };
 }
 
