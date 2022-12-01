@@ -136,6 +136,11 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
   const _onClose = React.useCallback(
     async (e: IOncloseProps) => {
       try {
+        if(!e) {
+          onClose();
+          return;
+        }
+
         if (
           (e.modal.length && e.rankResult.infraAcessibilityResult) ||
           e.rankResult.infraRestroomResult ||

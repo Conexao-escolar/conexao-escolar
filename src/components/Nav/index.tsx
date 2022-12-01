@@ -57,6 +57,17 @@ export default function WithSubnavigation({ MenuAtivo }: { MenuAtivo: Menus }) {
     Object.keys(Menus).map((el) => prefetch(`/${el}`));
   }, [prefetch]);
 
+  const LoggedButton = () => {
+    return (
+      <IconButton
+        borderRadius="10%"
+        colorScheme="blue"
+        aria-label="usuário-loagado"
+        icon={<FaUser size={20} />}
+      />
+    );
+  };
+
   return (
     <>
       <Box boxShadow="md" w="full">
@@ -75,9 +86,10 @@ export default function WithSubnavigation({ MenuAtivo }: { MenuAtivo: Menus }) {
             flex={{ base: 1 }}
             justify={{ base: "center", md: "space-around" }}
             alignItems="center"
+            justifyContent="space-between"
           >
             <Flex
-              flex={{ base: 1, md: "auto" }}
+              // flex={{ base: 1, md: "auto", sm: "auto" }}
               ml={{ base: -2 }}
               display={{ base: "flex", md: "none" }}
             >
@@ -106,12 +118,12 @@ export default function WithSubnavigation({ MenuAtivo }: { MenuAtivo: Menus }) {
               />
             </NextLink>
 
-            <Flex display={{ base: "none", md: "flex" }} ml={10}>
-              {/* <DesktopNav /> */}
-            </Flex>
+            {/* <Flex display={{ base: "none", md: "flex" }} ml={10}>
+              <DesktopNav />
+            </Flex> */}
             {!user ? (
               <Stack
-                flex={{ base: 1, md: 0 }}
+                // flex={{ base: 1, md: 0 }}
                 justify={"flex-end"}
                 direction={"row"}
                 spacing={6}
@@ -126,24 +138,19 @@ export default function WithSubnavigation({ MenuAtivo }: { MenuAtivo: Menus }) {
                 >
                   Cadastrar-se
                 </Button> */}
-                <Button
-                  fontSize={"sm"}
-                  fontWeight={400}
+                <IconButton
+                  aria-label="login"
+                  // bg="red"
                   variant={"link"}
-                  leftIcon={<Icon as={FaUserCircle} />}
+                  icon={<FaUserCircle  size={24} />}
                   onClick={googleLogin}
-                >
-                  Fazer o login
-                </Button>
+                />
               </Stack>
             ) : (
               <Box>
                 <Menu>
-                  <MenuButton
-                    as={Button}
-                    rightIcon={<Icon as={FaChevronDown} />}
-                  >
-                    {user.nome}
+                  <MenuButton>
+                    <LoggedButton />
                   </MenuButton>
                   <MenuList>
                     {/* <MenuItem icon={<Icon as={FaUser} />}>Meu perfil</MenuItem> */}

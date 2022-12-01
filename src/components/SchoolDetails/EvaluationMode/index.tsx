@@ -41,7 +41,10 @@ const EvaluationMode: React.FC<Props> = ({ isOpen, onClose }) => {
   const pedagogiAcessibilityRef = React.useRef<IRefProps>(null);
   const pedagogiPreparationRef = React.useRef<IRefProps>(null);
 
-  const _onClose = React.useCallback(() => {
+  const _onClose = React.useCallback((e) => {
+    if(!e) {
+      return onClose(null)
+    }
     const infraAcessibilityResult = infraAcessibilityRef.current.value();
     const infraRestroomResult = infraRestroomRef.current.value();
     const pedagogiAcessibilityResult = pedagogiAcessibilityRef.current.value();
