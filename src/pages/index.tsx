@@ -63,20 +63,79 @@ export default function Home({ schools, god, bad }) {
       <Flex
         bg="_blue"
         w="full"
-        h="300px"
+        h="500px"
         flexDir="column"
         align="center"
         justifyContent="center"
+        position="relative"
       >
-        <Text color="white" fontSize="3xl" fontWeight="semibold">
-          Pesquise a escola desejada
-        </Text>
-        <Center mt={4}>
-          <Box bg="white" borderRadius="10px">
-            <NextImg src="/logo.png" width="150px" height="100%" />
+        <Box
+          w="full"
+          h="full"
+          bgImage="/assets/school-banner.jpg"
+          bgRepeat="no-repeat"
+          bgSize="cover"
+          bgPosition="50% 30%"
+          position="absolute"
+          filter="auto"
+          brightness="45%"
+          blur="2px"
+        />
+        <Flex
+          filter="auto"
+          brightness="100%"
+          flexDir="column"
+          alignItems="center"
+          justifyContent="space-around"
+          h="full"
+        >
+          <Box textAlign="center" px={8}>
+            <Text color="white" fontSize="3xl" fontWeight="bold" p={4}>
+              Valorize a educação especial!
+            </Text>
+            <Text color="white" fontSize="xl" fontWeight="medium">
+              Deseja saber quais as instituições de ensino mais preparadas para
+              receber seu filho?
+            </Text>
+            <Box textAlign="center">
+              <Box>
+                <Text color="white">
+                  Pesquise e descubra as melhores escolas de sua região. Avalie
+                  o ambiente e a estrutura pedagógica escolar.{" "}
+                </Text>
+              </Box>
+            </Box>
           </Box>
-        </Center>
-        {/* <Stack
+          <Flex
+            w="full"
+            alignItems="center"
+            justifyContent="space-around"
+            flexDir={["column", "row"]}
+            gap={25}
+            px={20}
+          >
+            <Button
+              variant="outline"
+              borderColor="_orange.100"
+              textColor="_orange.100"
+              fontWeight="bold"
+              onClick={() => push("/ranking")}
+            >
+              Avalie uma escola
+            </Button>
+            <Button
+              variant="outline"
+              borderColor="_blue"
+              textColor="_blue"
+              fontWeight="bold"
+              as="a"
+              href="mailto:conexao.escolar.pvh@gmail.com"
+            >
+              Fale conosco
+            </Button>
+          </Flex>
+
+          {/* <Stack
           mt={8}
           direction={{
             base: "column",
@@ -114,6 +173,7 @@ export default function Home({ schools, god, bad }) {
             popHouverMessageOnDisabledItems="Em breve..."
           />
         </Stack> */}
+        </Flex>
       </Flex>
     );
   };
