@@ -41,7 +41,7 @@ import NextLink from "next/link";
 import Menus, { MenuOpcoes } from "./MenuOpcoes";
 import { useRouter } from "next/router";
 
-import useAuth from "../../hooks/useAuth";
+import useAuth from "../../User/hooks/useAuth";
 
 export default function WithSubnavigation({ MenuAtivo }: { MenuAtivo: Menus }) {
   const { isOpen, onToggle } = useDisclosure();

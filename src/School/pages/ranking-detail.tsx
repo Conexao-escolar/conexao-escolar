@@ -51,7 +51,7 @@ import { logEvent, getAnalytics } from "firebase/analytics";
 
 import { faker } from "@faker-js/faker";
 
-import useAuth from "../../hooks/useAuth";
+import useAuth from "../../User/hooks/useAuth";
 import IRankSchool from "../../types/IRankSchool";
 import School, {ISchoolProps} from "../entities/school";
 

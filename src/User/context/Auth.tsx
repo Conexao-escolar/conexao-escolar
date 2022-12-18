@@ -1,5 +1,5 @@
 import React from "react";
-import db from "../database";
+import db from "../../database";
 import {
   getAuth,
   signInWithPopup,

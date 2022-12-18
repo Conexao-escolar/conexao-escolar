@@ -19,7 +19,7 @@ import { FiAlertCircle, FiAlertOctagon } from "react-icons/fi";
 import { IPrimaryComents } from "../../../../types/IEscola";
 import { IComentFunctionsProps } from ".";
 // import { Container } from './styles';
-import useAuth from "../../../../hooks/useAuth";
+import useAuth from "../../../../User/hooks/useAuth";
 
 export type IReplyedComents = Omit<IPrimaryComents, "tags"> &
   Omit<Omit<IComentFunctionsProps, "onComentEnter">, "onComentReplyedEnter"> & {

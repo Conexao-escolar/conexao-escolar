@@ -24,7 +24,7 @@ import { IComents } from "../../../../types/IEscola";
 import { IComentFunctionsProps } from ".";
 import ReplyedComment from "./Replyed";
 
-import useAuth from "../../../../hooks/useAuth";
+import useAuth from "../../../../User/hooks/useAuth";
 
 export type IComentProp = IComents &
   Omit<IComentFunctionsProps, "onComentEnter"> & {

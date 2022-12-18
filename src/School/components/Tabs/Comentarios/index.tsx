@@ -16,7 +16,7 @@ import {
 
 import { MdSend } from "react-icons/md";
 
-import useAuth from "../../../../hooks/useAuth";
+import useAuth from "../../../../User/hooks/useAuth";
 
 import { SelectInput } from "../../../../components/Input";
 import ALL_TAGS from "../../../../types/ITags";
