@@ -1,5 +1,5 @@
 import School from "../entities/school";
-import ALL_TAGS from "../../types/ITags";
+import ALL_TAGS from "../types/ITags";
 
 export type SchoolsByTag = {
   [Property in ALL_TAGS]?: School[];

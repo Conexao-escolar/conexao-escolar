@@ -1,5 +1,5 @@
 import generateSchols from "../utils/generateRandomSchools";
-import IEscola, { IEscolaProfile } from "../types/IEscola";
+import IEscola, { IEscolaProfile } from "../School/types/IEscola";
 import generateRandomSchoolDetail from "../utils/generateRandomSchoolDetail";
 
 async function getSchoolDetail(schoolId: string): Promise<IEscolaProfile> {

@@ -1,5 +1,5 @@
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
-import ALL_TAGS from "../../types/ITags";
+import ALL_TAGS from "../types/ITags";
 import School, { IComents, IReputacao } from "../entities/school";
 
 export default function FirestoreDocumentoToSchool(

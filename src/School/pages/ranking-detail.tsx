@@ -19,7 +19,7 @@ import {
 import Container from "../../components/Container";
 import Menus from "../../components/Nav/MenuOpcoes";
 import { useRouter } from "next/router";
-import { IComents, IEscolaProfile } from "../../types/IEscola";
+import { IComents } from "../types/IEscola";
 
 import { MdPhotoCamera, MdStar } from "react-icons/md";
 import formatRank from "../../utils/formatRank";
@@ -52,8 +52,8 @@ import { logEvent, getAnalytics } from "firebase/analytics";
 import { faker } from "@faker-js/faker";
 
 import useAuth from "../../User/hooks/useAuth";
-import IRankSchool from "../../types/IRankSchool";
-import School, {ISchoolProps} from "../entities/school";
+import IRankSchool from "../types/IRankSchool";
+import {ISchoolProps} from "../entities/school";
 
 type ISchoolDetail = {
   exists: boolean;

@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Flex, Input, Text, Checkbox, Textarea } from "@chakra-ui/react";
 
 import ModalApp from "../../../components/Modal";
-import ALL_TAGS from "../../../types/ITags";
+import ALL_TAGS from "../../types/ITags";
 import EvaluationModeSliderInput, { IRefProps } from "./Slider";
 
 export type IOncloseProps = {
@@ -176,19 +176,19 @@ const EvaluationMode: React.FC<Props> = ({ isOpen, onClose }) => {
                 Físico
               </Checkbox>
               <Checkbox
-                value={ALL_TAGS.TDH}
-                isChecked={modalCategoria.includes(ALL_TAGS.TDH)}
+                value={ALL_TAGS.TDAH}
+                isChecked={modalCategoria.includes(ALL_TAGS.TDAH)}
                 onChange={({ target: { checked } }) => {
                   if (checked) {
                     return setModalCategoria((old) => {
-                      if (old.includes(ALL_TAGS.TDH)) return [...old];
-                      old.push(ALL_TAGS.TDH);
+                      if (old.includes(ALL_TAGS.TDAH)) return [...old];
+                      old.push(ALL_TAGS.TDAH);
                       return [...old];
                     });
                   }
                   return setModalCategoria((old) => {
-                    if (old.includes(ALL_TAGS.TDH)) {
-                      const newData = old.filter((el) => el !== ALL_TAGS.TDH);
+                    if (old.includes(ALL_TAGS.TDAH)) {
+                      const newData = old.filter((el) => el !== ALL_TAGS.TDAH);
 
                       return [...newData];
                     }

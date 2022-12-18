@@ -1,6 +1,6 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import React from "react";
-import { IEscolaProfile } from "../../../types/IEscola";
+import { IEscolaProfile } from "../../types/IEscola";
 
 // import { Container } from './styles';
 

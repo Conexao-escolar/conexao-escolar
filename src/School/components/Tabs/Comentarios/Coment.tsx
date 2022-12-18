@@ -20,7 +20,7 @@ import React from "react";
 import { BiDislike, BiLike } from "react-icons/bi";
 import { FiAlertCircle, FiAlertOctagon } from "react-icons/fi";
 import { MdSend } from "react-icons/md";
-import { IComents } from "../../../../types/IEscola";
+import { IComents } from "../../../types/IEscola";
 import { IComentFunctionsProps } from ".";
 import ReplyedComment from "./Replyed";
 

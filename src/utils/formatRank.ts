@@ -1,4 +1,4 @@
-import IRankSchool from "../types/IRankSchool";
+import IRankSchool from "../School/types/IRankSchool";
 
 function formatRank(rank: number): IRankSchool {
   if (rank <= 2) return IRankSchool.Pessimo;

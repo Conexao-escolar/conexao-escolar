@@ -1,7 +1,7 @@
 import { Box, Flex, Icon, Link, Text } from "@chakra-ui/react";
 import React from "react";
 import { MdStar } from "react-icons/md";
-import ICardEscla from "../../../types/IEscola";
+import ICardEscla from "../../types/IEscola";
 import NextLink from "next/link";
 
 type Props = Omit<

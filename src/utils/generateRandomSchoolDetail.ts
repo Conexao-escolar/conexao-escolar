@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
-import IEscola, { IEscolaProfile } from "../types/IEscola";
-import ALL_TAGS from "../types/ITags";
+import IEscola, { IEscolaProfile } from "../School/types/IEscola";
+import ALL_TAGS from "../School/types/ITags";
 import generateSchols from "./generateRandomSchools";
 
 const profile_img = () => {
@@ -94,7 +94,7 @@ function generateRandomSchoolDetail(schoolCard?: IEscola): IEscolaProfile {
       FISICO: {
         rank: 4,
       },
-      TDH: {
+      TDAH: {
         rank: 3,
       },
       VISUAL: {

@@ -1,8 +1,8 @@
 import { Box, Flex, Grid, GridItem, Icon, Text } from "@chakra-ui/react";
 import React from "react";
 import { MdStar } from "react-icons/md";
-import { IReputacao } from "../../../types/IEscola";
-import IRankSchool from "../../../types/IRankSchool";
+import { IReputacao } from "../../types/IEscola";
+import IRankSchool from "../../types/IRankSchool";
 // import { Container } from './styles';
 import formatRank from "../../../utils/formatRank";
 

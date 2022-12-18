@@ -1,4 +1,4 @@
-import ALL_TAGS from "../../types/ITags";
+import ALL_TAGS from "../types/ITags";
 
 export type IPrimaryComents = {
   _id: string;

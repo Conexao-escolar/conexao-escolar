@@ -23,14 +23,12 @@ import CardEscola from "../components/CardEscola";
 
 
 // SERVICES
-import separeteSchoolsByTag, {
-  SchoolsByTag
-} from '../services/separeteSchoolsByTag';
+import separeteSchoolsByTag from '../services/separeteSchoolsByTag';
 import separeteSchoolsByRank, {
   ISchoolOrdenedByRank,
 } from "../services/separeteSchoolsByRank";
 
-import ALL_TAGS from "../../types/ITags";
+import ALL_TAGS from "../types/ITags";
 import School, { ISchoolProps } from "../entities/school";
 
 type IListSchool = {

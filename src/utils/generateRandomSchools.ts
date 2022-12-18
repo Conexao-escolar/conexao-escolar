@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
-import IEscola from "../types/IEscola";
-import ALL_TAGS from "../types/ITags";
+import IEscola from "../School/types/IEscola";
+import ALL_TAGS from "../School/types/ITags";
 
 const randomModal = () => {
   const a = Number(faker.random.numeric(2));
