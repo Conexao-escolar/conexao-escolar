@@ -1,4 +1,3 @@
-/* eslint-disable react/no-children-prop */
 import {
   Box,
   Button,
@@ -16,33 +15,25 @@ import Container from "../components/Container";
 import Menus from "../components/Nav/MenuOpcoes";
 import CardEscola from "../School/components/CardEscola";
 
-import School from "../School/entities/school";
+import School, { ISchoolProps } from "../School/entities/school";
 import separeteSchoolsByRank from "../School/services/separeteSchoolsByRank";
 import FirestoreDocumentoToSchool from '../School/mappers/firestore-to-school';
 
-import ICardEscla, { IEscolaProfile } from "../types/IEscola";
-// import School from "../models/school";
 
 import { useRouter } from "next/router";
 
-export default function Home({ schools, god, bad }) {
-  const [goodSchols, setGoodSchools] = React.useState<ICardEscla[]>(() => {
+export default function Home({ god="", bad="" }) {
+  const goodSchols = React.useMemo<ISchoolProps[]>(() => {
     if (god) return JSON.parse(god);
-  });
-  const [badSchools, setBadSchools] = React.useState<ICardEscla[]>(() => {
+    return []    
+  }, [god]);
+
+  const badSchools = React.useMemo<ISchoolProps[]>(() => {
     if (bad) return JSON.parse(bad);
-  });
+    return []
+  }, [bad]);
 
   const { push } = useRouter();
-
-  // const { schools } = useSchool();
-
-  // React.useEffect(() => {
-  //   const byRank = separeteSchoolsByRank(schools, 4, 4);
-
-  //   setGoodSchools(byRank.desc);
-  //   setBadSchools(byRank.asc);
-  // }, [schools]);
 
   const BannerFilter = () => {
     const listOfStates = React.useMemo(() => ["Rondônia", "Mato Grosso"], []);
@@ -283,8 +274,8 @@ export async function getStaticProps() {
 
   const { asc, desc } = separeteSchoolsByRank(allSchools, 4, 4);
 
-  const _ascSchoolData = asc.map(data => data.Data);
-  const _descSchoolData = desc.map(data => data.Data);
+  const _ascSchoolData = desc.map(data => data.Data);
+  const _descSchoolData = asc.map(data => data.Data);
   const _allSchools = allSchools.map(school => school.Data);
 
   return {

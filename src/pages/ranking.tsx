@@ -1,55 +1,39 @@
 import { collection, getDocs, getFirestore } from "firebase/firestore";
 import Ranking from "../School/pages/ranking";
 import firebase from '../database';
-import School from "../models/school";
-import { IEscolaProfile } from "../types/IEscola";
-import separeteSchoolsByTag from "../services/separeteSchoolsByTag";
-import ALL_TAGS from "../types/ITags";
-import separeteSchoolsByRank, { ISchoolOrdenedByRank } from "../services/separeteSchoolsByRank";
+import { ISchoolProps } from "../School/entities/school";
+import FirestoreDocumentoToSchool from "../School/mappers/firestore-to-school";
 
-type IListSchool = {
-  [Property in ALL_TAGS]?: ISchoolOrdenedByRank;
-};
-
-const RankingNext = ({distribution}) => {
+const RankingNext = ({schools = ""}) => {
+  const parsedSchools = JSON.parse(schools);
   return (
-    <Ranking distribution={distribution} />
+    <Ranking schools={parsedSchools} />
   )
 }
 
-export default Ranking;
+export default RankingNext;
 
 export async function getStaticProps() {
   const db = getFirestore(firebase);
 
   const schoolsCollections = collection(db, "schools");
-  const allSchools = await getDocs(schoolsCollections)
+  const allSchools: ISchoolProps[] = await getDocs(schoolsCollections)
     .then((el) => {
       const result = el.docs.map((ab) => {
-        const school = new School(ab);
-        return school.get();
+        const school = FirestoreDocumentoToSchool(ab).Data;
+        return school
       });
 
       return result;
     })
     .catch((err) => {
       console.error("Erro ao buscar no database ", err.message || err);
-      return [] as IEscolaProfile[];
+      return [] as ISchoolProps[];
     });
-
-  // const allSchools = await getAllSchols();
-  const byTag = separeteSchoolsByTag(allSchools);
-  const byRank: IListSchool = {
-    AUTISMO: separeteSchoolsByRank(byTag.AUTISMO, 3, 10),
-    FISICO: separeteSchoolsByRank(byTag.FISICO, 3, 10),
-    TDH: separeteSchoolsByRank(byTag.TDH, 3, 10),
-    VISUAL: separeteSchoolsByRank(byTag.VISUAL, 3, 10),
-    AUDITIVO: separeteSchoolsByRank(byTag.AUDITIVO, 3, 10),
-  };
 
   return {
     props: {
-      distribution: JSON.stringify(byRank),
+      schools: JSON.stringify(allSchools),
     },
   };
 }

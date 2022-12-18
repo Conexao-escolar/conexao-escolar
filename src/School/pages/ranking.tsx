@@ -31,14 +31,14 @@ import separeteSchoolsByRank, {
 } from "../services/separeteSchoolsByRank";
 
 import ALL_TAGS from "../../types/ITags";
-import School from "../entities/school";
+import School, { ISchoolProps } from "../entities/school";
 
 type IListSchool = {
   [Property in ALL_TAGS]?: ISchoolOrdenedByRank;
 };
 
 type IRankingProps = {
-  schools: School[]
+  schools: ISchoolProps[]
 }
 
 /**
@@ -52,7 +52,7 @@ type IRankingProps = {
  * @returns 
  */
 const Ranking: React.FC<IRankingProps> = ({schools}) => {
-  const [thisSchool, setSchools] = React.useState<IListSchool>();
+  const [thisSchool, setSchools] = React.useState<IListSchool>({});
 
   //return Object.values(ALL_TAGS)
   const [categoriaFilter, setCategoriaFilters] = React.useState([]);
@@ -93,7 +93,9 @@ const Ranking: React.FC<IRankingProps> = ({schools}) => {
 
   React.useEffect(() => {
     if (schools.length) {
-      const byTag = separeteSchoolsByTag(schools);
+      const Schools = schools.map(school => new School(school));
+      const byTag = separeteSchoolsByTag(Schools);
+
       const byRank: IListSchool = {
         AUTISMO: separeteSchoolsByRank(byTag.AUTISMO, 3, 10),
         FISICO: separeteSchoolsByRank(byTag.FISICO, 3, 10),
@@ -266,12 +268,12 @@ const Ranking: React.FC<IRankingProps> = ({schools}) => {
               return (
                 <GridItem key={`exibir-${cat}`}>
                   <CardEscola
-                    escolas={thisSchool[cat].desc}
+                    escolas={thisSchool[cat].desc.map(school => school.Data)}
                     main_color="green"
                     title="Melhores escolas em"
                     tag={cat}
                     reverse={{
-                      escolas: thisSchool[cat].asc,
+                      escolas: thisSchool[cat].asc.map(school => school.Data),
                       main_color: "purple",
                       tag: cat,
                       title: "Piores escolas em",

@@ -1,16 +1,13 @@
 import React from "react";
 
+import { Box, Divider, Flex, Text } from "@chakra-ui/react";
 import {
-  Box,
-  Divider,
-  Flex,
-  Text,
-} from "@chakra-ui/react";
-import ICardEscla from "../../../types/IEscola";
+  ISchoolProps
+} from "../../entities/school";
 import SchoolLine from "./SchoolLine";
 
 export interface ICardEscolaProps {
-  escolas: ICardEscla[];
+  escolas: ISchoolProps[];
   title: string;
   label?: string;
   main_color: "purple" | "green";
@@ -34,6 +31,7 @@ const CardEscola: React.FC<IChildrenCardProps> = ({
   const MAIN_COLOR = (_color) =>
     _color === "green" ? "_orange.500" : "purple.700";
 
+  console.log(escolas);
   if (!escolas.length) return;
 
   const Title = ({
@@ -99,14 +97,18 @@ const CardEscola: React.FC<IChildrenCardProps> = ({
               <Flex justifyContent="center" h="50px">
                 <Title tag={reverse.tag} title={reverse.title} bad />
               </Flex>
-              {reverse.escolas.map((escola, index) => (
-                <SchoolLine
-                  {...escola}
-                  index={index + 1}
-                  color={MAIN_COLOR(reverse.main_color)}
-                  key={`first-${escola.id}`}
-                />
-              ))}
+              {reverse.escolas.map((escola, index) => {
+                return (
+                  <SchoolLine
+                    id={escola.id}
+                    nome={escola.nome}
+                    rank={escola.rank}
+                    index={index + 1}
+                    color={MAIN_COLOR(reverse.main_color)}
+                    key={`first-${escola.id}`}
+                  />
+                );
+              })}
             </Flex>
           </>
         )}
