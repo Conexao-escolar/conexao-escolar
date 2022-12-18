@@ -31,7 +31,6 @@ const CardEscola: React.FC<IChildrenCardProps> = ({
   const MAIN_COLOR = (_color) =>
     _color === "green" ? "_orange.500" : "purple.700";
 
-  console.log(escolas);
   if (!escolas.length) return;
 
   const Title = ({

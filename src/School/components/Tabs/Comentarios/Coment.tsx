@@ -84,7 +84,6 @@ const Comentarios: React.FC<IComentProp> = ({
   }, [_id, onComentReplyedEnter, replyedComment]);
 
   const _addLike = React.useCallback(() => {
-    console.log(_id);
     addLike({
       commnetId: _id,
     });

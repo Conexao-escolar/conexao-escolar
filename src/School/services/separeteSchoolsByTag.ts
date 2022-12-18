@@ -12,8 +12,6 @@ function separeteSchoolsByTag(orders: School[]): SchoolsByTag {
       const tagsNotIncluded = thisTags.filter((tag) => {
 
         if(!prev[tag]) {
-          console.log("i")
-          console.log(tag)
           console.log(prev[tag])
         }
         const alredyIncluded = prev[tag].find(

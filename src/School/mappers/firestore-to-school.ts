@@ -44,11 +44,6 @@ export default function FirestoreDocumentoToSchool(
       const haveOldKeyValue = reputacao["TDH"];
       const haveNewKey = reputacao["TDAH"];
 
-      console.log({
-        haveOldKeyValue,
-        haveNewKey,
-      });
-
       if (haveOldKeyValue) {
         newReputacao["TDAH"] = {
           rank: validRank(haveOldKeyValue),
