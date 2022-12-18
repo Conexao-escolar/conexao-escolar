@@ -53,19 +53,17 @@ import { faker } from "@faker-js/faker";
 
 import useAuth from "../../hooks/useAuth";
 import IRankSchool from "../../types/IRankSchool";
+import School, {ISchoolProps} from "../entities/school";
 
 type ISchoolDetail = {
   exists: boolean;
-  detail: string;
+  detail: ISchoolProps;
 };
 
 const RankingDetail: React.FC<ISchoolDetail> = ({
-  exists = true,
-  detail = "",
+  detail,
 }) => {
-  const [schoolDetail, setScholDetail] = React.useState<IEscolaProfile>(
-    {} as IEscolaProfile
-  );
+  const [schoolDetail, setScholDetail] = React.useState<ISchoolProps>(detail);
   const [loading, setLoading] = React.useState(true);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -414,7 +412,7 @@ const RankingDetail: React.FC<ISchoolDetail> = ({
   );
 
   React.useEffect(() => {
-    const { nome } = JSON.parse(detail) as IEscolaProfile;
+    const { nome } = detail;
 
     if (!!firebase) {
       const analityc = getAnalytics(firebase);
@@ -558,8 +556,7 @@ const RankingDetail: React.FC<ISchoolDetail> = ({
   );
 
   React.useEffect(() => {
-    const schoolParsed = JSON.parse(detail) as IEscolaProfile;
-    const { comentarios } = schoolParsed;
+    const { comentarios } = detail;
 
     const aproved = (_aproved: boolean, author_id: string) => {
       if (!!user && author_id === user.id) return true;
@@ -585,13 +582,16 @@ const RankingDetail: React.FC<ISchoolDetail> = ({
       })
       .filter((el) => !!el);
 
-    setScholDetail({
-      ...schoolParsed,
-      comentarios: commentFiltered,
-    });
+    const bodyNewSchool: ISchoolProps = {
+      ...detail,
+      comentarios: commentFiltered
+    }
+
+    setScholDetail(bodyNewSchool);
 
     setLoading(false);
   }, [detail, user]);
+
 
   return (
     <>

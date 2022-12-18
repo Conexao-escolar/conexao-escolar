@@ -39,6 +39,8 @@ export interface ISchoolProps {
   };
   comentarios: Array<IComents>;
   reputacao: IReputacao;
+  user_dislike: Array<string>;
+  user_like: Array<string>;
 }
 
 class School {
@@ -94,6 +96,26 @@ class School {
   }
   public get tags(): Array<ALL_TAGS> {
     return this.props.tags;
+  }
+
+  public get Data(): ISchoolProps {
+    return {
+      id: this.props.id,
+      modal: this.props.modal,
+      nome: this.props.nome,
+      endereco: this.props.endereco,
+      cidade: this.props.cidade,
+      rank: this.props.rank,
+      tags: this.props.tags,
+      profile_img: this.props.profile_img,
+      sobre: this.props.sobre,
+      conteudo: this.props.conteudo,
+      localizacao: this.props.localizacao,
+      comentarios: this.props.comentarios,
+      reputacao: this.props.reputacao,
+      user_dislike: this.props.user_dislike,
+      user_like: this.props.user_like,
+    };
   }
 }
 

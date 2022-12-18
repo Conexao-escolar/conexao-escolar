@@ -1,11 +1,11 @@
-import ICardEscla from "../types/IEscola";
-import ALL_TAGS from "../types/ITags";
+import School from "../entities/school";
+import ALL_TAGS from "../../types/ITags";
 
 export type SchoolsByTag = {
-  [Property in ALL_TAGS]?: ICardEscla[];
+  [Property in ALL_TAGS]?: School[];
 };
 
-function separeteSchoolsByTag(orders: ICardEscla[]): SchoolsByTag {
+function separeteSchoolsByTag(orders: School[]): SchoolsByTag {
   const result: SchoolsByTag = orders.reduce(
     (prev, curr) => {
       const thisTags = curr.tags;

@@ -2,11 +2,9 @@
 import {
   Box,
   Button,
-  Center,
   Divider,
   Flex,
   Heading,
-  Stack,
   Text,
 } from "@chakra-ui/react";
 import React from "react";
@@ -16,19 +14,16 @@ import { getFirestore, collection, getDocs } from "firebase/firestore";
 
 import Container from "../components/Container";
 import Menus from "../components/Nav/MenuOpcoes";
-import Input, { SelectInput } from "../components/Input";
 import CardEscola from "../School/components/CardEscola";
 
-import { FaSearch } from "react-icons/fa";
+import School from "../School/entities/school";
+import separeteSchoolsByRank from "../School/services/separeteSchoolsByRank";
+import FirestoreDocumentoToSchool from '../School/mappers/firestore-to-school';
 
-import useSchool from "../hooks/useSchool";
-import separeteSchoolsByRank from "../services/separeteSchoolsByRank";
 import ICardEscla, { IEscolaProfile } from "../types/IEscola";
-import School from "../models/school";
+// import School from "../models/school";
 
 import { useRouter } from "next/router";
-
-import NextImg from "next/image";
 
 export default function Home({ schools, god, bad }) {
   const [goodSchols, setGoodSchools] = React.useState<ICardEscla[]>(() => {
@@ -272,18 +267,18 @@ export async function getStaticProps() {
   const db = getFirestore(firebase);
 
   const schoolsCollections = collection(db, "schools");
-  const allSchools = await getDocs(schoolsCollections)
+  const allSchools: School[] = await getDocs(schoolsCollections)
     .then((el) => {
       const result = el.docs.map((ab) => {
-        const school = new School(ab);
-        return school.get();
+        const school = FirestoreDocumentoToSchool(ab);
+        return school;
       });
 
       return result;
     })
     .catch((err) => {
       console.error("Erro ao buscar no database ", err.message || err);
-      return [] as IEscolaProfile[];
+      return [] as School[];
     });
 
   const { asc, desc } = separeteSchoolsByRank(allSchools, 4, 4);

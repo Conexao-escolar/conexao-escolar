@@ -14,32 +14,45 @@ import {
   Grid,
   GridItem,
 } from "@chakra-ui/react";
+import { FaFilter } from "react-icons/fa";
 
 import Container from "../../components/Container";
 import Menus from "../../components/Nav/MenuOpcoes";
 import { SelectInput } from "../../components/Input";
-import { FaFilter } from "react-icons/fa";
-import {
-  ISchoolOrdenedByRank,
-} from "../../services/separeteSchoolsByRank";
-import ALL_TAGS from "../../types/ITags";
 import CardEscola from "../components/CardEscola";
+
+
+// SERVICES
+import separeteSchoolsByTag, {
+  SchoolsByTag
+} from '../services/separeteSchoolsByTag';
+import separeteSchoolsByRank, {
+  ISchoolOrdenedByRank,
+} from "../services/separeteSchoolsByRank";
+
+import ALL_TAGS from "../../types/ITags";
+import School from "../entities/school";
 
 type IListSchool = {
   [Property in ALL_TAGS]?: ISchoolOrdenedByRank;
 };
 
-const Ranking: React.FC = ({ distribution }: any) => {
-  const [thisSchool, setSchools] = React.useState<IListSchool>(() => {
-    const { AUTISMO, FISICO, TDH, VISUAL } = JSON.parse(distribution);
+type IRankingProps = {
+  schools: School[]
+}
 
-    return {
-      AUTISMO,
-      FISICO,
-      TDH,
-      VISUAL,
-    };
-  });
+/**
+ * // const { AUTISMO, FISICO, TDH, VISUAL } = JSON.parse(distribution);
+    // return {
+    //   AUTISMO,
+    //   FISICO,
+    //   TDH,
+    //   VISUAL,
+    // };
+ * @returns 
+ */
+const Ranking: React.FC<IRankingProps> = ({schools}) => {
+  const [thisSchool, setSchools] = React.useState<IListSchool>();
 
   //return Object.values(ALL_TAGS)
   const [categoriaFilter, setCategoriaFilters] = React.useState([]);
@@ -78,19 +91,19 @@ const Ranking: React.FC = ({ distribution }: any) => {
     [categoriaFilter, thisSchool]
   );
 
-  // React.useEffect(() => {
-  //   if (schools.length) {
-  //     const byTag = separeteSchoolsByTag(schools);
-  //     const byRank: IListSchool = {
-  //       AUTISMO: separeteSchoolsByRank(byTag.AUTISMO, 3, 10),
-  //       FISICO: separeteSchoolsByRank(byTag.FISICO, 3, 10),
-  //       TDH: separeteSchoolsByRank(byTag.TDH, 3, 10),
-  //       VISUAL: separeteSchoolsByRank(byTag.VISUAL, 3, 10),
-  //     };
+  React.useEffect(() => {
+    if (schools.length) {
+      const byTag = separeteSchoolsByTag(schools);
+      const byRank: IListSchool = {
+        AUTISMO: separeteSchoolsByRank(byTag.AUTISMO, 3, 10),
+        FISICO: separeteSchoolsByRank(byTag.FISICO, 3, 10),
+        TDAH: separeteSchoolsByRank(byTag.TDAH, 3, 10),
+        VISUAL: separeteSchoolsByRank(byTag.VISUAL, 3, 10),
+      };
 
-  //     setSchools(byRank);
-  //   }
-  // }, [schools]);
+      setSchools(byRank);
+    }
+  }, [schools]);
 
   const ContainerFilter = () => {
     return (

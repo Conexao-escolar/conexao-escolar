@@ -1,13 +1,13 @@
-import ICardEscla from "../types/IEscola";
+import School from "../entities/school";
 import _ from "lodash";
 
 export type ISchoolOrdenedByRank = {
-  asc: ICardEscla[];
-  desc: ICardEscla[];
+  asc: School[];
+  desc: School[];
 };
 
 function separeteSchoolsByRank(
-  escolas: ICardEscla[],
+  escolas: School[],
   rangeFirstSplit: number = 5,
   rangeSecondSplit: number = 3
 ): ISchoolOrdenedByRank {

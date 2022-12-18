@@ -6,9 +6,10 @@ import {
   doc,
 } from "firebase/firestore";
 
-import School from "../../models/school";
-
+// import School from "../../models/school";
+import FirestoreDocumentoToSchool from "../../School/mappers/firestore-to-school";
 import RankingDetail from "../../School/pages/ranking-detail";
+import School from "../../School/entities/school";
 
 type ISchoolDetail = {
   exists: boolean;
@@ -19,8 +20,10 @@ const SchoolDetail: React.FC<ISchoolDetail> = ({
   exists = true,
   detail = "",
 }) => {
+  const schoolDetail = JSON.parse(detail);
+
   return (
-    <RankingDetail  detail={detail} exists={exists} />
+    <RankingDetail detail={schoolDetail} exists={exists} />
   )
 };
 
@@ -34,7 +37,7 @@ export async function getServerSideProps(context) {
   const docRef = doc(db, "schools", schoolName);
   const docSnap = await getDoc(docRef);
 
-  const data = new School(docSnap).get();
+  const data = FirestoreDocumentoToSchool(docSnap).Data;
 
   return {
     props: {
