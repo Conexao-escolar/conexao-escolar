@@ -4,7 +4,7 @@ enum ALL_TAGS {
   "AUTISMO" = "AUTISMO",
   "VISUAL" = "VISUAL",
   "FISICO" = "FISICO",
-  "TDH" = "TDH",
+  "TDH" = "TDAH",
   "AUDITIVO" = "AUDITIVO"
 }
 

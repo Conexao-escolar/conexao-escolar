@@ -24,12 +24,13 @@ const Reputacao: React.FC<IProps> = ({ reputacao = {} }) => {
       rank: number,
       key: string
     ) => {
+      const keySTRReputacao = key.toLowerCase() === "tdh" ? "TDAH": key;
       if (reputacao === IRankSchool.Ruim || reputacao === IRankSchool.Pessimo)
         return (
           <>
             <Text>
               Reputação em
-              <span className="tag"> #{key}</span>
+              <span className="tag"> #{keySTRReputacao}</span>
             </Text>
             <Text fontSize="3xl" fontWeight="bold" textColor="#874A9F">
               {reputacao}
@@ -49,7 +50,7 @@ const Reputacao: React.FC<IProps> = ({ reputacao = {} }) => {
           <>
             <Text>
               Reputação em
-              <span className="tag"> #{key}</span>
+              <span className="tag"> #{keySTRReputacao}</span>
             </Text>
             <Text fontSize="3xl" fontWeight="bold" textColor="#FF6736">
               {reputacao}
@@ -69,7 +70,7 @@ const Reputacao: React.FC<IProps> = ({ reputacao = {} }) => {
         <>
           <Text>
             Reputação em
-            <span className="tag"> #{key}</span>
+            <span className="tag"> #{keySTRReputacao}</span>
           </Text>
           <Text fontSize="3xl" fontWeight="bold" textColor="#00CF9A">
             {reputacao}
