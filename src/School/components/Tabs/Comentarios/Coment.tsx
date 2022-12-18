@@ -21,7 +21,7 @@ import { BiDislike, BiLike } from "react-icons/bi";
 import { FiAlertCircle, FiAlertOctagon } from "react-icons/fi";
 import { MdSend } from "react-icons/md";
 import { IComents } from "../../../../types/IEscola";
-import { IComentFunctionsProps } from "./";
+import { IComentFunctionsProps } from ".";
 import ReplyedComment from "./Replyed";
 
 import useAuth from "../../../../hooks/useAuth";

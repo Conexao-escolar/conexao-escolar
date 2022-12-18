@@ -18,10 +18,10 @@ import { MdSend } from "react-icons/md";
 
 import useAuth from "../../../../hooks/useAuth";
 
-import { SelectInput } from "../../../Input";
+import { SelectInput } from "../../../../components/Input";
 import ALL_TAGS from "../../../../types/ITags";
 import { IEscolaProfile } from "../../../../types/IEscola";
-import Modal from "../../../Modal";
+import Modal from "../../../../components/Modal";
 
 import ComentLine from "./Coment";
 

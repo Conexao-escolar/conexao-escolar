@@ -6,7 +6,7 @@ import {
   Flex,
   Text,
 } from "@chakra-ui/react";
-import ICardEscla from "../../types/IEscola";
+import ICardEscla from "../../../types/IEscola";
 import SchoolLine from "./SchoolLine";
 
 export interface ICardEscolaProps {

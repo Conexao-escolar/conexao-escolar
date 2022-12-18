@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Flex, Input, Text, Checkbox, Textarea } from "@chakra-ui/react";
 
-import ModalApp from "../../Modal";
+import ModalApp from "../../../components/Modal";
 import ALL_TAGS from "../../../types/ITags";
 import EvaluationModeSliderInput, { IRefProps } from "./Slider";
 

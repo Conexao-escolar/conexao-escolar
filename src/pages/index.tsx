@@ -17,7 +17,7 @@ import { getFirestore, collection, getDocs } from "firebase/firestore";
 import Container from "../components/Container";
 import Menus from "../components/Nav/MenuOpcoes";
 import Input, { SelectInput } from "../components/Input";
-import CardEscola from "../components/CardEscola";
+import CardEscola from "../School/components/CardEscola";
 
 import { FaSearch } from "react-icons/fa";
 

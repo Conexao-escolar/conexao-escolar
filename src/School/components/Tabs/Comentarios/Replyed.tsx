@@ -17,7 +17,7 @@ import React from "react";
 import { BiDislike, BiLike } from "react-icons/bi";
 import { FiAlertCircle, FiAlertOctagon } from "react-icons/fi";
 import { IPrimaryComents } from "../../../../types/IEscola";
-import { IComentFunctionsProps } from "./";
+import { IComentFunctionsProps } from ".";
 // import { Container } from './styles';
 import useAuth from "../../../../hooks/useAuth";
 
