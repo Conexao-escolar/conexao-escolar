@@ -283,11 +283,15 @@ export async function getStaticProps() {
 
   const { asc, desc } = separeteSchoolsByRank(allSchools, 4, 4);
 
+  const _ascSchoolData = asc.map(data => data.Data);
+  const _descSchoolData = desc.map(data => data.Data);
+  const _allSchools = allSchools.map(school => school.Data);
+
   return {
     props: {
-      schools: JSON.stringify(allSchools),
-      god: JSON.stringify(desc),
-      bad: JSON.stringify(asc),
+      schools: JSON.stringify(_allSchools),
+      god: JSON.stringify(_ascSchoolData),
+      bad: JSON.stringify(_descSchoolData),
     },
   };
 }
